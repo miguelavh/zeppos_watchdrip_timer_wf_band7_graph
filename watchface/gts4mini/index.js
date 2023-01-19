@@ -120,7 +120,10 @@ function stopLoader() {
 
 function updateWidgets() {
     if (typeof batterySensor !== 'undefined') {
-        watchBattery.setProperty(hmUI.prop.TEXT, batterySensor.current + '%');
+        screenType = hmSetting.getScreenType();
+        if (screenType !== hmSetting.screen_type.AOD) {
+            watchBattery.setProperty(hmUI.prop.TEXT, batterySensor.current + '%');
+        }
     }
 }
 
