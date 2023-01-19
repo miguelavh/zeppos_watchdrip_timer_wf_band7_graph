@@ -80,6 +80,8 @@ let imgBg, digitalClock, btDisconnected, daysImg, dateImg, mask, maskCover, edit
 let bgValNoDataTextWidget, bgValTextImgWidget, bgValTimeTextWidget, bgDeltaTextWidget, bgTrendImageWidget, bgStaleLine, 
     phoneBattery, watchBattery, bgStatusLow, bgStatusOk, bgStatusHigh, progress, aapsText, aapsTimeText;
 
+let batterySensor;
+
 let globalNS, progressTimer, progressAngle, screenType;
 
 let debug, watchdrip;
@@ -114,6 +116,12 @@ function stopLoader() {
         progressTimer = null;
     }
     progress.setProperty(hmUI.prop.VISIBLE, false);
+}
+
+function updateWidgets() {
+    if (typeof batterySensor !== 'undefined') {
+        watchBattery.setProperty(hmUI.prop.TEXT, batterySensor.current + '%');
+    }
 }
 
 function mergeStyles(styleObj1, styleObj2) {
@@ -195,14 +203,15 @@ WatchFace({
 
         btDisconnected = hmUI.createWidget(hmUI.widget.IMG_STATUS, IMG_STATUS_BT_DISCONNECTED);
 
+        batterySensor = hmSensor.createSensor(hmSensor.id.BATTERY);
         watchBattery = hmUI.createWidget(hmUI.widget.TEXT, WATCH_BATTERY_TEXT);
+        batterySensor.addEventListener(hmSensor.event.CHANGE, updateWidgets);
         
         // UI lifecycle proxy
         const widgetDelegate = hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, {
             resume_call: (function() {
                 // Update watch battery
-                const batterySensor = hmSensor.createSensor(hmSensor.id.BATTERY);
-                watchBattery.setProperty(hmUI.prop.TEXT, batterySensor.current + '%');
+                updateWidgets();
             })
         });
 
@@ -246,6 +255,7 @@ WatchFace({
         bgStatusOk = hmUI.createWidget(hmUI.widget.IMG, BG_STATUS_OK_IMG);
         bgStatusHigh = hmUI.createWidget(hmUI.widget.IMG, BG_STATUS_HIGH_IMG);
         progress = hmUI.createWidget(hmUI.widget.IMG, IMG_LOADING_PROGRESS);
+        stopLoader();
         // From modified xDrip ExternalStatusService.getLastStatusLine()
         aapsText = hmUI.createWidget(hmUI.widget.TEXT, AAPS_TEXT);
         // From modified xDrip ExternalStatusService.getLastStatusLineTime()
@@ -375,6 +385,10 @@ WatchFace({
     onDestroy() {
         logger.log("wf on destroy invoke");
         watchdrip.destroy();
+
+        if (typeof batterySensor !== 'undefined') {
+            batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);
+        }
     },
 
     onShow() {
