@@ -5,8 +5,16 @@ let bgNumArr = range(10).map((v) => {
     return img(`bgNum/${v}.png`);
 });
 
+let bgNumAODArr = range(10).map((v) => {
+    return img(`bgNumAOD/${v}.png`);
+});
+
 let bigNumArr = range(10).map((v) => {
     return img(`bigNum/${v}.png`);
+});
+
+let bigNumAODArr = range(10).map((v) => {
+    return img(`bigNumAOD/${v}.png`);
 });
 
 let smallNumArr = range(10).map((v) => {
@@ -52,7 +60,20 @@ export const DIGITAL_TIME = {
     pm_y: px(42),
     pm_sc_path: img('bigNum/pm.png'),
     pm_en_path: img('bigNum/pm.png'),
-    show_level: hmUI.show_level.ONLY_NORMAL | hmUI.show_level.ONAL_AOD
+    show_level: hmUI.show_level.ONLY_NORMAL
+};
+
+export const DIGITAL_TIME_AOD = {
+    hour_array: bigNumAODArr,
+    hour_unit_sc: img('bigNumAOD/sp.png'), // colon
+    hour_unit_tc: img('bigNumAOD/sp.png'),
+    hour_unit_en: img('bigNumAOD/sp.png'),
+    minute_array: bigNumAODArr,
+    am_sc_path: img('bigNumAOD/am.png'),
+    am_en_path: img('bigNumAOD/am.png'),
+    pm_sc_path: img('bigNumAOD/pm.png'),
+    pm_en_path: img('bigNumAOD/pm.png'),
+    show_level: hmUI.show_level.ONAL_AOD
 };
 
 const dateX = px(163);
@@ -122,7 +143,13 @@ export const BG_VALUE_TEXT_IMG = {
     text: '0',
     visible: false,
     h_space:1,
-    show_level: hmUI.show_level.ONLY_NORMAL | hmUI.show_level.ONAL_AOD
+    show_level: hmUI.show_level.ONLY_NORMAL
+};
+
+export const BG_VALUE_TEXT_IMG_AOD = {
+    dot_image: img('bgNumAOD/d.png'),
+    font_array: bgNumAODArr,
+    show_level: hmUI.show_level.ONAL_AOD
 };
 
 export const BG_TIME_TEXT = {

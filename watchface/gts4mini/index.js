@@ -12,9 +12,11 @@ import {
     BG_TREND_IMAGE,
     BG_VALUE_NO_DATA_TEXT,
     BG_VALUE_TEXT_IMG,
+    BG_VALUE_TEXT_IMG_AOD,
     WEEK_DAYS_IMG,
     DATE_TEXT_IMG,
     DIGITAL_TIME,
+    DIGITAL_TIME_AOD,
     IMG_LOADING_PROGRESS,
     IMG_STATUS_BT_DISCONNECTED,
     PHONE_BATTERY_TEXT,
@@ -194,11 +196,13 @@ WatchFace({
         screenType = hmSetting.getScreenType();
         if (screenType === hmSetting.screen_type.AOD) {
             imgBg = hmUI.createWidget(hmUI.widget.FILL_RECT, BG_FILL_RECT);
+            
+            digitalClock = hmUI.createWidget(hmUI.widget.IMG_TIME, mergeStyles(DIGITAL_TIME, DIGITAL_TIME_AOD));
         } else {
             imgBg = hmUI.createWidget(hmUI.widget.IMG, BG_IMG);
-        };
 
-        digitalClock = hmUI.createWidget(hmUI.widget.IMG_TIME, DIGITAL_TIME);
+            digitalClock = hmUI.createWidget(hmUI.widget.IMG_TIME, DIGITAL_TIME);
+        };
 
         daysImg = hmUI.createWidget(hmUI.widget.IMG_WEEK, WEEK_DAYS_IMG);
 
@@ -247,8 +251,12 @@ WatchFace({
 
 
         //init watchdrip related widgets
+        if (screenType === hmSetting.screen_type.AOD) {
+            bgValTextImgWidget = hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(BG_VALUE_TEXT_IMG, BG_VALUE_TEXT_IMG_AOD));
+        } else {
+            bgValTextImgWidget = hmUI.createWidget(hmUI.widget.TEXT_IMG, BG_VALUE_TEXT_IMG);
+        };
         bgValNoDataTextWidget = hmUI.createWidget(hmUI.widget.TEXT, BG_VALUE_NO_DATA_TEXT);
-        bgValTextImgWidget = hmUI.createWidget(hmUI.widget.TEXT_IMG, BG_VALUE_TEXT_IMG);
         bgValTimeTextWidget = hmUI.createWidget(hmUI.widget.TEXT, BG_TIME_TEXT);
         bgDeltaTextWidget = hmUI.createWidget(hmUI.widget.TEXT, BG_DELTA_TEXT);
         bgTrendImageWidget = hmUI.createWidget(hmUI.widget.IMG, BG_TREND_IMAGE);
