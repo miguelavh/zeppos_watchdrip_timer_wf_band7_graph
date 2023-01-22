@@ -64,6 +64,8 @@ export const DIGITAL_TIME = {
 };
 
 export const DIGITAL_TIME_AOD = {
+    hour_startX: px(54),
+    hour_startY: px(122),
     hour_array: bigNumAODArr,
     hour_unit_sc: img('bigNumAOD/sp.png'), // colon
     hour_unit_tc: img('bigNumAOD/sp.png'),
@@ -71,8 +73,12 @@ export const DIGITAL_TIME_AOD = {
     minute_array: bigNumAODArr,
     am_sc_path: img('bigNumAOD/am.png'),
     am_en_path: img('bigNumAOD/am.png'),
+    am_x: px(290),
+    am_y: px(158),
     pm_sc_path: img('bigNumAOD/pm.png'),
     pm_en_path: img('bigNumAOD/pm.png'),
+    pm_x: px(290),
+    pm_y: px(158),
     show_level: hmUI.show_level.ONAL_AOD
 };
 
@@ -136,7 +142,6 @@ export const BG_VALUE_TEXT_IMG = {
     x: px(114),
     y: px(125),
     w: px(108),
-    color: Colors.white,
     align_h: hmUI.align.CENTER_H,
     dot_image: img('bgNum/d.png'),
     font_array: bgNumArr,
@@ -147,6 +152,9 @@ export const BG_VALUE_TEXT_IMG = {
 };
 
 export const BG_VALUE_TEXT_IMG_AOD = {
+    x: px(65),
+    y: px(201),
+    w: px(206),
     dot_image: img('bgNumAOD/d.png'),
     font_array: bgNumAODArr,
     show_level: hmUI.show_level.ONAL_AOD
