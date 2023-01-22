@@ -291,10 +291,13 @@ WatchFace({
         bgStatusHigh.setProperty(hmUI.prop.VISIBLE, false);
 
         if (bgObj.isHasData()) {
-            if (bgObj.isHigh) {
-                bgStatusHigh.setProperty(hmUI.prop.VISIBLE, true);
-            } else if (bgObj.isLow) {
-                bgStatusLow.setProperty(hmUI.prop.VISIBLE, true);
+            if (bgObj.isHigh || bgObj.isLow) {
+                if (bgObj.isHigh) {
+                    bgStatusHigh.setProperty(hmUI.prop.VISIBLE, true);
+                };
+                if (bgObj.isLow) {
+                    bgStatusLow.setProperty(hmUI.prop.VISIBLE, true);
+                };
             } else {
                 bgStatusOk.setProperty(hmUI.prop.VISIBLE, true);
             };
