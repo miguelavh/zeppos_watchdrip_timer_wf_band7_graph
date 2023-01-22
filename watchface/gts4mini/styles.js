@@ -73,12 +73,12 @@ export const DIGITAL_TIME_AOD = {
     minute_array: bigNumAODArr,
     am_sc_path: img('bigNumAOD/am.png'),
     am_en_path: img('bigNumAOD/am.png'),
-    am_x: px(290),
-    am_y: px(158),
+    am_x: px(281),
+    am_y: px(151),
     pm_sc_path: img('bigNumAOD/pm.png'),
     pm_en_path: img('bigNumAOD/pm.png'),
-    pm_x: px(290),
-    pm_y: px(158),
+    pm_x: px(281),
+    pm_y: px(151),
     show_level: hmUI.show_level.ONAL_AOD
 };
 
