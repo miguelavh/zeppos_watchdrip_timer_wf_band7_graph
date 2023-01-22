@@ -1,40 +1,44 @@
 import {img,range} from "../../utils/helper";
 import {Colors} from "../../utils/config/constants";
 
-let bgNumArr = range(10).map((v) => {
+const bgNumArr = range(10).map((v) => {
     return img(`bgNum/${v}.png`);
 });
 
-let bgNumAODArr = range(10).map((v) => {
+const bgNumAODArr = range(10).map((v) => {
     return img(`bgNumAOD/${v}.png`);
 });
 
-let bigNumArr = range(10).map((v) => {
+const bigNumArr = range(10).map((v) => {
     return img(`bigNum/${v}.png`);
 });
 
-let bigNumAODArr = range(10).map((v) => {
+const bigNumAODArr = range(10).map((v) => {
     return img(`bigNumAOD/${v}.png`);
 });
 
-let smallNumArr = range(10).map((v) => {
+const smallNumArr = range(10).map((v) => {
     return img(`smallNum/${v}.png`);
 });
 
-let smallNumAccentArr = range(10).map((v) => {
+const smallNumAccentArr = range(10).map((v) => {
     return img(`smallNumAccent/${v}.png`);
 });
 
-let weekEnArr = range(1, 8).map((v) => {
+const weekEnArr = range(1, 8).map((v) => {
     return img(`week_en/${v}.png`);
 });
 
-let weatherArr = range(29).map((v) => {
+const weatherArr = range(29).map((v) => {
     return img(`weather/${v}.png`);
 });
 
-let moonArr = range(1, 30).map((v) => {
+const moonArr = range(1, 30).map((v) => {
     return img(`moon/${v}.png`);
+});
+
+const stepsArr = range(10).map((v) => {
+    return img(`widgets/steps/steps${v}.png`);
 });
 
 export const DIGITAL_TIME = {
@@ -393,7 +397,7 @@ export const EDIT_GROUP_DEFAULTS = {
         },
         {
             type: hmUI.edit_type.STEP,
-            preview: img('widgets/steps.png')
+            preview: img('widgets/steps/steps.png')
         },
         {
             type: hmUI.edit_type.DISTANCE,
@@ -587,8 +591,10 @@ export const EDIT_HEART_TEXT_IMG = {
 };
 
 // STEP widget
-export const EDIT_STEP_IMG = {
-    src: img('widgets/steps.png') // 40x40px
+export const EDIT_STEP_IMG_LEVEL = {
+    image_array: stepsArr, // 90x40px
+    image_length: stepsArr.length,
+    type: hmUI.data_type.STEP
 };
 export const EDIT_STEP_TEXT_IMG = {
     type: hmUI.data_type.STEP
