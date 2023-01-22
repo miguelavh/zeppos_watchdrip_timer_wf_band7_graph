@@ -274,7 +274,7 @@ export const BG_STATUS_OK_IMG = {
 export const BG_STATUS_HIGH_IMG = {
     x: px(216),
     y: px(108),
-    src: 'watchdrip/bgHight.png',
+    src: 'watchdrip/bgHigh.png',
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 

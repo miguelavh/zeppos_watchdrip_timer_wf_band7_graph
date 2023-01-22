@@ -10,7 +10,6 @@ import {
 import {json2str, str2json} from "../../shared/data";
 import {MessageBuilder} from "../../shared/message";
 import {
-    Colors,
     Commands,
     DATA_AOD_TIMER_UPDATE_INTERVAL_MS,
     DATA_AOD_UPDATE_INTERVAL_MS,
@@ -329,7 +328,7 @@ export class Watchdrip {
 
     /*Read config which is defined in the app. If not defined, init config*/
     readConfig() {
-        var configStr = hmFS.SysProGetChars(WATCHDRIP_CONFIG);
+        let configStr = hmFS.SysProGetChars(WATCHDRIP_CONFIG);
         if (!configStr) {
             this.watchdripConfig = WATCHDRIP_CONFIG_DEFAULTS;
             this.saveConfig();
@@ -349,7 +348,7 @@ export class Watchdrip {
 
     /* will check last config updates to sync config with app*/
     checkConfigUpdate() {
-        var configLastUpdate = hmFS.SysProGetInt64(WATCHDRIP_CONFIG_LAST_UPDATE);
+        let configLastUpdate = hmFS.SysProGetInt64(WATCHDRIP_CONFIG_LAST_UPDATE);
         if (this.configLastUpdate !== configLastUpdate) {
             this.configLastUpdate = configLastUpdate;
             this.readConfig();

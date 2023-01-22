@@ -77,10 +77,8 @@ import {
 import {BG_IMG, BG_FILL_RECT} from "../../utils/config/styles_global";
 import {PROGRESS_ANGLE_INC, PROGRESS_UPDATE_INTERVAL_MS} from "../../utils/config/constants";
 
-let imgBg, digitalClock, btDisconnected, daysImg, dateImg, mask, maskCover, editGroupTopLeft, editGroupTopRight, 
-    editGroupBottomLeft, editGroupBottomRight, editGroupAAPSxDrip;
 let bgValNoDataTextWidget, bgValTextImgWidget, bgValTimeTextWidget, bgDeltaTextWidget, bgTrendImageWidget, bgStaleLine, 
-    phoneBattery, watchBattery, bgStatusLow, bgStatusOk, bgStatusHigh, progress, aapsText, aapsTimeText;
+    phoneBattery, watchBattery, bgStatusLow, bgStatusOk, bgStatusHigh, progress, editGroupAAPSxDrip, aapsText, aapsTimeText;
 
 let batterySensor;
 
@@ -195,20 +193,20 @@ WatchFace({
     initView() {
         screenType = hmSetting.getScreenType();
         if (screenType === hmSetting.screen_type.AOD) {
-            imgBg = hmUI.createWidget(hmUI.widget.FILL_RECT, BG_FILL_RECT);
+            const imgBg = hmUI.createWidget(hmUI.widget.FILL_RECT, BG_FILL_RECT);
             
-            digitalClock = hmUI.createWidget(hmUI.widget.IMG_TIME, mergeStyles(DIGITAL_TIME, DIGITAL_TIME_AOD));
+            const digitalClock = hmUI.createWidget(hmUI.widget.IMG_TIME, mergeStyles(DIGITAL_TIME, DIGITAL_TIME_AOD));
         } else {
-            imgBg = hmUI.createWidget(hmUI.widget.IMG, BG_IMG);
+            const imgBg = hmUI.createWidget(hmUI.widget.IMG, BG_IMG);
 
-            digitalClock = hmUI.createWidget(hmUI.widget.IMG_TIME, DIGITAL_TIME);
+            const digitalClock = hmUI.createWidget(hmUI.widget.IMG_TIME, DIGITAL_TIME);
         };
 
-        daysImg = hmUI.createWidget(hmUI.widget.IMG_WEEK, WEEK_DAYS_IMG);
+        const daysImg = hmUI.createWidget(hmUI.widget.IMG_WEEK, WEEK_DAYS_IMG);
 
-        dateTextImg = hmUI.createWidget(hmUI.widget.IMG_DATE, DATE_TEXT_IMG);
+        const dateTextImg = hmUI.createWidget(hmUI.widget.IMG_DATE, DATE_TEXT_IMG);
 
-        btDisconnected = hmUI.createWidget(hmUI.widget.IMG_STATUS, IMG_STATUS_BT_DISCONNECTED);
+        const btDisconnected = hmUI.createWidget(hmUI.widget.IMG_STATUS, IMG_STATUS_BT_DISCONNECTED);
 
         batterySensor = hmSensor.createSensor(hmSensor.id.BATTERY);
         watchBattery = hmUI.createWidget(hmUI.widget.TEXT, WATCH_BATTERY_TEXT);
@@ -225,23 +223,23 @@ WatchFace({
         
         // BEGIN editable components init
         // 100% edit mask
-        maskCover = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_MASK, EDIT_MASK_100);
+        const maskCover = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_MASK, EDIT_MASK_100);
         // 70% edit mask
-        mask = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_FG_MASK, EDIT_MASK_70);
+        const mask = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_FG_MASK, EDIT_MASK_70);
         // Top Left editable widget
-        editGroupTopLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_LEFT_GROUP));
+        const editGroupTopLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_LEFT_GROUP));
         const editTopLeftType = editGroupTopLeft.getProperty(hmUI.prop.CURRENT_TYPE);
         this.drawWidget(mergeStyles(EDIT_DEFAULT_IMG, EDIT_TL_IMG), mergeStyles(EDIT_DEFAULT_TEXT_IMG, EDIT_TL_TEXT_IMG), editTopLeftType);
         // Top Right editable widget
-        editGroupTopRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_RIGHT_GROUP));
+        const editGroupTopRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_RIGHT_GROUP));
         const editTopRightType = editGroupTopRight.getProperty(hmUI.prop.CURRENT_TYPE);
         this.drawWidget(mergeStyles(EDIT_DEFAULT_IMG, EDIT_TR_IMG), mergeStyles(EDIT_DEFAULT_TEXT_IMG, EDIT_TR_TEXT_IMG), editTopRightType);
         // Bottom Left editable widget
-        editGroupBottomLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_LEFT_GROUP));
+        const editGroupBottomLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_LEFT_GROUP));
         const editBottomLeftType = editGroupBottomLeft.getProperty(hmUI.prop.CURRENT_TYPE);
         this.drawWidget(mergeStyles(EDIT_DEFAULT_IMG, EDIT_BL_IMG), mergeStyles(EDIT_DEFAULT_TEXT_IMG, EDIT_BL_TEXT_IMG), editBottomLeftType);
         // Bottom Right editable widget
-        editGroupBottomRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_RIGHT_GROUP));
+        const editGroupBottomRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_RIGHT_GROUP));
         const editBottomRightType = editGroupBottomRight.getProperty(hmUI.prop.CURRENT_TYPE);
         this.drawWidget(mergeStyles(EDIT_DEFAULT_IMG, EDIT_BR_IMG), mergeStyles(EDIT_DEFAULT_TEXT_IMG, EDIT_BR_TEXT_IMG), editBottomRightType);
         
