@@ -65,7 +65,7 @@ export const DIGITAL_TIME = {
 
 export const DIGITAL_TIME_AOD = {
     hour_startX: px(95),
-    hour_startY: px(58),
+    hour_startY: px(108),
     hour_array: bigNumAODArr,
     hour_unit_sc: img('bigNumAOD/sp.png'), // colon
     hour_unit_tc: img('bigNumAOD/sp.png'),
@@ -149,6 +149,8 @@ export const BG_VALUE_TEXT_IMG = {
 };
 
 export const BG_VALUE_TEXT_IMG_AOD = {
+    x: px(141),
+    y: px(185),
     dot_image: img('bgNumAOD/d.png'),
     font_array: bgNumAODArr,
     show_level: hmUI.show_level.ONAL_AOD
