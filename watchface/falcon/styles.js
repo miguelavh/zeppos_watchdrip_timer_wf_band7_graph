@@ -64,6 +64,8 @@ export const DIGITAL_TIME = {
 };
 
 export const DIGITAL_TIME_AOD = {
+    hour_startX: px(95),
+    hour_startY: px(58),
     hour_array: bigNumAODArr,
     hour_unit_sc: img('bigNumAOD/sp.png'), // colon
     hour_unit_tc: img('bigNumAOD/sp.png'),
