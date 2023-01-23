@@ -1,40 +1,44 @@
 import {img,range} from "../../utils/helper";
 import {Colors} from "../../utils/config/constants";
 
-let bgNumArr = range(10).map((v) => {
+const bgNumArr = range(10).map((v) => {
     return img(`bgNum/${v}.png`);
 });
 
-let bgNumAODArr = range(10).map((v) => {
+const bgNumAODArr = range(10).map((v) => {
     return img(`bgNumAOD/${v}.png`);
 });
 
-let bigNumArr = range(10).map((v) => {
+const bigNumArr = range(10).map((v) => {
     return img(`bigNum/${v}.png`);
 });
 
-let bigNumAODArr = range(10).map((v) => {
+const bigNumAODArr = range(10).map((v) => {
     return img(`bigNumAOD/${v}.png`);
 });
 
-let smallNumArr = range(10).map((v) => {
+const smallNumArr = range(10).map((v) => {
     return img(`smallNum/${v}.png`);
 });
 
-let smallNumAccentArr = range(10).map((v) => {
+const smallNumAccentArr = range(10).map((v) => {
     return img(`smallNumAccent/${v}.png`);
 });
 
-let weekEnArr = range(1, 8).map((v) => {
+const weekEnArr = range(1, 8).map((v) => {
     return img(`week_en/${v}.png`);
 });
 
-let weatherArr = range(29).map((v) => {
+const weatherArr = range(29).map((v) => {
     return img(`weather/${v}.png`);
 });
 
-let moonArr = range(1, 30).map((v) => {
+const moonArr = range(1, 30).map((v) => {
     return img(`moon/${v}.png`);
+});
+
+const stepsArr = range(10).map((v) => {
+    return img(`widgets/progress-right-10-100/progress${v}.png`);
 });
 
 export const DIGITAL_TIME = {
@@ -66,10 +70,6 @@ export const DIGITAL_TIME = {
 export const DIGITAL_TIME_AOD = {
     hour_startX: px(95),
     hour_startY: px(108),
-    am_x: px(325),
-    am_y: px(120),
-    pm_x: px(325),
-    pm_y: px(120),
     hour_array: bigNumAODArr,
     hour_unit_sc: img('bigNumAOD/sp.png'), // colon
     hour_unit_tc: img('bigNumAOD/sp.png'),
@@ -77,8 +77,12 @@ export const DIGITAL_TIME_AOD = {
     minute_array: bigNumAODArr,
     am_sc_path: img('bigNumAOD/am.png'),
     am_en_path: img('bigNumAOD/am.png'),
+    am_x: px(325),
+    am_y: px(120),
     pm_sc_path: img('bigNumAOD/pm.png'),
     pm_en_path: img('bigNumAOD/pm.png'),
+    pm_x: px(325),
+    pm_y: px(120),
     show_level: hmUI.show_level.ONAL_AOD
 };
 
@@ -126,7 +130,7 @@ export const WEEK_DAYS_IMG = {
 
 export const BG_VALUE_NO_DATA_TEXT = {
     x: px(141),
-    y: px(132),
+    y: px(218),
     w: px(134),
     h: px(54),
     color: Colors.white,
@@ -142,7 +146,6 @@ export const BG_VALUE_TEXT_IMG = {
     x: px(141),
     y: px(135),
     w: px(134),
-    color: Colors.white,
     align_h: hmUI.align.CENTER_H,
     dot_image: img('bgNum/d.png'),
     font_array: bgNumArr,
@@ -153,8 +156,9 @@ export const BG_VALUE_TEXT_IMG = {
 };
 
 export const BG_VALUE_TEXT_IMG_AOD = {
-    x: px(141),
+    x: px(80),
     y: px(185),
+    w: px(255),
     dot_image: img('bgNumAOD/d.png'),
     font_array: bgNumAODArr,
     show_level: hmUI.show_level.ONAL_AOD
@@ -274,7 +278,7 @@ export const BG_STATUS_OK_IMG = {
 export const BG_STATUS_HIGH_IMG = {
     x: px(267),
     y: px(117),
-    src: 'watchdrip/bgHight.png',
+    src: 'watchdrip/bgHigh.png',
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
@@ -349,7 +353,7 @@ export const EDIT_GROUP_AAPS_XDRIP = {
             title_en: 'AAPS IOB/COB data (requires modified xDrip+)',
             preview: img('widgets/aaps.png')
         },
-        // custom empty widget, norhing is rendered
+        // custom empty widget, nothing is rendered
         {
             type: CUSTOM_WIDGETS.NONE,
             title_sc: 'None (empty space)',
@@ -393,7 +397,7 @@ export const EDIT_GROUP_DEFAULTS = {
         },
         {
             type: hmUI.edit_type.STEP,
-            preview: img('widgets/steps.png')
+            preview: img('widgets/steps/steps.png')
         },
         {
             type: hmUI.edit_type.DISTANCE,
@@ -431,7 +435,7 @@ export const EDIT_GROUP_DEFAULTS = {
             type: hmUI.edit_type.MOON,
             preview: img('widgets/moon.png')
         },
-        // custom empty widget, norhing is rendered
+        // custom empty widget, nothing is rendered
         {
             type: CUSTOM_WIDGETS.NONE,
             title_sc: 'None (empty space)',
@@ -449,8 +453,16 @@ export const EDIT_GROUP_DEFAULTS = {
 
 // Default styles for all IMG widgets 
 export const EDIT_DEFAULT_IMG = {
+    // TODO: make images full width and remove this
     w: px(editWidgetW), // full width to center
     pos_x: px((editWidgetW - editWidgetIconWidth) / 2), // center the image
+    show_level: hmUI.show_level.ONLY_NORMAL
+};
+
+// Default styles for all IMG_LEVEL widgets 
+export const EDIT_DEFAULT_IMG_LEVEL = {
+    w: px(50),
+    h: px(11),
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
@@ -487,6 +499,12 @@ export const EDIT_TL_IMG = {
     y: px(topLeftY)
 };
 
+// Styles for all Top Left IMG_LEVEL widgets
+export const EDIT_TL_IMG_LEVEL = {
+    x: px(topLeftX + editWidgetIconWidth + 8),
+    y: px(topLeftY + 15)
+};
+
 // Styles for all Top Left TEXT_IMG widgets
 export const EDIT_TL_TEXT_IMG = {
     x: px(topLeftX),
@@ -512,6 +530,12 @@ export const EDIT_TOP_RIGHT_GROUP = {
 export const EDIT_TR_IMG = {
     x: px(topRightX),
     y: px(topRightY)
+};
+
+// Styles for all Top Left IMG_LEVEL widgets
+export const EDIT_TR_IMG_LEVEL = {
+    x: px(topRightX + editWidgetIconWidth + 8),
+    y: px(topRightY + 15)
 };
 
 // Styles for all Top Right TEXT_IMG widgets
@@ -541,6 +565,12 @@ export const EDIT_BL_IMG = {
     y: px(bottomLeftY)
 };
 
+// Styles for all Top Left IMG_LEVEL widgets
+export const EDIT_BL_IMG_LEVEL = {
+    x: px(bottomLeftX + editWidgetIconWidth + 8),
+    y: px(bottomLeftY + 15)
+};
+
 // Styles for all Bottom Left TEXT_IMG widgets
 export const EDIT_BL_TEXT_IMG = {
     x: px(bottomLeftX),
@@ -568,6 +598,12 @@ export const EDIT_BR_IMG = {
     y: px(bottomRightY)
 };
 
+// Styles for all Top Left IMG_LEVEL widgets
+export const EDIT_BR_IMG_LEVEL = {
+    x: px(bottomRightX + editWidgetIconWidth + 8),
+    y: px(bottomRightY + 15)
+};
+
 // Default styles for all Bottom Right TEXT_IMG widgets
 export const EDIT_BR_TEXT_IMG = {
     x: px(bottomRightX),
@@ -588,7 +624,14 @@ export const EDIT_HEART_TEXT_IMG = {
 
 // STEP widget
 export const EDIT_STEP_IMG = {
-    src: img('widgets/steps.png') // 40x40px
+    src: img('widgets/steps/steps-base.png'), // 90x40px
+    pos_x: 0 // remove later 
+};
+export const EDIT_STEP_IMG_LEVEL = {
+    image_array: stepsArr, // 90x40px
+    image_length: stepsArr.length,
+    type: hmUI.data_type.STEP,
+    //level: 9
 };
 export const EDIT_STEP_TEXT_IMG = {
     type: hmUI.data_type.STEP
@@ -625,7 +668,7 @@ export const EDIT_WEATHER_CURRENT_TEXT_IMG = {
     imperial_unit_en: img('smallNum/unit-temperature-imperial.png')
 };
 
-// STEP widget
+// PAI widget
 export const EDIT_PAI_IMG = {
     src: img('widgets/pai.png') // 40x40px
 };
