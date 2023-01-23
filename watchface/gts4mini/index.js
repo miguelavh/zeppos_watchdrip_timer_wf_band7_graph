@@ -52,6 +52,7 @@ import {
     // Editable Widgets specific styles
     EDIT_HEART_IMG,
     EDIT_HEART_TEXT_IMG,
+    EDIT_STEP_IMG,
     EDIT_STEP_IMG_LEVEL,
     EDIT_STEP_TEXT_IMG,
     EDIT_DISTANCE_IMG,
@@ -141,6 +142,7 @@ WatchFace({
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_HEART_TEXT_IMG));
                 break;
             case hmUI.edit_type.STEP:
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_STEP_IMG));
                 hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(imgStyle, EDIT_STEP_IMG_LEVEL));
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_STEP_TEXT_IMG));
                 break;

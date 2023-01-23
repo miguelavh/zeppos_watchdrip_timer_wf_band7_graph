@@ -353,7 +353,7 @@ export const EDIT_GROUP_AAPS_XDRIP = {
             title_en: 'AAPS IOB/COB data (requires modified xDrip+)',
             preview: img('widgets/aaps.png')
         },
-        // custom empty widget, norhing is rendered
+        // custom empty widget, nothing is rendered
         {
             type: CUSTOM_WIDGETS.NONE,
             title_sc: 'None (empty space)',
@@ -435,7 +435,7 @@ export const EDIT_GROUP_DEFAULTS = {
             type: hmUI.edit_type.MOON,
             preview: img('widgets/moon.png')
         },
-        // custom empty widget, norhing is rendered
+        // custom empty widget, nothing is rendered
         {
             type: CUSTOM_WIDGETS.NONE,
             title_sc: 'None (empty space)',
@@ -596,11 +596,20 @@ export const EDIT_HEART_TEXT_IMG = {
 };
 
 // STEP widget
+export const EDIT_STEP_IMG = {
+    src: img('widgets/steps/steps-base.png'), // 90x40px
+    pos_x: 0, 
+};
 export const EDIT_STEP_IMG_LEVEL = {
+    x: px(topRightX + editWidgetIconWidth + 8),
+    pos_x: 0,
+    y: px(topRightY + 15),
+    w: px(40),
+    h: px(10),
     image_array: stepsArr, // 90x40px
     image_length: stepsArr.length,
     type: hmUI.data_type.STEP,
-    //level: 10
+    //level: 9
 };
 export const EDIT_STEP_TEXT_IMG = {
     type: hmUI.data_type.STEP
