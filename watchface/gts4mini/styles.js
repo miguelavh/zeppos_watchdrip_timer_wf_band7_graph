@@ -458,6 +458,11 @@ export const EDIT_DEFAULT_IMG = {
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
+// Default styles for all IMG_LEVEL widgets 
+export const EDIT_DEFAULT_IMG_LEVEL = {
+    show_level: hmUI.show_level.ONLY_NORMAL
+};
+
 // Default styles for all TEXT_IMG widgets
 export const EDIT_DEFAULT_TEXT_IMG = {
     w: px(editWidgetW),
@@ -594,7 +599,8 @@ export const EDIT_HEART_TEXT_IMG = {
 export const EDIT_STEP_IMG_LEVEL = {
     image_array: stepsArr, // 90x40px
     image_length: stepsArr.length,
-    type: hmUI.data_type.STEP
+    type: hmUI.data_type.STEP,
+    //level: 10
 };
 export const EDIT_STEP_TEXT_IMG = {
     type: hmUI.data_type.STEP
@@ -631,7 +637,7 @@ export const EDIT_WEATHER_CURRENT_TEXT_IMG = {
     imperial_unit_en: img('smallNum/unit-temperature-imperial.png')
 };
 
-// STEP widget
+// PAI widget
 export const EDIT_PAI_IMG = {
     src: img('widgets/pai.png') // 40x40px
 };

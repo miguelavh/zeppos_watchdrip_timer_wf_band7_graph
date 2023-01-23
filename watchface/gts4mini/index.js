@@ -334,6 +334,7 @@ WatchFace({
                 carbText = carbText.replace(".0 g", " g");
                 aapsString = aapsString + carbText;
                 aapsText.setProperty(hmUI.prop.TEXT, aapsString);
+                //aapsText.setProperty(hmUI.prop.TEXT, EDIT_STEP_IMG_LEVEL.image_length + ": " + EDIT_STEP_IMG_LEVEL.image_array[0]);
                 break;
             // Show nothing
             case CUSTOM_WIDGETS.NONE:
