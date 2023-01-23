@@ -461,8 +461,8 @@ export const EDIT_DEFAULT_IMG = {
 
 // Default styles for all IMG_LEVEL widgets 
 export const EDIT_DEFAULT_IMG_LEVEL = {
-    w: px(54),
-    h: px(12),
+    w: px(40),
+    w: px(10),
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
