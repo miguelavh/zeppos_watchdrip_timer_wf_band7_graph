@@ -32,22 +32,27 @@ import {
     // Default edit group styles
     EDIT_GROUP_DEFAULTS,
     EDIT_DEFAULT_IMG,
+    EDIT_DEFAULT_IMG_LEVEL,
     EDIT_DEFAULT_TEXT_IMG,
     // Top Left Edit Group
     EDIT_TOP_LEFT_GROUP,
     EDIT_TL_IMG,
+    EDIT_TL_IMG_LEVEL,
     EDIT_TL_TEXT_IMG,
     // Top Right Edit Group
     EDIT_TOP_RIGHT_GROUP,
     EDIT_TR_IMG,
+    EDIT_TR_IMG_LEVEL,
     EDIT_TR_TEXT_IMG,
     // Bottom Left Edit Group
     EDIT_BOTTOM_LEFT_GROUP,
     EDIT_BL_IMG,
+    EDIT_BL_IMG_LEVEL,
     EDIT_BL_TEXT_IMG,
     // Bottom Right Edit Group
     EDIT_BOTTOM_RIGHT_GROUP,
     EDIT_BR_IMG,
+    EDIT_BR_IMG_LEVEL,
     EDIT_BR_TEXT_IMG,
     // Editable Widgets specific styles
     EDIT_HEART_IMG,
@@ -128,62 +133,62 @@ function updateWidgets() {
     }
 }
 
-function mergeStyles(styleObj1, styleObj2) {
-    return Object.assign({}, styleObj1, styleObj2);
+function mergeStyles(styleObj1, styleObj2, styleObj3 = {}) {
+    return Object.assign({}, styleObj1, styleObj2, styleObj3);
 }
 
 
 WatchFace({
     // draws the editable widgets
-    drawWidget(imgStyle, textImgStyle, editType){
+    drawWidget(imgStyle, imgLevelStyle, textImgStyle, editType){
         switch (editType) {
             case hmUI.edit_type.HEART:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_HEART_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_HEART_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_HEART_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_HEART_TEXT_IMG));
                 break;
             case hmUI.edit_type.STEP:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_STEP_IMG));
-                hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(imgStyle, EDIT_STEP_IMG_LEVEL));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_STEP_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_STEP_IMG));
+                hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(EDIT_DEFAULT_IMG_LEVEL, imgLevelStyle, EDIT_STEP_IMG_LEVEL));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_STEP_TEXT_IMG));
                 break;
             case hmUI.edit_type.WEATHER:
-                hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(imgStyle, EDIT_WEATHER_CONDITION_IMG_LEVEL));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_WEATHER_CURRENT_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_WEATHER_CONDITION_IMG_LEVEL));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_WEATHER_CURRENT_TEXT_IMG));
                 break;
             case hmUI.edit_type.DISTANCE:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_DISTANCE_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_DISTANCE_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_DISTANCE_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_DISTANCE_TEXT_IMG));
                 break; 
             case hmUI.edit_type.ALTIMETER:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_ALTIMETER_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_ALTIMETER_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_ALTIMETER_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_ALTIMETER_TEXT_IMG));
                 break;
             case hmUI.edit_type.UVI:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_UVI_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_UVI_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_UVI_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_UVI_TEXT_IMG));
                 break;
             case hmUI.edit_type.PAI:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_PAI_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_PAI_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_PAI_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_PAI_TEXT_IMG));
                 break;
             case hmUI.edit_type.MOON:
-                hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(imgStyle, EDIT_MOON_IMG_LEVEL));
+                hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_MOON_IMG_LEVEL));
                 break;
             case hmUI.edit_type.AQI:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_AQI_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_AQI_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_AQI_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_AQI_TEXT_IMG));
                 break; 
             case hmUI.edit_type.SPO2:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_SPO2_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_SPO2_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_SPO2_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_SPO2_TEXT_IMG));
                 break;
             case hmUI.edit_type.CAL:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_CAL_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_CAL_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_CAL_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_CAL_TEXT_IMG));
                 break;
             case hmUI.edit_type.STAND:
-                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(imgStyle, EDIT_STAND_IMG));
-                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(textImgStyle, EDIT_STAND_TEXT_IMG));
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_STAND_IMG));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_STAND_TEXT_IMG));
                 break;
             case CUSTOM_WIDGETS.NONE:
                 // empty widget, render nothing
@@ -231,19 +236,19 @@ WatchFace({
         // Top Left editable widget
         const editGroupTopLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_LEFT_GROUP));
         const editTopLeftType = editGroupTopLeft.getProperty(hmUI.prop.CURRENT_TYPE);
-        this.drawWidget(mergeStyles(EDIT_DEFAULT_IMG, EDIT_TL_IMG), mergeStyles(EDIT_DEFAULT_TEXT_IMG, EDIT_TL_TEXT_IMG), editTopLeftType);
+        this.drawWidget(EDIT_TL_IMG, EDIT_TL_IMG_LEVEL, EDIT_TL_TEXT_IMG, editTopLeftType);
         // Top Right editable widget
         const editGroupTopRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_RIGHT_GROUP));
         const editTopRightType = editGroupTopRight.getProperty(hmUI.prop.CURRENT_TYPE);
-        this.drawWidget(mergeStyles(EDIT_DEFAULT_IMG, EDIT_TR_IMG), mergeStyles(EDIT_DEFAULT_TEXT_IMG, EDIT_TR_TEXT_IMG), editTopRightType);
+        this.drawWidget(EDIT_TR_IMG, EDIT_TR_IMG_LEVEL, EDIT_TR_TEXT_IMG, editTopRightType);
         // Bottom Left editable widget
         const editGroupBottomLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_LEFT_GROUP));
         const editBottomLeftType = editGroupBottomLeft.getProperty(hmUI.prop.CURRENT_TYPE);
-        this.drawWidget(mergeStyles(EDIT_DEFAULT_IMG, EDIT_BL_IMG), mergeStyles(EDIT_DEFAULT_TEXT_IMG, EDIT_BL_TEXT_IMG), editBottomLeftType);
+        this.drawWidget(EDIT_BL_IMG, EDIT_BL_IMG_LEVEL, EDIT_BL_TEXT_IMG, editBottomLeftType);
         // Bottom Right editable widget
         const editGroupBottomRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_RIGHT_GROUP));
         const editBottomRightType = editGroupBottomRight.getProperty(hmUI.prop.CURRENT_TYPE);
-        this.drawWidget(mergeStyles(EDIT_DEFAULT_IMG, EDIT_BR_IMG), mergeStyles(EDIT_DEFAULT_TEXT_IMG, EDIT_BR_TEXT_IMG), editBottomRightType);
+        this.drawWidget(EDIT_BR_IMG, EDIT_BR_IMG_LEVEL, EDIT_BR_TEXT_IMG, editBottomRightType);
         
         // xdrip or aaps treatments formatting edit group
         editGroupAAPSxDrip = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, EDIT_GROUP_AAPS_XDRIP);

@@ -38,7 +38,7 @@ const moonArr = range(1, 30).map((v) => {
 });
 
 const stepsArr = range(10).map((v) => {
-    return img(`widgets/steps/steps${v}.png`);
+    return img(`widgets/progress-right-10-100/progress${v}.png`);
 });
 
 export const DIGITAL_TIME = {
@@ -453,6 +453,7 @@ export const EDIT_GROUP_DEFAULTS = {
 
 // Default styles for all IMG widgets 
 export const EDIT_DEFAULT_IMG = {
+    // TODO: make images full width and remove this
     w: px(editWidgetW), // full width to center
     pos_x: px((editWidgetW - editWidgetIconWidth) / 2), // center the image
     show_level: hmUI.show_level.ONLY_NORMAL
@@ -460,6 +461,8 @@ export const EDIT_DEFAULT_IMG = {
 
 // Default styles for all IMG_LEVEL widgets 
 export const EDIT_DEFAULT_IMG_LEVEL = {
+    w: px(40),
+    h: px(10),
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
@@ -496,6 +499,12 @@ export const EDIT_TL_IMG = {
     y: px(topLeftY)
 };
 
+// Styles for all Top Left IMG_LEVEL widgets
+export const EDIT_TL_IMG_LEVEL = {
+    x: px(topLeftX + editWidgetIconWidth + 8),
+    y: px(topLeftY + 15)
+};
+
 // Styles for all Top Left TEXT_IMG widgets
 export const EDIT_TL_TEXT_IMG = {
     x: px(topLeftX),
@@ -521,6 +530,12 @@ export const EDIT_TOP_RIGHT_GROUP = {
 export const EDIT_TR_IMG = {
     x: px(topRightX),
     y: px(topRightY)
+};
+
+// Styles for all Top Left IMG_LEVEL widgets
+export const EDIT_TR_IMG_LEVEL = {
+    x: px(topRightX + editWidgetIconWidth + 8),
+    y: px(topRightY + 15)
 };
 
 // Styles for all Top Right TEXT_IMG widgets
@@ -550,6 +565,12 @@ export const EDIT_BL_IMG = {
     y: px(bottomLeftY)
 };
 
+// Styles for all Top Left IMG_LEVEL widgets
+export const EDIT_BL_IMG_LEVEL = {
+    x: px(bottomLeftX + editWidgetIconWidth + 8),
+    y: px(bottomLeftY + 15)
+};
+
 // Styles for all Bottom Left TEXT_IMG widgets
 export const EDIT_BL_TEXT_IMG = {
     x: px(bottomLeftX),
@@ -577,6 +598,12 @@ export const EDIT_BR_IMG = {
     y: px(bottomRightY)
 };
 
+// Styles for all Top Left IMG_LEVEL widgets
+export const EDIT_BR_IMG_LEVEL = {
+    x: px(bottomRightX + editWidgetIconWidth + 8),
+    y: px(bottomRightY + 15)
+};
+
 // Default styles for all Bottom Right TEXT_IMG widgets
 export const EDIT_BR_TEXT_IMG = {
     x: px(bottomRightX),
@@ -598,14 +625,9 @@ export const EDIT_HEART_TEXT_IMG = {
 // STEP widget
 export const EDIT_STEP_IMG = {
     src: img('widgets/steps/steps-base.png'), // 90x40px
-    pos_x: 0, 
+    pos_x: 0 // remove later 
 };
 export const EDIT_STEP_IMG_LEVEL = {
-    x: px(topRightX + editWidgetIconWidth + 8),
-    pos_x: 0,
-    y: px(topRightY + 15),
-    w: px(40),
-    h: px(10),
     image_array: stepsArr, // 90x40px
     image_length: stepsArr.length,
     type: hmUI.data_type.STEP,
