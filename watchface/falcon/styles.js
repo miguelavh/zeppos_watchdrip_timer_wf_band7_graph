@@ -532,7 +532,7 @@ export const EDIT_TR_IMG = {
     y: px(topRightY)
 };
 
-// Styles for all Top Left IMG_LEVEL widgets
+// Styles for all Top Right IMG_LEVEL widgets
 export const EDIT_TR_IMG_LEVEL = {
     x: px(topRightX + editWidgetIconWidth + 8),
     y: px(topRightY + 15)
@@ -565,7 +565,7 @@ export const EDIT_BL_IMG = {
     y: px(bottomLeftY)
 };
 
-// Styles for all Top Left IMG_LEVEL widgets
+// Styles for all Bottom Left IMG_LEVEL widgets
 export const EDIT_BL_IMG_LEVEL = {
     x: px(bottomLeftX + editWidgetIconWidth + 8),
     y: px(bottomLeftY + 15)
@@ -598,13 +598,13 @@ export const EDIT_BR_IMG = {
     y: px(bottomRightY)
 };
 
-// Styles for all Top Left IMG_LEVEL widgets
+// Styles for all Bottom Right IMG_LEVEL widgets
 export const EDIT_BR_IMG_LEVEL = {
     x: px(bottomRightX + editWidgetIconWidth + 8),
     y: px(bottomRightY + 15)
 };
 
-// Default styles for all Bottom Right TEXT_IMG widgets
+// Styles for all Bottom Right TEXT_IMG widgets
 export const EDIT_BR_TEXT_IMG = {
     x: px(bottomRightX),
     y: px(bottomRightY + editWidgetIconHeight + editWidgetIconMargin)
