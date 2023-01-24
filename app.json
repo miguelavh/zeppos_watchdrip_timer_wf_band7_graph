@@ -69,6 +69,30 @@
       ],
       "designWidth": 416
   },
+    "gtr4": {
+      "module": {
+        "watchface": {
+          "path": "watchface/entry/gtr4/index",
+          "main": 1,
+          "editable": 1,
+          "lockscreen": 1
+        },
+        "app-side": {
+          "path": "app-side/index"
+        }
+      },
+      "platforms": [
+        {
+          "name": "gtr41",
+          "deviceSource": 7930112
+        },
+        {
+          "name": "gtr42",
+          "deviceSource": 7930113
+        }
+      ],
+      "designWidth": 466
+  },
   "gts4mini": {
       "module": {
         "watchface": {
