@@ -323,7 +323,7 @@ WatchFace({
 
         phoneBattery.setProperty(hmUI.prop.TEXT, watchdripData.getStatus().getBatVal());
 
-        let treatmentObj = watchdripData.getTreatment();
+        const treatmentObj = watchdripData.getTreatment();
         // treatments formatting according to user selection
         const editTypeAAPSxDrip = editGroupAAPSxDrip.getProperty(hmUI.prop.CURRENT_TYPE);
         switch (editTypeAAPSxDrip) {
@@ -333,15 +333,19 @@ WatchFace({
                 break;
             // Fill data from modified xDrip ExternalStatusService.getLastStatusLine()    
             case CUSTOM_WIDGETS.AAPS:
-                let aapsString = "";
+                // old code
+                /*let aapsString = "";
                 let insText = "IOB: " + treatmentObj.insulin.toFixed(2) + " U";
                 insText = insText.replace(".0 U", " U");
                 aapsString = aapsString + insText + " - ";        
                 let carbText = "COB: " + treatmentObj.carbs + " g";
                 carbText = carbText.replace(".0 g", " g");
                 aapsString = aapsString + carbText;
-                aapsText.setProperty(hmUI.prop.TEXT, aapsString);
-                //aapsText.setProperty(hmUI.prop.TEXT, EDIT_STEP_IMG_LEVEL.image_length + ": " + EDIT_STEP_IMG_LEVEL.image_array[0]);
+                aapsText.setProperty(hmUI.prop.TEXT, aapsString);*/
+
+                // new code
+                const externalStatusObj = watchdripData.getExternal();
+                aapsText.setProperty(hmUI.prop.TEXT, externalStatusObj.getStatusLine());
                 break;
             // Show nothing
             case CUSTOM_WIDGETS.NONE:
@@ -360,7 +364,7 @@ WatchFace({
 
         bgStaleLine.setProperty(hmUI.prop.VISIBLE, watchdripData.isBgStale());
 
-        let treatmentObj = watchdripData.getTreatment();
+        const treatmentObj = watchdripData.getTreatment();
         // treatments formatting according to user selection
         const editTypeAAPSxDrip = editGroupAAPSxDrip.getProperty(hmUI.prop.CURRENT_TYPE);
         switch (editTypeAAPSxDrip) {
@@ -374,7 +378,12 @@ WatchFace({
                 break;
             // Fill data from modified xDrip ExternalStatusService.getLastStatusLine()    
             case CUSTOM_WIDGETS.AAPS:
-                aapsTimeText.setProperty(hmUI.prop.TEXT, watchdripData.getTimeAgo(treatmentObj.time));
+                // old code
+                // aapsTimeText.setProperty(hmUI.prop.TEXT, watchdripData.getTimeAgo(treatmentObj.time));
+
+                //new code
+                const externalStatusObj = watchdripData.getExternal();
+                aapsTimeText.setProperty(hmUI.prop.TEXT, watchdripData.getTimeAgo(externalStatusObj.time));
                 break;
             // Show nothing
             case CUSTOM_WIDGETS.NONE:
