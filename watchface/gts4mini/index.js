@@ -333,17 +333,6 @@ WatchFace({
                 break;
             // Fill data from modified xDrip ExternalStatusService.getLastStatusLine()    
             case CUSTOM_WIDGETS.AAPS:
-                // old code
-                /*let aapsString = "";
-                let insText = "IOB: " + treatmentObj.insulin.toFixed(2) + " U";
-                insText = insText.replace(".0 U", " U");
-                aapsString = aapsString + insText + " - ";        
-                let carbText = "COB: " + treatmentObj.carbs + " g";
-                carbText = carbText.replace(".0 g", " g");
-                aapsString = aapsString + carbText;
-                aapsText.setProperty(hmUI.prop.TEXT, aapsString);*/
-
-                // new code
                 const externalStatusObj = watchdripData.getExternal();
                 aapsText.setProperty(hmUI.prop.TEXT, externalStatusObj.getStatusLine());
                 break;
@@ -378,10 +367,6 @@ WatchFace({
                 break;
             // Fill data from modified xDrip ExternalStatusService.getLastStatusLine()    
             case CUSTOM_WIDGETS.AAPS:
-                // old code
-                // aapsTimeText.setProperty(hmUI.prop.TEXT, watchdripData.getTimeAgo(treatmentObj.time));
-
-                //new code
                 const externalStatusObj = watchdripData.getExternal();
                 aapsTimeText.setProperty(hmUI.prop.TEXT, watchdripData.getTimeAgo(externalStatusObj.time));
                 break;
