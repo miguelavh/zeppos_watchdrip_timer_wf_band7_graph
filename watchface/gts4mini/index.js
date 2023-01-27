@@ -140,7 +140,7 @@ function mergeStyles(styleObj1, styleObj2, styleObj3 = {}) {
 
 WatchFace({
     // draws the editable widgets
-    drawWidget(imgStyle, imgArcProgressStyle, textImgStyle, editType){
+    drawWidget(imgStyle, arcProgressStyle, textImgStyle, editType){
         switch (editType) {
             case hmUI.edit_type.HEART:
                 hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_HEART_IMG));
@@ -148,7 +148,7 @@ WatchFace({
                 break;
             case hmUI.edit_type.STEP:
                 hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_STEP_IMG));
-                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS, imgArcProgressStyle, EDIT_STEP_ARC_PROGRESS));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS, arcProgressStyle, EDIT_STEP_ARC_PROGRESS));
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_STEP_TEXT_IMG));
                 break;
             case hmUI.edit_type.WEATHER:
