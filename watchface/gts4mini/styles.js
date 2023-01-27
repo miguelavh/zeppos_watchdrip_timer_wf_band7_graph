@@ -37,9 +37,6 @@ const moonArr = range(1, 30).map((v) => {
     return img(`moon/${v}.png`);
 });
 
-const stepsArr = range(10).map((v) => {
-    return img(`widgets/progress-right-10-100/progress${v}.png`);
-});
 
 export const DIGITAL_TIME = {
     hour_startX: px(84),
@@ -380,6 +377,9 @@ const editWidgetH = px(70);
 const editWidgetIconHeight = 40;
 const editWidgetIconWidth = 40;
 const editWidgetIconMargin = 7;
+const editWidgetArcRadius = 19;
+const editWidgetArcMarginLeft = 4;
+const editWidgetArcMarginTop = 1;
 
 export const EDIT_GROUP_DEFAULTS = {
     w: px(editWidgetW),
@@ -459,10 +459,13 @@ export const EDIT_DEFAULT_IMG = {
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
-// Default styles for all IMG_LEVEL widgets 
-export const EDIT_DEFAULT_IMG_LEVEL = {
-    w: px(40),
-    h: px(10),
+// Default styles for all ARC_PROGRESS widgets
+export const EDIT_DEFAULT_ARC_PROGRESS = {
+    radius: px(editWidgetArcRadius),
+    start_angle: -90,
+    end_angle: 270,
+    color: Colors.accent,
+    line_width: 5,
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
@@ -499,10 +502,10 @@ export const EDIT_TL_IMG = {
     y: px(topLeftY)
 };
 
-// Styles for all Top Left IMG_LEVEL widgets
-export const EDIT_TL_IMG_LEVEL = {
-    x: px(topLeftX + editWidgetIconWidth + 8),
-    y: px(topLeftY + 15)
+// Styles for all Top Left ARC_PROGRESS widgets
+export const EDIT_TL_ARC_PROGRESS = {
+    center_x: px(topLeftX + editWidgetArcRadius + (editWidgetW / 2) + editWidgetArcMarginLeft),
+    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop)
 };
 
 // Styles for all Top Left TEXT_IMG widgets
@@ -532,10 +535,10 @@ export const EDIT_TR_IMG = {
     y: px(topRightY)
 };
 
-// Styles for all Top Right IMG_LEVEL widgets
-export const EDIT_TR_IMG_LEVEL = {
-    x: px(topRightX + editWidgetIconWidth + 8),
-    y: px(topRightY + 15)
+// Styles for all Top Right ARC_PROGRESS widgets
+export const EDIT_TR_ARC_PROGRESS = {
+    center_x: px(topRightX + editWidgetArcRadius + (editWidgetW / 2) + editWidgetArcMarginLeft),
+    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop)
 };
 
 // Styles for all Top Right TEXT_IMG widgets
@@ -565,10 +568,10 @@ export const EDIT_BL_IMG = {
     y: px(bottomLeftY)
 };
 
-// Styles for all Bottom Left IMG_LEVEL widgets
-export const EDIT_BL_IMG_LEVEL = {
-    x: px(bottomLeftX + editWidgetIconWidth + 8),
-    y: px(bottomLeftY + 15)
+// Styles for all Bottom Left ARC_PROGRESS widgets
+export const EDIT_BL_ARC_PROGRESS = {
+    center_x: px(bottomLeftX + editWidgetArcRadius + (editWidgetW / 2) + editWidgetArcMarginLeft),
+    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop)
 };
 
 // Styles for all Bottom Left TEXT_IMG widgets
@@ -598,10 +601,10 @@ export const EDIT_BR_IMG = {
     y: px(bottomRightY)
 };
 
-// Styles for all Bottom Right IMG_LEVEL widgets
-export const EDIT_BR_IMG_LEVEL = {
-    x: px(bottomRightX + editWidgetIconWidth + 8),
-    y: px(bottomRightY + 15)
+// Styles for all Bottom Right ARC_PROGRESS widgets
+export const EDIT_BR_ARC_PROGRESS = {
+    center_x: px(bottomRightX + editWidgetArcRadius + (editWidgetW / 2) + editWidgetArcMarginLeft),
+    center_y: px(bottomRightY + editWidgetArcRadius + editWidgetArcMarginTop)
 };
 
 // Styles for all Bottom Right TEXT_IMG widgets
@@ -627,9 +630,7 @@ export const EDIT_STEP_IMG = {
     src: img('widgets/steps/steps-base.png'), // 90x40px
     pos_x: 0 // remove later 
 };
-export const EDIT_STEP_IMG_LEVEL = {
-    image_array: stepsArr, // 90x40px
-    image_length: stepsArr.length,
+export const EDIT_STEP_ARC_PROGRESS = {
     type: hmUI.data_type.STEP,
     //level: 9
 };
