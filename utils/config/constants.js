@@ -1,6 +1,6 @@
 import {MINUTE_IN_MS, SECOND_IN_MS} from "../../shared/date";
 
-// new code
+// new code by oakeley
 /* export const DATA_TIMER_UPDATE_INTERVAL_MS = SECOND_IN_MS * 5;
 export const DATA_UPDATE_INTERVAL_MS = SECOND_IN_MS * 20;
 
