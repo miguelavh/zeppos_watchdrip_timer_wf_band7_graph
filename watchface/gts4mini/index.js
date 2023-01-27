@@ -291,7 +291,7 @@ WatchFace({
      */
     updateValuesWidget(watchdripData) {
         if (watchdripData === undefined) return;
-        let bgObj = watchdripData.getBg();
+        const bgObj = watchdripData.getBg();
 
         bgStatusLow.setProperty(hmUI.prop.VISIBLE, false);
         bgStatusOk.setProperty(hmUI.prop.VISIBLE, false);
@@ -323,12 +323,12 @@ WatchFace({
 
         phoneBattery.setProperty(hmUI.prop.TEXT, watchdripData.getStatus().getBatVal());
 
-        const treatmentObj = watchdripData.getTreatment();
         // treatments formatting according to user selection
         const editTypeAAPSxDrip = editGroupAAPSxDrip.getProperty(hmUI.prop.CURRENT_TYPE);
         switch (editTypeAAPSxDrip) {
             // default xDrip data
             case CUSTOM_WIDGETS.XDRIP:
+                const treatmentObj = watchdripData.getTreatment();
                 aapsText.setProperty(hmUI.prop.TEXT, treatmentObj.getPredictIOB());
                 break;
             // Fill data from modified xDrip ExternalStatusService.getLastStatusLine()    
@@ -359,18 +359,18 @@ WatchFace({
      */
     updateTimesWidget(watchdripData) {
         if (watchdripData === undefined) return;
-        let bgObj = watchdripData.getBg();
+        const bgObj = watchdripData.getBg();
         bgValTimeTextWidget.setProperty(hmUI.prop.TEXT, watchdripData.getTimeAgo(bgObj.time));
 
         bgStaleLine.setProperty(hmUI.prop.VISIBLE, watchdripData.isBgStale());
 
-        const treatmentObj = watchdripData.getTreatment();
         // treatments formatting according to user selection
         const editTypeAAPSxDrip = editGroupAAPSxDrip.getProperty(hmUI.prop.CURRENT_TYPE);
         switch (editTypeAAPSxDrip) {
             // default xDrip data
             case CUSTOM_WIDGETS.XDRIP:
-                let treatmentsText = treatmentObj.getTreatments();
+                const treatmentObj = watchdripData.getTreatment();
+                const treatmentsText = treatmentObj.getTreatments();
                 if (treatmentsText !== "") {
                     treatmentsText = treatmentsText + " " + watchdripData.getTimeAgo(treatmentObj.time);
                 };
