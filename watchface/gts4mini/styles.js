@@ -372,8 +372,8 @@ export const EDIT_GROUP_AAPS_XDRIP = {
 
 
 // BEGIN edit group default styles
-const editWidgetW = px(90);
-const editWidgetH = px(70);
+const editWidgetW = 90;
+const editWidgetH = 70;
 const editWidgetIconHeight = 40;
 const editWidgetIconWidth = 40;
 const editWidgetIconMargin = 7;
@@ -504,8 +504,8 @@ export const EDIT_DEFAULT_TEXT_IMG = {
 
 
 // BEGIN Top Left Edit Widgets
-const topLeftX = px(7);
-const topLeftY = px(110);
+const topLeftX = 7;
+const topLeftY = 110;
 
 export const EDIT_TOP_LEFT_GROUP = {
     edit_id: 101,
@@ -546,8 +546,8 @@ export const EDIT_TL_TEXT_IMG = {
 
 
 // BEGIN Top Right Edit Widgets
-const topRightX = px(239);
-const topRightY = px(110);
+const topRightX = 239;
+const topRightY = 110;
 
 export const EDIT_TOP_RIGHT_GROUP = {
     edit_id: 102,
@@ -588,8 +588,8 @@ export const EDIT_TR_TEXT_IMG = {
 
 
 // BEGIN Bottom Left Edit Widgets
-const bottomLeftX = px(7);
-const bottomLeftY = px(195);
+const bottomLeftX = 7;
+const bottomLeftY = 195;
 
 export const EDIT_BOTTOM_LEFT_GROUP = {
     edit_id: 103,
@@ -630,8 +630,8 @@ export const EDIT_BL_TEXT_IMG = {
 
 
 // BEGIN Bottom Right Edit Widgets
-const bottomRightX = px(239);
-const bottomRightY = px(195);
+const bottomRightX = 239;
+const bottomRightY = 195;
 
 export const EDIT_BOTTOM_RIGHT_GROUP = {
     edit_id: 104,
@@ -755,7 +755,7 @@ export const EDIT_ALTIMETER_IMG = {
 };
 export const EDIT_ALTIMETER_TEXT_IMG = {
     type: hmUI.data_type.ALTIMETER,
-    nit_sc: img('smallNum/unit-pressure-metric.png'),
+    unit_sc: img('smallNum/unit-pressure-metric.png'),
     unit_tc: img('smallNum/unit-pressure-metric.png'),
     unit_en: img('smallNum/unit-pressure-metric.png'),
     imperial_unit_sc: img('smallNum/unit-pressure-imperial.png'),
@@ -780,7 +780,7 @@ export const EDIT_CAL_ARC_PROGRESS = {
 };
 export const EDIT_CAL_TEXT_IMG = {
     type: hmUI.data_type.CAL,
-    nit_sc: img('smallNum/unit-calories.png'),
+    unit_sc: img('smallNum/unit-calories.png'),
     unit_tc: img('smallNum/unit-calories.png'),
     unit_en: img('smallNum/unit-calories.png'),
     imperial_unit_sc: img('smallNum/unit-calories.png'),
@@ -805,12 +805,12 @@ export const EDIT_SPO2_IMG = {
 };
 export const EDIT_SPO2_TEXT_IMG = {
     type: hmUI.data_type.SPO2,
-    nit_sc: img('smallNum/unit-spo2.png'),
-    unit_tc: img('smallNum/unit-spo2.png'),
-    unit_en: img('smallNum/unit-spo2.png'),
-    imperial_unit_sc: img('smallNum/unit-spo2.png'),
-    imperial_unit_tc: img('smallNum/unit-spo2.png'),
-    imperial_unit_en: img('smallNum/unit-spo2.png')
+    unit_sc: img('smallNum/unit-percent.png'),
+    unit_tc: img('smallNum/unit-percent.png'),
+    unit_en: img('smallNum/unit-percent.png'),
+    imperial_unit_sc: img('smallNum/unit-percent.png'),
+    imperial_unit_tc: img('smallNum/unit-percent.png'),
+    imperial_unit_en: img('smallNum/unit-percent.png')
 };
 
 // STAND widget
@@ -833,6 +833,12 @@ export const EDIT_HUMIDITY_ARC_PROGRESS = {
     type: hmUI.data_type.HUMIDITY
 };
 export const EDIT_HUMIDITY_TEXT_IMG = {
-    type: hmUI.data_type.HUMIDITY
+    type: hmUI.data_type.HUMIDITY,
+    unit_sc: img('smallNum/unit-percent.png'),
+    unit_tc: img('smallNum/unit-percent.png'),
+    unit_en: img('smallNum/unit-percent.png'),
+    imperial_unit_sc: img('smallNum/unit-percent.png'),
+    imperial_unit_tc: img('smallNum/unit-percent.png'),
+    imperial_unit_en: img('smallNum/unit-percent.png')
 };
 // END Edit Widgets
