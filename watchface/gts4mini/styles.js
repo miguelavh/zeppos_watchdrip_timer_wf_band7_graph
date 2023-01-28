@@ -363,7 +363,7 @@ export const EDIT_GROUP_AAPS_XDRIP = {
     default_type: CUSTOM_WIDGETS.XDRIP,
     tips_BG: img('mask/text_tag-wide.png'),
     tips_width: 300,
-    tips_margin: 5, // optional, default value: 0,
+    tips_margin: 10, // optional, default value: 0,
     tips_x: -32,
     tips_y: -45,
     show_level: hmUI.show_level.ONLY_NORMAL | hmUI.show_level.ONLY_EDIT
@@ -454,7 +454,7 @@ export const EDIT_GROUP_DEFAULTS = {
     count: editGroupTypes.length,
     tips_BG: img('mask/text_tag.png'),
     tips_width: 110,
-    tips_margin: 5, // optional, default value: 0
+    tips_margin: 10, // optional, default value: 0
     show_level: hmUI.show_level.ONLY_NORMAL | hmUI.show_level.ONLY_EDIT
 };
 
