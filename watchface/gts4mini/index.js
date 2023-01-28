@@ -89,7 +89,7 @@ import {
     EDIT_HUMIDITY_TEXT_IMG
 } from "./styles";
 import {BG_IMG, BG_FILL_RECT} from "../../utils/config/styles_global";
-import {PROGRESS_ANGLE_INC, PROGRESS_UPDATE_INTERVAL_MS} from "../../utils/config/constants";
+import {PROGRESS_ANGLE_INC, PROGRESS_UPDATE_INTERVAL_MS, TEST_DATA} from "../../utils/config/constants";
 
 let bgValNoDataTextWidget, bgValTextImgWidget, bgValTimeTextWidget, bgDeltaTextWidget, bgTrendImageWidget, bgStaleLine, 
     phoneBattery, watchBattery, bgStatusLow, bgStatusOk, bgStatusHigh, progress, editGroupAAPSxDrip, aapsText, aapsTimeText;
@@ -364,6 +364,13 @@ WatchFace({
                 aapsText.setProperty(hmUI.prop.VISIBLE, false);
                 break;
         };
+
+        if (TEST_DATA) {
+            bgStatusLow.setProperty(hmUI.prop.VISIBLE, true);
+            bgStatusOk.setProperty(hmUI.prop.VISIBLE, true);
+            bgStatusHigh.setProperty(hmUI.prop.VISIBLE, true);
+            bgValTimeTextWidget.setProperty(hmUI.prop.VISIBLE, true);
+        }
     },
 
     /**
