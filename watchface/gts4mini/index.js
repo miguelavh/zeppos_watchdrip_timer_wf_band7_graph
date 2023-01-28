@@ -65,20 +65,28 @@ import {
     EDIT_WEATHER_CONDITION_IMG_LEVEL,
     EDIT_WEATHER_CURRENT_TEXT_IMG,
     EDIT_PAI_IMG,
+    EDIT_PAI_ARC_PROGRESS,
     EDIT_PAI_TEXT_IMG,
     EDIT_UVI_IMG,
+    EDIT_UVI_ARC_PROGRESS,
     EDIT_UVI_TEXT_IMG,
     EDIT_ALTIMETER_IMG,
     EDIT_ALTIMETER_TEXT_IMG,
     EDIT_MOON_IMG_LEVEL,
     EDIT_CAL_IMG,
+    EDIT_CAL_ARC_PROGRESS,
     EDIT_CAL_TEXT_IMG,
     EDIT_AQI_IMG,
+    EDIT_AQI_ARC_PROGRESS,
     EDIT_AQI_TEXT_IMG,
     EDIT_SPO2_IMG,
     EDIT_SPO2_TEXT_IMG,
     EDIT_STAND_IMG,
-    EDIT_STAND_TEXT_IMG
+    EDIT_STAND_ARC_PROGRESS,
+    EDIT_STAND_TEXT_IMG,
+    EDIT_HUMIDITY_IMG,
+    EDIT_HUMIDITY_ARC_PROGRESS,
+    EDIT_HUMIDITY_TEXT_IMG
 } from "./styles";
 import {BG_IMG, BG_FILL_RECT} from "../../utils/config/styles_global";
 import {PROGRESS_ANGLE_INC, PROGRESS_UPDATE_INTERVAL_MS} from "../../utils/config/constants";
@@ -166,10 +174,14 @@ WatchFace({
                 break;
             case hmUI.edit_type.UVI:
                 hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_UVI_IMG));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.left, arcProgressStyle.left, EDIT_UVI_ARC_PROGRESS));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.right, arcProgressStyle.right, EDIT_UVI_ARC_PROGRESS));
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_UVI_TEXT_IMG));
                 break;
             case hmUI.edit_type.PAI:
                 hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_PAI_IMG));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.left, arcProgressStyle.left, EDIT_PAI_ARC_PROGRESS));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.right, arcProgressStyle.right, EDIT_PAI_ARC_PROGRESS));
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_PAI_TEXT_IMG));
                 break;
             case hmUI.edit_type.MOON:
@@ -185,12 +197,22 @@ WatchFace({
                 break;
             case hmUI.edit_type.CAL:
                 hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_CAL_IMG));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.left, arcProgressStyle.left, EDIT_CAL_ARC_PROGRESS));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.right, arcProgressStyle.right, EDIT_CAL_ARC_PROGRESS));
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_CAL_TEXT_IMG));
                 break;
             case hmUI.edit_type.STAND:
                 hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_STAND_IMG));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.left, arcProgressStyle.left, EDIT_STAND_ARC_PROGRESS));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.right, arcProgressStyle.right, EDIT_STAND_ARC_PROGRESS));
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_STAND_TEXT_IMG));
                 break;
+            case hmUI.edit_type.HUMIDITY:
+                hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_HUMIDITY_IMG));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.left, arcProgressStyle.left, EDIT_HUMIDITY_ARC_PROGRESS));
+                hmUI.createWidget(hmUI.widget.ARC_PROGRESS, mergeStyles(EDIT_DEFAULT_ARC_PROGRESS.right, arcProgressStyle.right, EDIT_HUMIDITY_ARC_PROGRESS));
+                hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_HUMIDITY_TEXT_IMG));
+                break;    
             case CUSTOM_WIDGETS.NONE:
                 // empty widget, render nothing
                 break;            

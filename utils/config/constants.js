@@ -33,7 +33,8 @@ export const Colors = {
     black:0x000000,
     bgHigh:0xffa0a0,
     bgLow:0x8bbbff,
-    accent:0xffbeff37,
+    //accent:0xffbeff37,
+    accent:0xff99cc33,
 };
 
 /*set to true on wf creation*/

@@ -363,7 +363,7 @@ export const EDIT_GROUP_AAPS_XDRIP = {
     default_type: CUSTOM_WIDGETS.XDRIP,
     tips_BG: img('mask/text_tag-wide.png'),
     tips_width: 300,
-    tips_margin: 0, // optional, default value: 0,
+    tips_margin: 5, // optional, default value: 0,
     tips_x: -32,
     tips_y: -45,
     show_level: hmUI.show_level.ONLY_NORMAL | hmUI.show_level.ONLY_EDIT
@@ -377,77 +377,84 @@ const editWidgetH = px(70);
 const editWidgetIconHeight = 40;
 const editWidgetIconWidth = 40;
 const editWidgetIconMargin = 7;
-const editWidgetArcRadius = 19;
+const editWidgetArcRadius = 16;
+const editWidgetArcLineWidth = 8;
 const editWidgetArcMarginX = 3;
-const editWidgetArcMarginTop = 1;
+const editWidgetArcMarginTop = 0;
+
+const editGroupTypes = [
+    {
+        type: hmUI.edit_type.HEART,
+        preview: img('widgets/heart.png')
+    },
+    {
+        type: hmUI.edit_type.SPO2,
+        preview: img('widgets/spo2.png')
+    },
+    {
+        type: hmUI.edit_type.STEP,
+        preview: img('widgets/steps/steps.png')
+    },
+    {
+        type: hmUI.edit_type.DISTANCE,
+        preview: img('widgets/distance.png')
+    },
+    {
+        type: hmUI.edit_type.CAL,
+        preview: img('widgets/calories/calories.png')
+    },
+    {
+        type: hmUI.edit_type.STAND,
+        preview: img('widgets/stand/stand.png')
+    },
+    {
+        type: hmUI.edit_type.PAI_DAILY,
+        preview: img('widgets/pai/pai.png')
+    },
+    {
+        type: hmUI.edit_type.WEATHER,
+        preview: img('widgets/temp.png')
+    },
+    {
+        type: hmUI.edit_type.HUMIDITY,
+        preview: img('widgets/humidity/humidity.png')
+    },
+    {
+        type: hmUI.edit_type.ALTIMETER,
+        preview: img('widgets/air-pressure.png')
+    },
+    {
+        type: hmUI.edit_type.UVI,
+        preview: img('widgets/uvi/uvi.png')
+    },
+    {
+        type: hmUI.edit_type.AQI,
+        preview: img('widgets/aqi.png')
+    },
+    {
+        type: hmUI.edit_type.MOON,
+        preview: img('widgets/moon.png')
+    },
+    // custom empty widget, nothing is rendered
+    {
+        type: CUSTOM_WIDGETS.NONE,
+        title_sc: 'None (empty space)',
+        title_tc: 'None (empty space)',
+        title_en: 'None (empty space)',
+        preview: img('widgets/empty.png')
+    }
+];
 
 export const EDIT_GROUP_DEFAULTS = {
     w: px(editWidgetW),
     h: px(editWidgetH),
     select_image: img('mask/select.png'),
     un_select_image: img('mask/un_select.png'),
-    optional_types: [
-        {
-            type: hmUI.edit_type.HEART,
-            preview: img('widgets/heart.png')
-        },
-        {
-            type: hmUI.edit_type.SPO2,
-            preview: img('widgets/spo2.png')
-        },
-        {
-            type: hmUI.edit_type.STEP,
-            preview: img('widgets/steps/steps.png')
-        },
-        {
-            type: hmUI.edit_type.DISTANCE,
-            preview: img('widgets/distance.png')
-        },
-        {
-            type: hmUI.edit_type.CAL,
-            preview: img('widgets/calories.png')
-        },
-        {
-            type: hmUI.edit_type.STAND,
-            preview: img('widgets/stand.png')
-        },
-        {
-            type: hmUI.edit_type.PAI_DAILY,
-            preview: img('widgets/pai.png')
-        },
-        {
-            type: hmUI.edit_type.WEATHER,
-            preview: img('widgets/temp.png')
-        },
-        {
-            type: hmUI.edit_type.ALTIMETER,
-            preview: img('widgets/air-pressure.png')
-        },
-        {
-            type: hmUI.edit_type.UVI,
-            preview: img('widgets/uvi.png')
-        },
-        {
-            type: hmUI.edit_type.AQI,
-            preview: img('widgets/aqi.png')
-        },
-        {
-            type: hmUI.edit_type.MOON,
-            preview: img('widgets/moon.png')
-        },
-        // custom empty widget, nothing is rendered
-        {
-            type: CUSTOM_WIDGETS.NONE,
-            title_sc: 'None (empty space)',
-            title_tc: 'None (empty space)',
-            title_en: 'None (empty space)',
-            preview: img('widgets/empty.png')
-        }
-    ],
-    count: 13,
+    optional_types: editGroupTypes,
+    count: editGroupTypes.length,
     tips_BG: img('mask/text_tag.png'),
     tips_width: 110,
-    tips_margin: 0, // optional, default value: 0
+    tips_margin: 5, // optional, default value: 0
     show_level: hmUI.show_level.ONLY_NORMAL | hmUI.show_level.ONLY_EDIT
 };
 
@@ -455,7 +462,6 @@ export const EDIT_GROUP_DEFAULTS = {
 export const EDIT_DEFAULT_IMG = {
     // TODO: make images full width and remove this
     w: px(editWidgetW), // full width to center
-    pos_x: px((editWidgetW - editWidgetIconWidth) / 2), // center the image
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
@@ -465,7 +471,7 @@ const EDIT_DEFAULT_ARC_PROGRESS_LEFT = {
     start_angle: 180,
     end_angle: 360,
     color: Colors.accent,
-    line_width: 5,
+    line_width: editWidgetArcLineWidth,
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 // Default styles for all ARC_PROGRESS RIGHT widgets
@@ -474,7 +480,7 @@ const EDIT_DEFAULT_ARC_PROGRESS_RIGHT = {
     start_angle: 180,
     end_angle: 0,
     color: Colors.accent,
-    line_width: 5,
+    line_width: editWidgetArcLineWidth,
     show_level: hmUI.show_level.ONLY_NORMAL
 };
 
@@ -518,13 +524,13 @@ export const EDIT_TL_IMG = {
 
 // Styles for all Top Left ARC_PROGRESS widgets
 const EDIT_TL_ARC_PROGRESS_LEFT = {
-    center_x: px(topLeftX + editWidgetArcRadius + editWidgetArcMarginX),
-    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop)
+    center_x: px(topLeftX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 // Styles for all Top Left ARC_PROGRESS Right widgets
 const EDIT_TL_ARC_PROGRESS_RIGHT = {
-    center_x: px(topLeftX + editWidgetArcRadius + (3 * editWidgetArcMarginX) + editWidgetIconWidth),
-    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop)
+    center_x: px(topLeftX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 export const EDIT_TL_ARC_PROGRESS = {
     left: EDIT_TL_ARC_PROGRESS_LEFT,
@@ -560,13 +566,13 @@ export const EDIT_TR_IMG = {
 
 // Styles for all Top Right ARC_PROGRESS widgets
 const EDIT_TR_ARC_PROGRESS_LEFT = {
-    center_x: px(topRightX + editWidgetArcRadius + editWidgetArcMarginX),
-    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop)
+    center_x: px(topRightX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 // Styles for all Top Right ARC_PROGRESS Right widgets
 const EDIT_TR_ARC_PROGRESS_RIGHT = {
-    center_x: px(topRightX + editWidgetArcRadius + (3 * editWidgetArcMarginX) + editWidgetIconWidth),
-    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop)
+    center_x: px(topRightX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 export const EDIT_TR_ARC_PROGRESS = {
     left: EDIT_TR_ARC_PROGRESS_LEFT,
@@ -602,13 +608,13 @@ export const EDIT_BL_IMG = {
 
 // Styles for all Bottom Left ARC_PROGRESS widgets
 const EDIT_BL_ARC_PROGRESS_LEFT = {
-    center_x: px(bottomLeftX + editWidgetArcRadius + editWidgetArcMarginX),
-    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop)
+    center_x: px(bottomLeftX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 // Styles for all Bottom Left ARC_PROGRESS Right widgets
 const EDIT_BL_ARC_PROGRESS_RIGHT = {
-    center_x: px(bottomLeftX + editWidgetArcRadius + (3 * editWidgetArcMarginX) + editWidgetIconWidth),
-    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop)
+    center_x: px(bottomLeftX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 export const EDIT_BL_ARC_PROGRESS = {
     left: EDIT_BL_ARC_PROGRESS_LEFT,
@@ -644,13 +650,13 @@ export const EDIT_BR_IMG = {
 
 // Styles for all Bottom Right ARC_PROGRESS widgets
 const EDIT_BR_ARC_PROGRESS_LEFT = {
-    center_x: px(bottomRightX + editWidgetArcRadius + editWidgetArcMarginX),
-    center_y: px(bottomRightY + editWidgetArcRadius + editWidgetArcMarginTop)
+    center_x: px(bottomRightX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(bottomRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 // Styles for all Bottom Right ARC_PROGRESS Right widgets
 const EDIT_BR_ARC_PROGRESS_RIGHT = {
-    center_x: px(bottomRightX + editWidgetArcRadius + (3 * editWidgetArcMarginX) + editWidgetIconWidth),
-    center_y: px(bottomRightY + editWidgetArcRadius + editWidgetArcMarginTop)
+    center_x: px(bottomRightX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(bottomRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 export const EDIT_BR_ARC_PROGRESS = {
     left: EDIT_BR_ARC_PROGRESS_LEFT,
@@ -669,7 +675,8 @@ export const EDIT_BR_TEXT_IMG = {
 // These styles are merged with the above default styles.
 // HEART widget
 export const EDIT_HEART_IMG = {
-    src: img('widgets/heart.png') // 40x40px
+    src: img('widgets/heart.png'), // 40x40px
+    pos_x: px((editWidgetW - editWidgetIconWidth) / 2) // center the image
 };
 export const EDIT_HEART_TEXT_IMG = {
     type: hmUI.data_type.HEART
@@ -677,12 +684,11 @@ export const EDIT_HEART_TEXT_IMG = {
 
 // STEP widget
 export const EDIT_STEP_IMG = {
-    src: img('widgets/steps/steps-base.png'), // 90x40px
-    pos_x: 0 // remove later 
+    src: img('widgets/steps/steps-base.png') // 90x40px 
 };
 export const EDIT_STEP_ARC_PROGRESS = {
     type: hmUI.data_type.STEP,
-    //level: 50
+    //level: 75
 };
 export const EDIT_STEP_TEXT_IMG = {
     type: hmUI.data_type.STEP
@@ -690,7 +696,8 @@ export const EDIT_STEP_TEXT_IMG = {
 
 // DISTANCE widget
 export const EDIT_DISTANCE_IMG = {
-    src: img('widgets/distance.png') // 40x40px
+    src: img('widgets/distance.png'), // 40x40px
+    pos_x: px((editWidgetW - editWidgetIconWidth) / 2) // center the image
 };
 export const EDIT_DISTANCE_TEXT_IMG = {
     type: hmUI.data_type.DISTANCE,
@@ -721,7 +728,10 @@ export const EDIT_WEATHER_CURRENT_TEXT_IMG = {
 
 // PAI widget
 export const EDIT_PAI_IMG = {
-    src: img('widgets/pai.png') // 40x40px
+    src: img('widgets/pai/pai-base.png') // 90x40px
+};
+export const EDIT_PAI_ARC_PROGRESS = {
+    type: hmUI.data_type.PAI_DAILY
 };
 export const EDIT_PAI_TEXT_IMG = {
     type: hmUI.data_type.PAI_DAILY
@@ -729,7 +739,10 @@ export const EDIT_PAI_TEXT_IMG = {
 
 // UVI widget
 export const EDIT_UVI_IMG = {
-    src: img('widgets/uvi.png') // 40x40px
+    src: img('widgets/uvi/uvi-base.png') // 90x40px
+};
+export const EDIT_UVI_ARC_PROGRESS = {
+    type: hmUI.data_type.UVI
 };
 export const EDIT_UVI_TEXT_IMG = {
     type: hmUI.data_type.UVI
@@ -737,7 +750,8 @@ export const EDIT_UVI_TEXT_IMG = {
 
 // ALTIMETER widget
 export const EDIT_ALTIMETER_IMG = {
-    src: img('widgets/air-pressure.png') // 40x40px
+    src: img('widgets/air-pressure.png'), // 40x40px
+    pos_x: px((editWidgetW - editWidgetIconWidth) / 2) // center the image
 };
 export const EDIT_ALTIMETER_TEXT_IMG = {
     type: hmUI.data_type.ALTIMETER,
@@ -759,7 +773,10 @@ export const EDIT_MOON_IMG_LEVEL = {
 
 // CAL widget
 export const EDIT_CAL_IMG = {
-    src: img('widgets/calories.png') // 40x40px
+    src: img('widgets/calories/calories-base.png') // 90x40px
+};
+export const EDIT_CAL_ARC_PROGRESS = {
+    type: hmUI.data_type.CAL
 };
 export const EDIT_CAL_TEXT_IMG = {
     type: hmUI.data_type.CAL,
@@ -774,7 +791,8 @@ export const EDIT_CAL_TEXT_IMG = {
 
 // AQI widget
 export const EDIT_AQI_IMG = {
-    src: img('widgets/aqi.png') // 40x40px
+    src: img('widgets/aqi.png'), // 40x40px
+    pos_x: px((editWidgetW - editWidgetIconWidth) / 2) // center the image
 };
 export const EDIT_AQI_TEXT_IMG = {
     type: hmUI.data_type.AQI
@@ -782,7 +800,8 @@ export const EDIT_AQI_TEXT_IMG = {
 
 // SPO2 widget
 export const EDIT_SPO2_IMG = {
-    src: img('widgets/spo2.png') // 40x40px
+    src: img('widgets/spo2.png'), // 40x40px
+    pos_x: px((editWidgetW - editWidgetIconWidth) / 2) // center the image
 };
 export const EDIT_SPO2_TEXT_IMG = {
     type: hmUI.data_type.SPO2,
@@ -796,10 +815,24 @@ export const EDIT_SPO2_TEXT_IMG = {
 
 // STAND widget
 export const EDIT_STAND_IMG = {
-    src: img('widgets/stand.png') // 40x40px
+    src: img('widgets/stand/stand-base.png') // 90x40px
+};
+export const EDIT_STAND_ARC_PROGRESS = {
+    type: hmUI.data_type.STAND
 };
 export const EDIT_STAND_TEXT_IMG = {
     type: hmUI.data_type.STAND,
     dot_image: img('smallNum/slash.png')
+};
+
+// HUMIDITY widget
+export const EDIT_HUMIDITY_IMG = {
+    src: img('widgets/humidity/humidity-base.png') // 90x40px
+};
+export const EDIT_HUMIDITY_ARC_PROGRESS = {
+    type: hmUI.data_type.HUMIDITY
+};
+export const EDIT_HUMIDITY_TEXT_IMG = {
+    type: hmUI.data_type.HUMIDITY
 };
 // END Edit Widgets
