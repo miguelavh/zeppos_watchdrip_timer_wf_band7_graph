@@ -389,7 +389,7 @@ WatchFace({
             // default xDrip data
             case CUSTOM_WIDGETS.XDRIP:
                 const treatmentObj = watchdripData.getTreatment();
-                const treatmentsText = treatmentObj.getTreatments();
+                let treatmentsText = treatmentObj.getTreatments();
                 if (treatmentsText !== "") {
                     treatmentsText = treatmentsText + " " + watchdripData.getTimeAgo(treatmentObj.time);
                 };
