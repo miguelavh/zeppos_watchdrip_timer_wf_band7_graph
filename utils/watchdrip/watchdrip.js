@@ -69,6 +69,7 @@ export class Watchdrip {
         debug.log("startDataUpdates, interval: " + interval);
         this.checkUpdates(); //start immediately
 
+        // TODO: AOD needs timer
         /* this.intervalTimer = this.globalNS.setInterval(() => {
             this.checkUpdates();
         }, interval); */
