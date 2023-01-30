@@ -50,7 +50,7 @@ export class Watchdrip {
 
     start() { 
         watchdrip = this.globalNS.watchdrip;
-        this.updateValuesWidget();
+        // this.updateValuesWidget();
         //Monitor watchface activity in order to recreate connection
         if (this.isAOD()) {
             watchdrip.widgetDelegateCallbackResumeCall();
@@ -67,11 +67,11 @@ export class Watchdrip {
         if (this.intervalTimer !== null) return; //already started
         let interval = this.isAOD() ? DATA_AOD_TIMER_UPDATE_INTERVAL_MS : DATA_TIMER_UPDATE_INTERVAL_MS;
         debug.log("startDataUpdates, interval: " + interval);
-        // this.checkUpdates(); //start immediately
+        this.checkUpdates(); //start immediately
 
-        this.intervalTimer = this.globalNS.setInterval(() => {
+        /* this.intervalTimer = this.globalNS.setInterval(() => {
             this.checkUpdates();
-        }, interval);    
+        }, interval); */
     }
 
     stopDataUpdates() {
