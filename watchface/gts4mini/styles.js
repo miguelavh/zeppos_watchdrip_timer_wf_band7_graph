@@ -684,8 +684,8 @@ export const EDIT_HEART_IMG = {
 export const EDIT_HEART_IMG_LEVEL = {
     image_array: heartArr, // 90x40px
     image_length: heartArr.length,
-    //type: hmUI.data_type.HEART
-    level: 1
+    type: hmUI.data_type.HEART
+    //level: 3
 };
 export const EDIT_HEART_TEXT_IMG = {
     type: hmUI.data_type.HEART
