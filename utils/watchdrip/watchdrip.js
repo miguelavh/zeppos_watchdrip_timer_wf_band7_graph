@@ -64,14 +64,14 @@ export class Watchdrip {
     }
 
     startDataUpdates() {
-        if (this.intervalTimer != null) return; //already started
+        if (this.intervalTimer !== null) return; //already started
         let interval = this.isAOD() ? DATA_AOD_TIMER_UPDATE_INTERVAL_MS : DATA_TIMER_UPDATE_INTERVAL_MS;
         debug.log("startDataUpdates, interval: " + interval);
-        this.checkUpdates(); //start immediately
+        // this.checkUpdates(); //start immediately
 
         this.intervalTimer = this.globalNS.setInterval(() => {
             this.checkUpdates();
-        }, interval);
+        }, interval);    
     }
 
     stopDataUpdates() {
@@ -101,7 +101,7 @@ export class Watchdrip {
     }
 
     checkUpdates() {
-        this.updateTimesWidget();
+        // this.updateTimesWidget();
         //debug.log("checkUpdates");
         if (this.updatingData) {
             // debug.log("updatingData, return");
