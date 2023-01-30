@@ -101,6 +101,7 @@ export class Watchdrip {
     }
 
     checkUpdates() {
+        let needsUpdate = false;
         // this.updateTimesWidget();
         //debug.log("checkUpdates");
         if (this.updatingData) {
@@ -112,34 +113,44 @@ export class Watchdrip {
         if (!lastInfoUpdate) {
             if (this.lastUpdateAttempt == null) {
                 debug.log("initial fetch");
-                watchdrip.fetchInfo();
-                return;
+                needsUpdate = true;
+                //watchdrip.fetchInfo();
+                //return;
             }
             if (utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS) {
                 debug.log("the side app not responding, force update again");
-                watchdrip.fetchInfo();
-                return;
+                needsUpdate = true;
+                //watchdrip.fetchInfo();
+                //return;
             }
         } else {
             if (!this.lastUpdateSucessful) {
                 if (this.lastUpdateAttempt !== null)
                     if ((utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS)) {
                         debug.log("reached DATA_STALE_TIME_MS");
-                        watchdrip.fetchInfo();
-                        return;
+                        needsUpdate = true;
+                        //watchdrip.fetchInfo();
+                        //return;
                     } else {
-                        return;
+                        //return;
                     }
             }
             if ((utc - lastInfoUpdate > this.updateIntervals)) {
+                needsUpdate = true;
                 debug.log("reached DATA_UPDATE_INTERVAL_MS");
-                watchdrip.fetchInfo();
-                return;
+                //watchdrip.fetchInfo();
+                //return;
             }
             if (this.lastInfoUpdate === lastInfoUpdate) {
                 //debug.log("data not modified");
-                return;
+                //return;
             }
+
+            if (needsUpdate) {
+                watchdrip.fetchInfo();
+                watchdrip.readInfo();
+            }
+
             watchdrip.updateWidgets();
         }
     }
@@ -190,7 +201,6 @@ export class Watchdrip {
     widgetDelegateCallbackResumeCall() {
         debug.log("resume_call");
         logger.log("resume_call");
-        watchdrip.readInfo();
         watchdrip.updatingData = false;
         watchdrip.update();
         debug.log("resume_callend");
@@ -205,7 +215,7 @@ export class Watchdrip {
         if (typeof watchdrip.onUpdateFinishCallback === "function"){
             watchdrip.onUpdateFinishCallback(watchdrip.lastUpdateSucessful);
         }
-       watchdrip.dropConnection();
+        watchdrip.dropConnection();
     }
 
 
