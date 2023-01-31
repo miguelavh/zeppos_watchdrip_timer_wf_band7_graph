@@ -103,7 +103,9 @@ export class Watchdrip {
 
     checkUpdates() {
         let needsUpdate = false;
-        // this.updateTimesWidget();
+        
+        watchdrip.readInfo();
+        this.updateTimesWidget();
         //debug.log("checkUpdates");
         if (this.updatingData) {
             // debug.log("updatingData, return");
@@ -149,10 +151,7 @@ export class Watchdrip {
 
             if (needsUpdate) {
                 watchdrip.fetchInfo();
-                watchdrip.readInfo();
             }
-
-            watchdrip.updateWidgets();
         }
     }
 
@@ -203,6 +202,7 @@ export class Watchdrip {
         debug.log("resume_call");
         logger.log("resume_call");
         watchdrip.updatingData = false;
+        //watchdrip.readInfo();
         watchdrip.update();
         debug.log("resume_callend");
         logger.log("resume_callend");
