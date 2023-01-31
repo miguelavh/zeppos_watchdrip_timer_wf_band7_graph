@@ -105,7 +105,7 @@ export class Watchdrip {
         let fetchNewData = false;
         
         watchdrip.readInfo();
-        //this.updateTimesWidget();
+        this.updateTimesWidget();
         //debug.log("checkUpdates");
         if (this.updatingData) {
             // debug.log("updatingData, return");
@@ -114,7 +114,7 @@ export class Watchdrip {
         let lastInfoUpdate = hmFS.SysProGetInt64(WF_INFO_LAST_UPDATE);
         let utc = this.timeSensor.utc;
         if (this.lastInfoUpdate === 0) {
-            if (this.lastUpdateAttempt == null) {
+            if (this.lastUpdateAttempt === null) {
                 debug.log("initial fetch");
                 //watchdrip.fetchInfo();
                 //return;
@@ -152,13 +152,13 @@ export class Watchdrip {
                 //debug.log("data not modified");
                 //return;
             }
+
+            this.updateWidgets();
         }
 
         if(fetchNewData){
             watchdrip.fetchInfo();
         }
-
-        this.updateWidgets();
     }
 
     update() {
@@ -304,7 +304,7 @@ export class Watchdrip {
 
                     this.lastInfoUpdate = this.saveInfo(info);
                     this.lastUpdateSucessful = true;
-                    //this.updateWidgets();
+                    this.updateWidgets();
                 } catch (e) {
                     debug.log("error:" + e);
                 }
