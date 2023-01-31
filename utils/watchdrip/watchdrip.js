@@ -102,10 +102,10 @@ export class Watchdrip {
     }
 
     checkUpdates() {
-        let needsUpdate = false;
+        let fetchNewData = false;
         
         watchdrip.readInfo();
-        this.updateTimesWidget();
+        //this.updateTimesWidget();
         //debug.log("checkUpdates");
         if (this.updatingData) {
             // debug.log("updatingData, return");
@@ -116,43 +116,49 @@ export class Watchdrip {
         if (!lastInfoUpdate) {
             if (this.lastUpdateAttempt == null) {
                 debug.log("initial fetch");
-                needsUpdate = true;
                 //watchdrip.fetchInfo();
                 //return;
+                fetchNewData = true;
             }
+
             if (utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS) {
                 debug.log("the side app not responding, force update again");
-                needsUpdate = true;
                 //watchdrip.fetchInfo();
                 //return;
+                fetchNewData = true;
             }
         } else {
             if (!this.lastUpdateSucessful) {
-                if (this.lastUpdateAttempt !== null)
+                if (this.lastUpdateAttempt !== null){
                     if ((utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS)) {
                         debug.log("reached DATA_STALE_TIME_MS");
-                        needsUpdate = true;
                         //watchdrip.fetchInfo();
                         //return;
+                        fetchNewData = true;
                     } else {
                         //return;
                     }
+                }
             }
+
             if ((utc - lastInfoUpdate > this.updateIntervals)) {
-                needsUpdate = true;
                 debug.log("reached DATA_UPDATE_INTERVAL_MS");
                 //watchdrip.fetchInfo();
                 //return;
+                fetchNewData = true;
             }
+
             if (this.lastInfoUpdate === lastInfoUpdate) {
                 //debug.log("data not modified");
                 //return;
             }
-
-            if (needsUpdate) {
-                watchdrip.fetchInfo();
-            }
         }
+
+        if(fetchNewData){
+            watchdrip.fetchInfo();
+        }
+
+        this.updateWidgets();
     }
 
     update() {
@@ -238,8 +244,8 @@ export class Watchdrip {
 
     updateWidgets() {
         debug.log("updateWidgets");
-        this.updateValuesWidget()
-        this.updateTimesWidget()
+        this.updateValuesWidget();
+        this.updateTimesWidget();
     }
 
     updateValuesWidget() {
@@ -298,7 +304,7 @@ export class Watchdrip {
 
                     this.lastInfoUpdate = this.saveInfo(info);
                     this.lastUpdateSucessful = true;
-                    this.updateWidgets();
+                    //this.updateWidgets();
                 } catch (e) {
                     debug.log("error:" + e);
                 }
