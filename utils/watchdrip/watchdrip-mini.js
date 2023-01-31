@@ -6,6 +6,8 @@ import {
 
 import {str2json} from "../../shared/data";
 
+import {MessageBuilder} from "../../shared/message";
+
 import {
     Commands,
     DATA_AOD_TIMER_UPDATE_INTERVAL_MS,
@@ -138,6 +140,7 @@ export class Watchdrip {
         logger.log("initConnection");
         this.connectionActive = true;
         const appId = WATCHDRIP_APP_ID;
+        messageBuilder = new MessageBuilder({appId});
         messageBuilder.connect();
     }
 
