@@ -129,7 +129,7 @@ export class Watchdrip {
 
         if(fetchNewData){
             logger.log("CHECK_UPDATES_FETCH");
-            watchdrip.fetchInfo();
+            this.fetchInfo();
         }
 
         this.updateWidgets();
@@ -251,6 +251,7 @@ export class Watchdrip {
     /*Callback which is called  when watchface is active  (visible)*/
     widgetDelegateCallbackResumeCall() {
         logger.log("resume_call");
+        watchdrip.updatingData = false;
         watchdrip.checkUpdates();
         logger.log("resume_callend");
     }
@@ -258,6 +259,7 @@ export class Watchdrip {
     /*Callback which is called  when watchface deactivating (not visible)*/
     widgetDelegateCallbackPauseCall() {
         logger.log("pause_call");
+        watchdrip.updatingData = false;
         if (typeof watchdrip.onUpdateFinishCallback === "function"){
             watchdrip.onUpdateFinishCallback(watchdrip.lastUpdateSucessful);
         }
