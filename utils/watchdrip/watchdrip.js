@@ -113,7 +113,7 @@ export class Watchdrip {
         }
         let lastInfoUpdate = hmFS.SysProGetInt64(WF_INFO_LAST_UPDATE);
         let utc = this.timeSensor.utc;
-        if (!lastInfoUpdate) {
+        if (lastInfoUpdate === 0) {
             if (this.lastUpdateAttempt == null) {
                 debug.log("initial fetch");
                 //watchdrip.fetchInfo();
