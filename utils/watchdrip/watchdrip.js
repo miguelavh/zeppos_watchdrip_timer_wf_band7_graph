@@ -50,7 +50,7 @@ export class Watchdrip {
 
     start() { 
         watchdrip = this.globalNS.watchdrip;
-        // this.updateValuesWidget();
+        this.updateValuesWidget();
         //Monitor watchface activity in order to recreate connection
         if (this.isAOD()) {
             watchdrip.widgetDelegateCallbackResumeCall();
@@ -64,15 +64,14 @@ export class Watchdrip {
     }
 
     startDataUpdates() {
-        if (this.intervalTimer !== null) return; //already started
+        if (this.intervalTimer != null) return; //already started
         let interval = this.isAOD() ? DATA_AOD_TIMER_UPDATE_INTERVAL_MS : DATA_TIMER_UPDATE_INTERVAL_MS;
         debug.log("startDataUpdates, interval: " + interval);
         this.checkUpdates(); //start immediately
 
-        // TODO: AOD needs timer
-        /* this.intervalTimer = this.globalNS.setInterval(() => {
+        this.intervalTimer = this.globalNS.setInterval(() => {
             this.checkUpdates();
-        }, interval); */
+        }, interval);
     }
 
     stopDataUpdates() {
@@ -102,9 +101,6 @@ export class Watchdrip {
     }
 
     checkUpdates() {
-        let fetchNewData = false;
-        
-        watchdrip.readInfo();
         this.updateTimesWidget();
         //debug.log("checkUpdates");
         if (this.updatingData) {
@@ -113,51 +109,38 @@ export class Watchdrip {
         }
         let lastInfoUpdate = hmFS.SysProGetInt64(WF_INFO_LAST_UPDATE);
         let utc = this.timeSensor.utc;
-        if (this.lastInfoUpdate === 0) {
-            if (this.lastUpdateAttempt === null) {
+        if (!lastInfoUpdate) {
+            if (this.lastUpdateAttempt == null) {
                 debug.log("initial fetch");
-                //watchdrip.fetchInfo();
-                //return;
-                fetchNewData = true;
+                watchdrip.fetchInfo();
+                return;
             }
-
             if (utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS) {
                 debug.log("the side app not responding, force update again");
-                //watchdrip.fetchInfo();
-                //return;
-                fetchNewData = true;
+                watchdrip.fetchInfo();
+                return;
             }
         } else {
             if (!this.lastUpdateSucessful) {
-                if (this.lastUpdateAttempt !== null){
+                if (this.lastUpdateAttempt !== null)
                     if ((utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS)) {
                         debug.log("reached DATA_STALE_TIME_MS");
-                        //watchdrip.fetchInfo();
-                        //return;
-                        fetchNewData = true;
+                        watchdrip.fetchInfo();
+                        return;
                     } else {
-                        //return;
+                        return;
                     }
-                }
             }
-
             if ((utc - lastInfoUpdate > this.updateIntervals)) {
                 debug.log("reached DATA_UPDATE_INTERVAL_MS");
-                //watchdrip.fetchInfo();
-                //return;
-                fetchNewData = true;
+                watchdrip.fetchInfo();
+                return;
             }
-
             if (this.lastInfoUpdate === lastInfoUpdate) {
                 //debug.log("data not modified");
-                //return;
+                return;
             }
-
-            this.updateWidgets();
-        }
-
-        if(fetchNewData){
-            watchdrip.fetchInfo();
+            watchdrip.updateWidgets();
         }
     }
 
@@ -207,8 +190,8 @@ export class Watchdrip {
     widgetDelegateCallbackResumeCall() {
         debug.log("resume_call");
         logger.log("resume_call");
+        watchdrip.readInfo();
         watchdrip.updatingData = false;
-        //watchdrip.readInfo();
         watchdrip.update();
         debug.log("resume_callend");
         logger.log("resume_callend");
@@ -222,7 +205,7 @@ export class Watchdrip {
         if (typeof watchdrip.onUpdateFinishCallback === "function"){
             watchdrip.onUpdateFinishCallback(watchdrip.lastUpdateSucessful);
         }
-        watchdrip.dropConnection();
+       watchdrip.dropConnection();
     }
 
 
@@ -244,8 +227,8 @@ export class Watchdrip {
 
     updateWidgets() {
         debug.log("updateWidgets");
-        this.updateValuesWidget();
-        this.updateTimesWidget();
+        this.updateValuesWidget()
+        this.updateTimesWidget()
     }
 
     updateValuesWidget() {
