@@ -100,7 +100,7 @@ export class Watchdrip {
 
         logger.log("CHECK_UPDATES");
 
-        watchdrip.updateTimesWidget();
+        watchdrip.updateWidgets();
         
         if (watchdrip.updatingData) {
             return;
