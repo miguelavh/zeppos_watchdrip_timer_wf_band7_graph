@@ -132,7 +132,7 @@ export class Watchdrip {
             watchdrip.fetchInfo();
         }
 
-        watchdrip.updateWidgets();
+        watchdrip.updateTimesWidget();
     }
 
     //connect watch with side app
