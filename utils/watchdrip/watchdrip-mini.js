@@ -203,9 +203,7 @@ export class Watchdrip {
         watchdrip.lastUpdateAttempt = watchdrip.timeSensor.utc;
         watchdrip.lastUpdateSucessful = false;
 
-        if (!watchdrip.connectionActive) {
-            watchdrip.initConnection();
-        }
+        watchdrip.initConnection();
 
         logger.log("fetchInfo");
         if (messageBuilder.connectStatus() === false) {
