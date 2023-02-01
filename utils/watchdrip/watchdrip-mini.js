@@ -30,7 +30,7 @@ export class Watchdrip {
     constructor() {
         this.screenType = hmSetting.getScreenType();
 
-        this.updateIntervals = this.isAOD() ? DATA_AOD_UPDATE_INTERVAL_MS : DATA_UPDATE_INTERVAL_MS;
+        this.updateIntervals = this.screenType === hmSetting.screen_type.AOD ? DATA_AOD_UPDATE_INTERVAL_MS : DATA_UPDATE_INTERVAL_MS;
 
         this.globalNS = getGlobal();
         debug = this.globalNS.debug;
@@ -49,8 +49,12 @@ export class Watchdrip {
         //watchdrip.readInfo();
     }
 
-    start() { 
+    //call before any usage of the class instance
+    prepare(){
         watchdrip = this.globalNS.watchdrip;
+    }
+
+    start() { 
         //watchdrip.checkUpdates();
         // watchdrip.updateValuesWidget();
         //Monitor watchface activity in order to recreate connection
@@ -71,12 +75,12 @@ export class Watchdrip {
     startTimerDataUpdates() {
         if (watchdrip.intervalTimer !== null) return; //already started
         
-        if (watchdrip.isAOD()) {
-            logger.log("startTimerDataUpdates, interval: " + DATA_AOD_TIMER_UPDATE_INTERVAL_MS);
-            watchdrip.intervalTimer = watchdrip.globalNS.setInterval(() => {
-                watchdrip.checkUpdates();
-            }, DATA_AOD_TIMER_UPDATE_INTERVAL_MS);
-        }
+        const interval = watchdrip.isAOD() ? DATA_AOD_TIMER_UPDATE_INTERVAL_MS : DATA_TIMER_UPDATE_INTERVAL_MS;
+
+        logger.log("startTimerDataUpdates, interval: " + interval);
+        watchdrip.intervalTimer = watchdrip.globalNS.setInterval(() => {
+            watchdrip.checkUpdates();
+        }, interval);
     }
 
     stopTimerDataUpdates() {
@@ -88,13 +92,15 @@ export class Watchdrip {
     }
 
     isAOD(){
-        return  this.screenType === hmSetting.screen_type.AOD;
+        return watchdrip.screenType === hmSetting.screen_type.AOD;
     }
 
     checkUpdates() {
         let fetchNewData = false;
 
         logger.log("CHECK_UPDATES");
+
+        watchdrip.updateTimesWidget();
         
         if (watchdrip.updatingData) {
             return;
@@ -116,10 +122,10 @@ export class Watchdrip {
                 }
             }
 
-            if (utc - watchdrip.lastInfoUpdate > DATA_UPDATE_INTERVAL_MS) {
-                logger.log("data older than watch data update interval, update again");
-                fetchNewData = true;
-            }
+            //if (utc - watchdrip.lastInfoUpdate > DATA_UPDATE_INTERVAL_MS) {
+            //    logger.log("data older than watch data update interval, update again");
+            //    fetchNewData = true;
+            //}
 
             if (utc - watchdrip.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS) {
                 logger.log("data older than sensor update interval, update again");
@@ -131,15 +137,17 @@ export class Watchdrip {
             logger.log("CHECK_UPDATES_FETCH");
             watchdrip.fetchInfo();
         }
-
-        watchdrip.updateTimesWidget();
     }
 
     //connect watch with side app
     initConnection() {
+        if (watchdrip.connectionActive){
+            return;
+        }
         logger.log("initConnection");
         watchdrip.connectionActive = true;
         const appId = WATCHDRIP_APP_ID;
+        //we need to recreate connection to force start side app
         messageBuilder = new MessageBuilder({appId});
         messageBuilder.connect();
     }
@@ -153,19 +161,19 @@ export class Watchdrip {
     }
 
     setUpdateValueWidgetCallback(callback){
-        this.updateValueWidgetCallback = callback;
+        watchdrip.updateValueWidgetCallback = callback;
     }
 
     setUpdateTimesWidgetCallback(callback){
-        this.updateTimesWidgetCallback = callback;
+        watchdrip.updateTimesWidgetCallback = callback;
     }
 
     setOnUpdateStartCallback(callback){
-        this.onUpdateStartCallback = callback;
+        watchdrip.onUpdateStartCallback = callback;
     }
 
     setOnUpdateFinishCallback(callback){
-        this.onUpdateFinishCallback = callback;
+        watchdrip.onUpdateFinishCallback = callback;
     }
 
     updateWidgets() {
@@ -241,18 +249,19 @@ export class Watchdrip {
             if (typeof watchdrip.onUpdateFinishCallback === "function"){
                 watchdrip.onUpdateFinishCallback(watchdrip.lastUpdateSucessful);
             }
-            //if (watchdrip.isAOD()){
+            if (watchdrip.isAOD()){
                 watchdrip.dropConnection();
-            //}
+            }
         });
     }
 
-    // REMINDER: Callbacks need watchdrip instead of watchdrip. this is not working.
+    // REMINDER: Callbacks need watchdrip instead of this, this is not working.
     /*Callback which is called  when watchface is active  (visible)*/
     widgetDelegateCallbackResumeCall() {
         logger.log("resume_call");
         watchdrip.updatingData = false;
         watchdrip.checkUpdates();
+        //watchdrip.startTimerDataUpdates();
         logger.log("resume_callend");
     }
 
