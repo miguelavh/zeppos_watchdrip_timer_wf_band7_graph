@@ -220,7 +220,7 @@ export class Watchdrip {
             logger.log(info);
             try {
                 if (info.error) {
-                    logger.log("error:" + info.message);
+                    logger.log("app-side error:" + info.message);
                     return;
                 }
                 const dataInfo = str2json(info);
@@ -230,13 +230,13 @@ export class Watchdrip {
 
                 watchdrip.lastInfoUpdate = watchdrip.timeSensor.utc;
                 watchdrip.lastUpdateSucessful = true;
-                watchdrip.updateWidgets();
             } catch (e) {
-                logger.log("error:" + e);
+                logger.log("parsing error:" + e);
             }
         }).catch((error) => {
             logger.log("fetch error:" + error);
         }).finally(() => {
+            watchdrip.updateWidgets();
             watchdrip.updatingData = false;
             if (typeof watchdrip.onUpdateFinishCallback === "function"){
                 watchdrip.onUpdateFinishCallback(watchdrip.lastUpdateSucessful);
