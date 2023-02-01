@@ -1,5 +1,5 @@
 import {DebugText} from "../../shared/debug";
-import {Watchdrip} from "../../utils/watchdrip/watchdrip";
+import {Watchdrip} from "../../utils/watchdrip/watchdrip-mini";
 import {WatchdripData} from "../../utils/watchdrip/watchdrip-data";
 import {getGlobal} from "../../shared/global";
 import {
@@ -77,7 +77,6 @@ import {
     EDIT_CAL_ARC_PROGRESS,
     EDIT_CAL_TEXT_IMG,
     EDIT_AQI_IMG,
-    EDIT_AQI_ARC_PROGRESS,
     EDIT_AQI_TEXT_IMG,
     EDIT_SPO2_IMG,
     EDIT_SPO2_TEXT_IMG,
