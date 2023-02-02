@@ -56,6 +56,7 @@ import {
     EDIT_BR_TEXT_IMG,
     // Editable Widgets specific styles
     EDIT_HEART_IMG,
+    EDIT_HEART_IMG_LEVEL,
     EDIT_HEART_TEXT_IMG,
     EDIT_STEP_IMG,
     EDIT_STEP_ARC_PROGRESS,
@@ -77,7 +78,6 @@ import {
     EDIT_CAL_ARC_PROGRESS,
     EDIT_CAL_TEXT_IMG,
     EDIT_AQI_IMG,
-    EDIT_AQI_ARC_PROGRESS,
     EDIT_AQI_TEXT_IMG,
     EDIT_SPO2_IMG,
     EDIT_SPO2_TEXT_IMG,
@@ -152,6 +152,7 @@ WatchFace({
         switch (editType) {
             case hmUI.edit_type.HEART:
                 hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_HEART_IMG));
+                hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_HEART_IMG_LEVEL));
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_HEART_TEXT_IMG));
                 break;
             case hmUI.edit_type.STEP:
@@ -433,6 +434,8 @@ WatchFace({
         if (typeof batterySensor !== 'undefined') {
             batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);
         }
+
+        stopLoader();
     },
 
     onShow() {
