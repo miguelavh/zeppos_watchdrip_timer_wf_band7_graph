@@ -117,6 +117,7 @@ export class Watchdrip {
         }
 
         const utc = getGlobalWD().timeSensor.utc;
+
         if (getGlobalWD().lastInfoUpdate === 0) {
             if (getGlobalWD().lastUpdateAttempt === null) {
                 logger.log("initial fetch");
@@ -124,7 +125,7 @@ export class Watchdrip {
             }
         } else {
             if (getGlobalWD().lastUpdateSucessful) {
-                if (utc - getGlobalWD().watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS) {
+                if (utc - getGlobalWD().watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS + DATA_STALE_TIME_MS) {
                     logger.log("data older than sensor update interval, update again");
                     fetchNewData = true;
                 }
@@ -211,10 +212,10 @@ export class Watchdrip {
 
         logger.log("fetchInfo");
         if (getGlobalMB().connectStatus() === false) {
-            logger.log("No bt connection");
+            logger.log("No BT connection");
             return;
         }
-        logger.log("bt connection ok");
+        logger.log("BT connection ok");
         getApp()._options.globalData.watchDrip.updatingData = true;
         if (typeof getGlobalWD().onUpdateStartCallback === "function"){
             getGlobalWD().onUpdateStartCallback();
@@ -223,7 +224,7 @@ export class Watchdrip {
         getGlobalMB().request({
             method: Commands.getInfo,
         }, {
-            timeout: 10000
+            timeout: 5000
         }).then((data) => {
             logger.log("received data");
             const {result: info = {}} = data;
