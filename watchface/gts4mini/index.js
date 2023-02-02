@@ -100,6 +100,8 @@ let globalNS, progressTimer, progressAngle, screenType;
 
 let debug, watchdrip;
 
+const { watchDrip } = getApp()._options.globalData;
+
 export const logger = Logger.getLogger("timer-page");
 
 function initDebug() {
@@ -143,13 +145,6 @@ function updateWidgets() {
 
 function mergeStyles(styleObj1, styleObj2, styleObj3 = {}) {
     return Object.assign({}, styleObj1, styleObj2, styleObj3);
-}
-
-/**
- * @returns Watchdrip
- */
-function getGlobalWatchDrip() {
-    return getApp()._options.globalData.watchDrip;
 }
 
 
@@ -429,11 +424,11 @@ WatchFace({
         //watchdrip = globalNS.watchdrip;
         //watchdrip.prepare();
         getApp()._options.globalData.watchDrip = new Watchdrip();
-        getGlobalWatchDrip().setUpdateValueWidgetCallback(this.updateValuesWidget);
-        getGlobalWatchDrip().setUpdateTimesWidgetCallback(this.updateTimesWidget);
-        getGlobalWatchDrip().setOnUpdateStartCallback(this.updateStart);
-        getGlobalWatchDrip().setOnUpdateFinishCallback(this.updateFinish);
-        getGlobalWatchDrip().start();
+        watchDrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
+        watchDrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
+        watchDrip.setOnUpdateStartCallback(this.updateStart);
+        watchDrip.setOnUpdateFinishCallback(this.updateFinish);
+        watchDrip.start();
     },
 
     onDestroy() {
