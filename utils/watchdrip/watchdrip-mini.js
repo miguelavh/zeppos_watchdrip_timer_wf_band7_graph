@@ -113,23 +113,16 @@ export class Watchdrip {
                 fetchNewData = true;
             }
         } else {
-            if (!watchdrip.lastUpdateSucessful) {
-                if (watchdrip.lastUpdateAttempt !== null){
-                    if ((utc - watchdrip.lastUpdateAttempt > DATA_STALE_TIME_MS)) {
-                        logger.log("side app not responding, force update again");
-                        fetchNewData = true;
-                    }
+            if (watchdrip.lastUpdateSucessful) {
+                if (utc - watchdrip.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS) {
+                    logger.log("data older than sensor update interval, update again");
+                    fetchNewData = true;
                 }
-            }
-
-            //if (utc - watchdrip.lastInfoUpdate > DATA_UPDATE_INTERVAL_MS) {
-            //    logger.log("data older than watch data update interval, update again");
-            //    fetchNewData = true;
-            //}
-
-            if (utc - watchdrip.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS) {
-                logger.log("data older than sensor update interval, update again");
-                fetchNewData = true;
+            } else {
+                if ((utc - watchdrip.lastUpdateAttempt > DATA_STALE_TIME_MS)) {
+                    logger.log("side app not responding, force update again");
+                    fetchNewData = true;
+                }
             }
         }
 
