@@ -119,10 +119,8 @@ export class Watchdrip {
         const utc = getGlobalWD().timeSensor.utc;
 
         if (getGlobalWD().lastInfoUpdate === 0) {
-            if (getGlobalWD().lastUpdateAttempt === null) {
                 logger.log("initial fetch");
                 fetchNewData = true;
-            }
         } else {
             if (getGlobalWD().lastUpdateSucessful) {
                 if (utc - getGlobalWD().watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS + DATA_STALE_TIME_MS) {

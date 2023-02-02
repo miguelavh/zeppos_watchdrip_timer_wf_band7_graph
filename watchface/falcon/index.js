@@ -1,4 +1,3 @@
-import {DebugText} from "../../shared/debug";
 import {Watchdrip} from "../../utils/watchdrip/watchdrip-mini";
 import {WatchdripData} from "../../utils/watchdrip/watchdrip-data";
 import {getGlobal} from "../../shared/global";
@@ -97,15 +96,8 @@ let batterySensor;
 
 let globalNS, progressTimer, progressAngle, screenType;
 
-let debug, watchdrip;
 
 export const logger = Logger.getLogger("timer-page");
-
-function initDebug() {
-    globalNS.debug = new DebugText();
-    debug = globalNS.debug;
-    debug.setLines(12);
-};
 
 
 function startLoader() {
@@ -142,6 +134,10 @@ function updateWidgets() {
 
 function mergeStyles(styleObj1, styleObj2, styleObj3 = {}) {
     return Object.assign({}, styleObj1, styleObj2, styleObj3);
+}
+
+function getGlobalWD() {
+    return getApp()._options.globalData.watchDrip;
 }
 
 
@@ -413,22 +409,22 @@ WatchFace({
     build() {
         logger.log("wf on build invoke");
         globalNS = getGlobal();
-        initDebug();
-        debug.log("build");
+
         this.initView();
-        globalNS.watchdrip = new Watchdrip();
-        watchdrip = globalNS.watchdrip;
-        watchdrip.prepare();
-        watchdrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
-        watchdrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
-        watchdrip.setOnUpdateStartCallback(this.updateStart);
-        watchdrip.setOnUpdateFinishCallback(this.updateFinish);
-        watchdrip.start();
+        //globalNS.watchdrip = new Watchdrip();
+        //watchdrip = globalNS.watchdrip;
+        //watchdrip.prepare();
+        getApp()._options.globalData.watchDrip = new Watchdrip();
+        getGlobalWD().setUpdateValueWidgetCallback(this.updateValuesWidget);
+        getGlobalWD().setUpdateTimesWidgetCallback(this.updateTimesWidget);
+        getGlobalWD().setOnUpdateStartCallback(this.updateStart);
+        getGlobalWD().setOnUpdateFinishCallback(this.updateFinish);
+        getGlobalWD().start();
     },
 
     onDestroy() {
         logger.log("wf on destroy invoke");
-        watchdrip.destroy();
+        getGlobalWD().destroy();
 
         if (typeof batterySensor !== 'undefined') {
             batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);
@@ -436,10 +432,10 @@ WatchFace({
     },
 
     onShow() {
-        debug.log("onShow");
+    
     },
 
     onHide() {
-        debug.log("onHide");
+    
     },
 });

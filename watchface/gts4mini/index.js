@@ -98,17 +98,7 @@ let batterySensor;
 
 let globalNS, progressTimer, progressAngle, screenType;
 
-let debug, watchdrip;
-
-//const watchDrip = getApp()._options.globalData.watchDrip;
-
 export const logger = Logger.getLogger("timer-page");
-
-function initDebug() {
-    globalNS.debug = new DebugText();
-    debug = globalNS.debug;
-    debug.setLines(12);
-};
 
 
 function startLoader() {
@@ -421,8 +411,7 @@ WatchFace({
     build() {
         logger.log("wf on build invoke");
         globalNS = getGlobal();
-        initDebug();
-        debug.log("build");
+
         this.initView();
         //globalNS.watchdrip = new Watchdrip();
         //watchdrip = globalNS.watchdrip;
@@ -447,10 +436,10 @@ WatchFace({
     },
 
     onShow() {
-        debug.log("onShow");
+    
     },
 
     onHide() {
-        debug.log("onHide");
+    
     },
 });
