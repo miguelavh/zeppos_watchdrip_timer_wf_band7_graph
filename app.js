@@ -8,6 +8,7 @@ const messageBuilder = new MessageBuilder({ appId });
 App({
   globalData: {
     messageBuilder: messageBuilder,
+    watchDrip: null
   },
   onCreate(options) {
     console.log("app on create invoke");

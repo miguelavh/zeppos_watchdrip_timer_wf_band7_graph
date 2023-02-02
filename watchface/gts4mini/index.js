@@ -145,6 +145,13 @@ function mergeStyles(styleObj1, styleObj2, styleObj3 = {}) {
     return Object.assign({}, styleObj1, styleObj2, styleObj3);
 }
 
+/**
+ * @returns Watchdrip
+ */
+function getGlobalWatchDrip() {
+    return getApp()._options.globalData.watchDrip;
+}
+
 
 WatchFace({
     // draws the editable widgets
@@ -418,19 +425,20 @@ WatchFace({
         initDebug();
         debug.log("build");
         this.initView();
-        globalNS.watchdrip = new Watchdrip();
-        watchdrip = globalNS.watchdrip;
-        watchdrip.prepare();
-        watchdrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
-        watchdrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
-        watchdrip.setOnUpdateStartCallback(this.updateStart);
-        watchdrip.setOnUpdateFinishCallback(this.updateFinish);
-        watchdrip.start();
+        //globalNS.watchdrip = new Watchdrip();
+        //watchdrip = globalNS.watchdrip;
+        //watchdrip.prepare();
+        getApp()._options.globalData.watchDrip = new Watchdrip();
+        getGlobalWatchDrip().setUpdateValueWidgetCallback(this.updateValuesWidget);
+        getGlobalWatchDrip().setUpdateTimesWidgetCallback(this.updateTimesWidget);
+        getGlobalWatchDrip().setOnUpdateStartCallback(this.updateStart);
+        getGlobalWatchDrip().setOnUpdateFinishCallback(this.updateFinish);
+        getGlobalWatchDrip().start();
     },
 
     onDestroy() {
         logger.log("wf on destroy invoke");
-        watchdrip.destroy();
+        getGlobalWatchDrip().destroy();
 
         if (typeof batterySensor !== 'undefined') {
             batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);
