@@ -1,5 +1,4 @@
-import {DebugText} from "../../shared/debug";
-import {Watchdrip} from "../../utils/watchdrip/watchdrip";
+import {Watchdrip} from "../../utils/watchdrip/watchdrip-mini";
 import {WatchdripData} from "../../utils/watchdrip/watchdrip-data";
 import {getGlobal} from "../../shared/global";
 import {
@@ -56,6 +55,7 @@ import {
     EDIT_BR_TEXT_IMG,
     // Editable Widgets specific styles
     EDIT_HEART_IMG,
+    EDIT_HEART_IMG_LEVEL,
     EDIT_HEART_TEXT_IMG,
     EDIT_STEP_IMG,
     EDIT_STEP_ARC_PROGRESS,
@@ -77,7 +77,6 @@ import {
     EDIT_CAL_ARC_PROGRESS,
     EDIT_CAL_TEXT_IMG,
     EDIT_AQI_IMG,
-    EDIT_AQI_ARC_PROGRESS,
     EDIT_AQI_TEXT_IMG,
     EDIT_SPO2_IMG,
     EDIT_SPO2_TEXT_IMG,
@@ -98,15 +97,8 @@ let batterySensor;
 
 let globalNS, progressTimer, progressAngle, screenType;
 
-let debug, watchdrip;
 
 export const logger = Logger.getLogger("timer-page");
-
-function initDebug() {
-    globalNS.debug = new DebugText();
-    debug = globalNS.debug;
-    debug.setLines(12);
-};
 
 
 function startLoader() {
@@ -145,6 +137,10 @@ function mergeStyles(styleObj1, styleObj2, styleObj3 = {}) {
     return Object.assign({}, styleObj1, styleObj2, styleObj3);
 }
 
+function getGlobalWD() {
+    return getApp()._options.globalData.watchDrip;
+}
+
 
 WatchFace({
     // draws the editable widgets
@@ -152,6 +148,7 @@ WatchFace({
         switch (editType) {
             case hmUI.edit_type.HEART:
                 hmUI.createWidget(hmUI.widget.IMG, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_HEART_IMG));
+                hmUI.createWidget(hmUI.widget.IMG_LEVEL, mergeStyles(EDIT_DEFAULT_IMG, imgStyle, EDIT_HEART_IMG_LEVEL));
                 hmUI.createWidget(hmUI.widget.TEXT_IMG, mergeStyles(EDIT_DEFAULT_TEXT_IMG, textImgStyle, EDIT_HEART_TEXT_IMG));
                 break;
             case hmUI.edit_type.STEP:
@@ -414,32 +411,35 @@ WatchFace({
     build() {
         logger.log("wf on build invoke");
         globalNS = getGlobal();
-        initDebug();
-        debug.log("build");
+
         this.initView();
-        globalNS.watchdrip = new Watchdrip();
-        watchdrip = globalNS.watchdrip;
-        watchdrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
-        watchdrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
-        watchdrip.setOnUpdateStartCallback(this.updateStart);
-        watchdrip.setOnUpdateFinishCallback(this.updateFinish);
-        watchdrip.start();
+        //globalNS.watchdrip = new Watchdrip();
+        //watchdrip = globalNS.watchdrip;
+        //watchdrip.prepare();
+        getApp()._options.globalData.watchDrip = new Watchdrip();
+        getGlobalWD().setUpdateValueWidgetCallback(this.updateValuesWidget);
+        getGlobalWD().setUpdateTimesWidgetCallback(this.updateTimesWidget);
+        getGlobalWD().setOnUpdateStartCallback(this.updateStart);
+        getGlobalWD().setOnUpdateFinishCallback(this.updateFinish);
+        getGlobalWD().start();
     },
 
     onDestroy() {
         logger.log("wf on destroy invoke");
-        watchdrip.destroy();
+        getGlobalWD().destroy();
 
         if (typeof batterySensor !== 'undefined') {
             batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);
         }
+
+        stopLoader();
     },
 
     onShow() {
-        debug.log("onShow");
+    
     },
 
     onHide() {
-        debug.log("onHide");
+    
     },
 });
