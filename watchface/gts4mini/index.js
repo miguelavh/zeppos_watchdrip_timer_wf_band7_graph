@@ -100,7 +100,7 @@ let globalNS, progressTimer, progressAngle, screenType;
 
 let debug, watchdrip;
 
-const { watchDrip } = getApp()._options.globalData;
+//const watchDrip = getApp()._options.globalData.watchDrip;
 
 export const logger = Logger.getLogger("timer-page");
 
@@ -145,6 +145,10 @@ function updateWidgets() {
 
 function mergeStyles(styleObj1, styleObj2, styleObj3 = {}) {
     return Object.assign({}, styleObj1, styleObj2, styleObj3);
+}
+
+function getGlobalWD() {
+    return getApp()._options.globalData.watchDrip;
 }
 
 
@@ -424,16 +428,16 @@ WatchFace({
         //watchdrip = globalNS.watchdrip;
         //watchdrip.prepare();
         getApp()._options.globalData.watchDrip = new Watchdrip();
-        watchDrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
-        watchDrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
-        watchDrip.setOnUpdateStartCallback(this.updateStart);
-        watchDrip.setOnUpdateFinishCallback(this.updateFinish);
-        watchDrip.start();
+        getGlobalWD().setUpdateValueWidgetCallback(this.updateValuesWidget);
+        getGlobalWD().setUpdateTimesWidgetCallback(this.updateTimesWidget);
+        getGlobalWD().setOnUpdateStartCallback(this.updateStart);
+        getGlobalWD().setOnUpdateFinishCallback(this.updateFinish);
+        getGlobalWD().start();
     },
 
     onDestroy() {
         logger.log("wf on destroy invoke");
-        getGlobalWatchDrip().destroy();
+        getGlobalWD().destroy();
 
         if (typeof batterySensor !== 'undefined') {
             batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);

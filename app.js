@@ -8,7 +8,7 @@ const messageBuilder = new MessageBuilder({ appId });
 App({
   globalData: {
     messageBuilder: messageBuilder,
-    watchDrip: null
+    watchDrip: { }
   },
   onCreate(options) {
     console.log("wf-app on create invoke");
@@ -16,6 +16,5 @@ App({
 
   onDestroy(options) {
     console.log("wf-app on destroy invoke");
-    messageBuilder.disConnect();
   },
 });

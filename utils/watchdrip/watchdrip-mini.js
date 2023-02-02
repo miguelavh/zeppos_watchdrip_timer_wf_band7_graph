@@ -20,14 +20,19 @@ import {
 
 import {WatchdripData} from "./watchdrip-data";
 
-// const objects are "bindings". updating the const object properties updates the original object properties and vice-versa
 const { messageBuilder } = getApp()._options.globalData;
-const { watchDrip } = getApp()._options.globalData;
-
 
 export const logger = Logger.getLogger("wf-wathchdrip");
 
 let  debug;
+
+function getGlobalWD() {
+    return getApp()._options.globalData.watchDrip;
+}
+
+function getGlobalMB() {
+    return getApp()._options.globalData.messageBuilder;
+}
 
 export class Watchdrip {
     constructor() {
@@ -62,42 +67,42 @@ export class Watchdrip {
 
     start() {
         //Monitor watchface activity in order to recreate connection
-        if (watchDrip.isAOD()) {
+        if (getGlobalWD().isAOD()) {
             logger.log("IS_AOD_TRUE");
-            watchDrip.startTimerDataUpdates();
+            getGlobalWD().startTimerDataUpdates();
             
         }
         else {
             logger.log("IS_AOD_FALSE");
             hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, {
-                resume_call: watchDrip.widgetDelegateCallbackResumeCall,
-                pause_call: watchDrip.widgetDelegateCallbackPauseCall,
+                resume_call: getGlobalWD().widgetDelegateCallbackResumeCall,
+                pause_call: getGlobalWD().widgetDelegateCallbackPauseCall,
             });
         }
     }
 
     startTimerDataUpdates() {
-        if (watchDrip.intervalTimer !== null) return; //already started
+        if (getGlobalWD().intervalTimer !== null) return; //already started
         
-        const interval = watchDrip.isAOD() ? DATA_AOD_TIMER_UPDATE_INTERVAL_MS : DATA_TIMER_UPDATE_INTERVAL_MS;
+        const interval = getGlobalWD().isAOD() ? DATA_AOD_TIMER_UPDATE_INTERVAL_MS : DATA_TIMER_UPDATE_INTERVAL_MS;
 
         logger.log("startTimerDataUpdates, interval: " + interval);
         
-        watchDrip.intervalTimer = watchDrip.globalNS.setInterval(() => {
-            watchDrip.checkUpdates();
+        getApp()._options.globalData.watchDrip.intervalTimer = getGlobalWD().globalNS.setInterval(() => {
+            getGlobalWD().checkUpdates();
         }, interval);
     }
 
     stopTimerDataUpdates() {
-        if (watchDrip.intervalTimer !== null) {
+        if (getGlobalWD().intervalTimer !== null) {
             logger.log("stopTimerDataUpdates");
-            watchDrip.globalNS.clearInterval(watchDrip.intervalTimer);
-            watchDrip.intervalTimer = null;
+            getGlobalWD().globalNS.clearInterval(getGlobalWD().intervalTimer);
+            getApp()._options.globalData.watchDrip.intervalTimer = null;
         }
     }
 
     isAOD(){
-        return watchDrip.screenType === hmSetting.screen_type.AOD;
+        return getGlobalWD().screenType === hmSetting.screen_type.AOD;
     }
 
     checkUpdates() {
@@ -105,31 +110,31 @@ export class Watchdrip {
 
         logger.log("CHECK_UPDATES");
 
-        watchDrip.updateWidgets();
+        getGlobalWD().updateWidgets();
         
-        if (watchDrip.updatingData) {
+        if (getGlobalWD().updatingData) {
             return;
         }
 
-        const utc = watchDrip.timeSensor.utc;
-        if (watchDrip.lastInfoUpdate === 0) {
-            if (watchDrip.lastUpdateAttempt === null) {
+        const utc = getGlobalWD().timeSensor.utc;
+        if (getGlobalWD().lastInfoUpdate === 0) {
+            if (getGlobalWD().lastUpdateAttempt === null) {
                 logger.log("initial fetch");
                 fetchNewData = true;
             }
         } else {
-            if (watchDrip.lastUpdateSucessful) {
-                if (utc - watchDrip.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS) {
+            if (getGlobalWD().lastUpdateSucessful) {
+                if (utc - getGlobalWD().watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS) {
                     logger.log("data older than sensor update interval, update again");
                     fetchNewData = true;
                 }
             } else {
-                if ((utc - watchDrip.lastUpdateAttempt > DATA_STALE_TIME_MS)) {
+                if ((utc - getGlobalWD().lastUpdateAttempt > DATA_STALE_TIME_MS)) {
                     logger.log("side app not responding, force update again");
                     //we need to recreate connection to force start side app
                     const appId = WATCHDRIP_APP_ID;
                     getApp()._options.globalData.messageBuilder = new MessageBuilder({ appId });
-                    watchDrip.connectionActive = false;
+                    getGlobalWD().connectionActive = false;
                     fetchNewData = true;
                 }
             }
@@ -137,61 +142,61 @@ export class Watchdrip {
 
         if(fetchNewData){
             logger.log("CHECK_UPDATES_FETCH");
-            watchDrip.fetchInfo();
+            getGlobalWD().fetchInfo();
         }
     }
 
     //connect watch with side app
     initConnection() {
-        if (watchDrip.connectionActive){
+        if (getGlobalWD().connectionActive){
             return;
         }
         logger.log("initConnection");
-        watchDrip.connectionActive = true;
-        messageBuilder.connect();
+        getApp()._options.globalData.watchDrip.connectionActive = true;
+        getGlobalMB().connect();
     }
 
     dropConnection(){
-        if (watchDrip.connectionActive) {
+        if (getGlobalWD().connectionActive) {
             logger.log("dropConnection");
-            messageBuilder.disConnect();
-            watchDrip.connectionActive = false;
+            getGlobalMB().disConnect();
+            getApp()._options.globalData.watchDrip.connectionActive = false;
         }
     }
 
     setUpdateValueWidgetCallback(callback){
-        watchDrip.updateValueWidgetCallback = callback;
+        getApp()._options.globalData.watchDrip.updateValueWidgetCallback = callback;
     }
 
     setUpdateTimesWidgetCallback(callback){
-        watchDrip.updateTimesWidgetCallback = callback;
+        getApp()._options.globalData.watchDrip.updateTimesWidgetCallback = callback;
     }
 
     setOnUpdateStartCallback(callback){
-        watchDrip.onUpdateStartCallback = callback;
+        getApp()._options.globalData.watchDrip.onUpdateStartCallback = callback;
     }
 
     setOnUpdateFinishCallback(callback){
-        watchDrip.onUpdateFinishCallback = callback;
+        getApp()._options.globalData.watchDrip.onUpdateFinishCallback = callback;
     }
 
     updateWidgets() {
         logger.log("updateWidgets");
-        watchDrip.updateValuesWidget();
-        watchDrip.updateTimesWidget();
+        getGlobalWD().updateValuesWidget();
+        getGlobalWD().updateTimesWidget();
     }
 
     updateValuesWidget() {
-        if (typeof watchDrip.updateValueWidgetCallback === "function"){
+        if (typeof getGlobalWD().updateValueWidgetCallback === "function"){
             logger.log("updateValuesWidget");
-            watchDrip.updateValueWidgetCallback(watchDrip.watchdripData);
+            getGlobalWD().updateValueWidgetCallback(getGlobalWD().watchdripData);
         }
     }
 
     updateTimesWidget() {
-        if (typeof watchDrip.updateTimesWidgetCallback === "function"){
+        if (typeof getGlobalWD().updateTimesWidgetCallback === "function"){
             logger.log("updateTimesWidget");
-            watchDrip.updateTimesWidgetCallback(watchDrip.watchdripData);
+            getGlobalWD().updateTimesWidgetCallback(getGlobalWD().watchdripData);
         }
     }
 
@@ -199,23 +204,23 @@ export class Watchdrip {
     }
 
     fetchInfo() {
-        watchDrip.lastUpdateAttempt = watchDrip.timeSensor.utc;
-        watchDrip.lastUpdateSucessful = false;
+        getApp()._options.globalData.watchDrip.lastUpdateAttempt = getGlobalWD().timeSensor.utc;
+        getApp()._options.globalData.watchDrip.lastUpdateSucessful = false;
 
-        watchDrip.initConnection();
+        getGlobalWD().initConnection();
 
         logger.log("fetchInfo");
-        if (messageBuilder.connectStatus() === false) {
+        if (getGlobalMB().connectStatus() === false) {
             logger.log("No bt connection");
             return;
         }
         logger.log("bt connection ok");
-        watchDrip.updatingData = true;
-        if (typeof watchDrip.onUpdateStartCallback === "function"){
-            watchDrip.onUpdateStartCallback();
+        getApp()._options.globalData.watchDrip.updatingData = true;
+        if (typeof getGlobalWD().onUpdateStartCallback === "function"){
+            getGlobalWD().onUpdateStartCallback();
         }
 
-        messageBuilder.request({
+        getGlobalMB().request({
             method: Commands.getInfo,
         }, {
             timeout: 10000
@@ -230,24 +235,24 @@ export class Watchdrip {
                 }
                 const dataInfo = str2json(info);
 
-                watchDrip.watchdripData.setData(dataInfo);
-                watchDrip.watchdripData.updateTimeDiff();
+                getGlobalWD().watchdripData.setData(dataInfo);
+                getGlobalWD().watchdripData.updateTimeDiff();
 
-                watchDrip.lastInfoUpdate = watchDrip.timeSensor.utc,
-                watchDrip.lastUpdateSucessful = true;
+                getApp()._options.globalData.watchDrip.lastInfoUpdate = getGlobalWD().timeSensor.utc,
+                getApp()._options.globalData.watchDrip.lastUpdateSucessful = true;
             } catch (e) {
                 logger.log("parsing error:" + e);
             }
         }).catch((error) => {
             logger.log("fetch error:" + error);
         }).finally(() => {
-            watchDrip.updateWidgets();
-            watchDrip.updatingData = false;
-            if (typeof watchDrip.onUpdateFinishCallback === "function"){
-                watchDrip.onUpdateFinishCallback(watchDrip.lastUpdateSucessful);
+            getGlobalWD().updateWidgets();
+            getApp()._options.globalData.watchDrip.updatingData = false;
+            if (typeof getGlobalWD().onUpdateFinishCallback === "function"){
+                getGlobalWD().onUpdateFinishCallback(getGlobalWD().lastUpdateSucessful);
             }
-            if (watchDrip.isAOD()){
-                watchDrip.dropConnection();
+            if (getGlobalWD().isAOD()){
+                getGlobalWD().dropConnection();
             }
         });
     }
@@ -256,23 +261,23 @@ export class Watchdrip {
     /*Callback which is called  when watchface is active  (visible)*/
     widgetDelegateCallbackResumeCall() {
         logger.log("resume_call");
-        watchDrip.updatingData = false;
-        watchDrip.checkUpdates();
+        getApp()._options.globalData.watchDrip.updatingData = false;
+        getGlobalWD().checkUpdates();
         logger.log("resume_callend");
     }
 
     /*Callback which is called  when watchface deactivating (not visible)*/
     widgetDelegateCallbackPauseCall() {
         logger.log("pause_call");
-        watchDrip.updatingData = false;
-        if (typeof watchDrip.onUpdateFinishCallback === "function"){
-            watchDrip.onUpdateFinishCallback(watchDrip.lastUpdateSucessful);
+        getApp()._options.globalData.watchDrip.updatingData = false;
+        if (typeof getGlobalWD().onUpdateFinishCallback === "function"){
+            getGlobalWD().onUpdateFinishCallback(getGlobalWD().lastUpdateSucessful);
         }
-        watchDrip.dropConnection();
+        getGlobalWD().dropConnection();
     }
 
     destroy() {
-        watchDrip.stopTimerDataUpdates();
-        watchDrip.dropConnection();
+        getGlobalWD().stopTimerDataUpdates();
+        getGlobalWD().dropConnection();
     }
 }
