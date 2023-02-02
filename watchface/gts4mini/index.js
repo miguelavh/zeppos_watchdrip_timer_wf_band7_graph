@@ -1,4 +1,3 @@
-import {DebugText} from "../../shared/debug";
 import {Watchdrip} from "../../utils/watchdrip/watchdrip-mini";
 import {WatchdripData} from "../../utils/watchdrip/watchdrip-data";
 import {getGlobal} from "../../shared/global";
