@@ -97,6 +97,7 @@ let batterySensor;
 
 let globalNS, progressTimer, progressAngle, screenType;
 
+
 export const logger = Logger.getLogger("timer-page");
 
 

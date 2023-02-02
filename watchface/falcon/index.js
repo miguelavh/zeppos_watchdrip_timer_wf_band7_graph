@@ -429,6 +429,8 @@ WatchFace({
         if (typeof batterySensor !== 'undefined') {
             batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);
         }
+
+        stopLoader();
     },
 
     onShow() {
