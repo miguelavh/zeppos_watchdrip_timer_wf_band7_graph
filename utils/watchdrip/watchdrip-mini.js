@@ -175,6 +175,8 @@ export class Watchdrip {
     }
 
     fetchInfo() {
+        logger.log("fetchInfo");
+        
         this.lastUpdateAttempt = this.timeSensor.utc;
         this.lastUpdateSucessful = false;
 
@@ -193,8 +195,6 @@ export class Watchdrip {
         }
 
         this.initConnection();
-
-        logger.log("fetchInfo");
         
         logger.log("BT connection ok");
         this.updatingData = true;
