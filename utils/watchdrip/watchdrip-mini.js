@@ -230,23 +230,10 @@ export class Watchdrip {
             if (typeof this.onUpdateFinishCallback === "function"){
                 this.onUpdateFinishCallback(this.lastUpdateSucessful);
             }
-            if (this.isAOD()){
+            //if (this.isAOD()){
                 this.dropConnection();
-            }
+            //}
         });
-    }
-
-    // REMINDER: Callbacks need global instance instead of this, "this" is not working.
-    /*Callback which is called  when watchface is active  (visible)*/
-    widgetDelegateCallbackResumeCall() {
-        logger.log("resume_call");
-        getGlobalWD().checkUpdates();
-    }
-
-    /*Callback which is called  when watchface deactivating (not visible)*/
-    widgetDelegateCallbackPauseCall() {
-        logger.log("pause_call");
-        getGlobalWD().dropConnection();
     }
 
     destroy() {

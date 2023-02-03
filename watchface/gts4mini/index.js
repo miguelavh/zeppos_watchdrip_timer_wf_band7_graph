@@ -428,7 +428,7 @@ WatchFace({
                 }),
                 pause_call: (function() {
                     logger.log("pause_call");
-                    watchDrip.dropConnection();
+                    //watchDrip.dropConnection();
             
                     stopLoader();
                 })
