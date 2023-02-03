@@ -407,6 +407,7 @@ WatchFace({
 
         const watchDrip = new Watchdrip();
         getApp()._options.globalData.watchDrip = watchDrip;
+
         watchDrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
         watchDrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
         watchDrip.setOnUpdateStartCallback(this.updateStart);
@@ -429,6 +430,7 @@ WatchFace({
                 pause_call: (function() {
                     logger.log("pause_call");
                     //watchDrip.dropConnection();
+                    watchDrip.updatingData = false;
             
                     stopLoader();
                 })

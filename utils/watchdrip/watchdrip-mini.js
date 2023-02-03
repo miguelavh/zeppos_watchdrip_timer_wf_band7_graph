@@ -20,15 +20,9 @@ import {
 
 import {WatchdripData} from "./watchdrip-data";
 
-const { messageBuilder } = getApp()._options.globalData;
 
 export const logger = Logger.getLogger("wf-wathchdrip");
 
-let  debug;
-
-function getGlobalWD() {
-    return getApp()._options.globalData.watchDrip;
-}
 
 function getGlobalMB() {
     return getApp()._options.globalData.messageBuilder;
@@ -41,14 +35,14 @@ export class Watchdrip {
         this.updateIntervals = this.screenType === hmSetting.screen_type.AOD ? DATA_AOD_UPDATE_INTERVAL_MS : DATA_UPDATE_INTERVAL_MS;
 
         this.globalNS = getGlobal();
-        debug = this.globalNS.debug;
         this.timeSensor = hmSensor.createSensor(hmSensor.id.TIME);
         this.watchdripData = new WatchdripData(this.timeSensor);
 
         this.lastInfoUpdate = 0;
-        this.lastUpdateAttempt = null;
+        this.lastUpdateAttempt = 0;
         this.lastUpdateSucessful = false;
         this.updatingData = false;
+        this.renewMB = true;
 
         this.intervalTimer = null;
 
@@ -92,30 +86,28 @@ export class Watchdrip {
         this.updateWidgets();
         
         if (this.updatingData) {
+            logger.log("alreday fetching. doing nothing.");
             return;
         }
 
         const utc = this.timeSensor.utc;
 
-        if (this.lastInfoUpdate === 0) {
+        if (this.lastUpdateSucessful) {
+            if (utc - this.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS + DATA_STALE_TIME_MS) {
+                logger.log("data older than sensor update interval, update again");
+                fetchNewData = true;
+            }
+        } else {
+            if (this.lastInfoUpdate === 0 && this.lastUpdateAttempt === 0) {
                 logger.log("initial fetch");
                 fetchNewData = true;
-        } else {
-            if (this.lastUpdateSucessful) {
-                if (utc - this.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS + DATA_STALE_TIME_MS) {
-                    logger.log("data older than sensor update interval, update again");
-                    fetchNewData = true;
-                }
             } else {
-                if ((utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS)) {
+                if (utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS) {
                     logger.log("side app not responding, force update again");
-                    //we need to recreate connection to force start side app
-                    const appId = WATCHDRIP_APP_ID;
-                    getApp()._options.globalData.messageBuilder = new MessageBuilder({ appId });
-                    this.connectionActive = false;
+                    this.renewMB = true;
                     fetchNewData = true;
                 }
-            }
+            }    
         }
 
         if(fetchNewData){
@@ -186,13 +178,24 @@ export class Watchdrip {
         this.lastUpdateAttempt = this.timeSensor.utc;
         this.lastUpdateSucessful = false;
 
-        this.initConnection();
-
-        logger.log("fetchInfo");
-        if (getGlobalMB().connectStatus() === false) {
+        if (hmBle.connectStatus() === false) {
             logger.log("No BT connection");
             return;
         }
+
+        if (this.renewMB === true) {
+            //we need to recreate connection to force start side app
+            logger.log("renew messageBuilder");
+            const appId = WATCHDRIP_APP_ID;
+            getApp()._options.globalData.messageBuilder = new MessageBuilder({ appId });
+            this.connectionActive = false;
+            this.renewMB = false;
+        }
+
+        this.initConnection();
+
+        logger.log("fetchInfo");
+        
         logger.log("BT connection ok");
         this.updatingData = true;
         if (typeof this.onUpdateStartCallback === "function"){
@@ -230,9 +233,8 @@ export class Watchdrip {
             if (typeof this.onUpdateFinishCallback === "function"){
                 this.onUpdateFinishCallback(this.lastUpdateSucessful);
             }
-            //if (this.isAOD()){
-                this.dropConnection();
-            //}
+            
+            this.dropConnection();
         });
     }
 
