@@ -126,7 +126,6 @@ function stopLoader() {
 
 function updateWidgets() {
     if (typeof batterySensor !== 'undefined') {
-        screenType = hmSetting.getScreenType();
         if (screenType !== hmSetting.screen_type.AOD) {
             watchBattery.setProperty(hmUI.prop.TEXT, batterySensor.current + '%');
         }
@@ -239,14 +238,6 @@ WatchFace({
         watchBattery = hmUI.createWidget(hmUI.widget.TEXT, WATCH_BATTERY_TEXT);
         batterySensor.addEventListener(hmSensor.event.CHANGE, updateWidgets);
         
-        // UI lifecycle proxy
-        const widgetDelegate = hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, {
-            resume_call: (function() {
-                // Update watch battery
-                updateWidgets();
-            })
-        });
-
         
         // BEGIN editable components init
         // 100% edit mask
@@ -413,24 +404,42 @@ WatchFace({
         globalNS = getGlobal();
 
         this.initView();
-        //globalNS.watchdrip = new Watchdrip();
-        //watchdrip = globalNS.watchdrip;
-        //watchdrip.prepare();
-        getApp()._options.globalData.watchDrip = new Watchdrip();
-        getGlobalWD().setUpdateValueWidgetCallback(this.updateValuesWidget);
-        getGlobalWD().setUpdateTimesWidgetCallback(this.updateTimesWidget);
-        getGlobalWD().setOnUpdateStartCallback(this.updateStart);
-        getGlobalWD().setOnUpdateFinishCallback(this.updateFinish);
-        getGlobalWD().start();
+
+        const watchDrip = new Watchdrip();
+        getApp()._options.globalData.watchDrip = watchDrip;
+
+        watchDrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
+        watchDrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
+        watchDrip.setOnUpdateStartCallback(this.updateStart);
+        watchDrip.setOnUpdateFinishCallback(this.updateFinish);
+        
+        // AOD runs on a timer, normal uses widget_delegate for updates
+        if (watchDrip.isAOD()) {
+            logger.log("IS_AOD_TRUE");
+            watchDrip.startTimerDataUpdates();
+            
+        } else {
+            logger.log("IS_AOD_FALSE");
+            hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, {
+                resume_call: (function() {
+                    logger.log("resume_call");
+                    watchDrip.checkUpdates();
+                    // Update watch battery
+                    updateWidgets();
+                }),
+                pause_call: (function() {
+                    logger.log("pause_call");
+                    watchDrip.updatingData = false;
+            
+                    stopLoader();
+                })
+            });
+        }
     },
 
     onDestroy() {
         logger.log("wf on destroy invoke");
         getGlobalWD().destroy();
-
-        if (typeof batterySensor !== 'undefined') {
-            batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);
-        }
 
         stopLoader();
     },
