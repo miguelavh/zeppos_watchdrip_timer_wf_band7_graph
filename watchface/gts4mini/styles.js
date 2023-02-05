@@ -150,7 +150,6 @@ export const BG_VALUE_TEXT_IMG = {
     align_h: hmUI.align.CENTER_H,
     dot_image: img('bgNum/d.png'),
     font_array: bgNumArr,
-    text: '0',
     visible: false,
     h_space:1,
     show_level: hmUI.show_level.ONLY_NORMAL

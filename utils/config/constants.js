@@ -14,7 +14,7 @@ export const DATA_UPDATE_INTERVAL_MS = MINUTE_IN_MS * 5;
 export const DATA_AOD_TIMER_UPDATE_INTERVAL_MS = SECOND_IN_MS * 30;
 export const DATA_AOD_UPDATE_INTERVAL_MS = MINUTE_IN_MS * 5;
 
-export const DATA_STALE_TIME_MS = 10 * 1000;
+export const DATA_STALE_TIME_MS = SECOND_IN_MS * 10;
 
 // usually 5 minutes, 1 minute for libre3 for whatever it is good
 export const XDRIP_UPDATE_INTERVAL_MS = MINUTE_IN_MS * 5;

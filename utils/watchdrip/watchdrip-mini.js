@@ -1,7 +1,11 @@
 import {getGlobal} from "../../shared/global";
 
 import {
-    WATCHDRIP_APP_ID
+    WATCHDRIP_APP_ID,
+    WF_INFO,
+    WF_INFO_LAST_UPDATE,
+    WF_INFO_LAST_SUCCESSFUL,
+    WF_INFO_LAST_UPDATE_SUCCESSFUL
 } from "../config/global-constants";
 
 import {str2json} from "../../shared/data";
@@ -40,13 +44,13 @@ export class Watchdrip {
 
         this.lastInfoUpdate = 0;
         this.lastUpdateAttempt = 0;
-        this.lastUpdateSucessful = false;
+        this.lastUpdateSuccessful = false;
+        this.fetchNewData = false;
         this.updatingData = false;
-        this.renewMB = true;
+        this.renewMB = false;
+        this.connectionActive = false;
 
         this.intervalTimer = null;
-
-        this.connectionActive = false;
 
         this.updateTimesWidgetCallback = null;
         this.updateValuesWidgetCallback = null;
@@ -79,9 +83,11 @@ export class Watchdrip {
     }
 
     checkUpdates() {
-        let fetchNewData = false;
-
         logger.log("CHECK_UPDATES");
+
+        this.fetchNewData = false;
+
+        this.readInfo();
 
         this.updateWidgets();
         
@@ -92,25 +98,25 @@ export class Watchdrip {
 
         const utc = this.timeSensor.utc;
 
-        if (this.lastUpdateSucessful) {
+        if (this.lastUpdateSuccessful) {
             if (utc - this.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS + DATA_STALE_TIME_MS) {
                 logger.log("data older than sensor update interval, update again");
-                fetchNewData = true;
+                this.fetchNewData = true;
             }
         } else {
             if (this.lastInfoUpdate === 0 && this.lastUpdateAttempt === 0) {
                 logger.log("initial fetch");
-                fetchNewData = true;
+                this.fetchNewData = true;
             } else {
                 if (utc - this.lastUpdateAttempt > DATA_STALE_TIME_MS) {
                     logger.log("side app not responding, force update again");
                     this.renewMB = true;
-                    fetchNewData = true;
+                    this.fetchNewData = true;
                 }
             }    
         }
 
-        if(fetchNewData){
+        if(this.fetchNewData){
             logger.log("CHECK_UPDATES_FETCH");
             this.fetchInfo();
         }
@@ -154,7 +160,9 @@ export class Watchdrip {
     updateWidgets() {
         logger.log("updateWidgets");
         this.updateValuesWidget();
-        this.updateTimesWidget();
+        if (!this.isAOD()) {
+            this.updateTimesWidget();
+        }
     }
 
     updateValuesWidget() {
@@ -178,7 +186,7 @@ export class Watchdrip {
         logger.log("fetchInfo");
         
         this.lastUpdateAttempt = this.timeSensor.utc;
-        this.lastUpdateSucessful = false;
+        this.lastUpdateSuccessful = false;
 
         if (hmBle.connectStatus() === false) {
             logger.log("No BT connection");
@@ -216,12 +224,13 @@ export class Watchdrip {
                     return;
                 }
                 const dataInfo = str2json(info);
-
                 this.watchdripData.setData(dataInfo);
                 this.watchdripData.updateTimeDiff();
 
                 this.lastInfoUpdate = this.timeSensor.utc,
-                this.lastUpdateSucessful = true;
+                this.lastUpdateSuccessful = true;
+
+                this.saveInfo(info);
             } catch (e) {
                 logger.log("parsing error: " + e);
             }
@@ -231,11 +240,35 @@ export class Watchdrip {
             this.updateWidgets();
             this.updatingData = false;
             if (typeof this.onUpdateFinishCallback === "function"){
-                this.onUpdateFinishCallback(this.lastUpdateSucessful);
+                this.onUpdateFinishCallback(this.lastUpdateSuccessful);
             }
             
             this.dropConnection();
         });
+    }
+
+    readInfo() {
+        const info = hmFS.SysProGetChars(WF_INFO);
+        if (info) {
+            try {
+                const data = str2json(info);
+
+                this.watchdripData.setData(data);
+
+                this.lastInfoUpdate = hmFS.SysProGetInt64(WF_INFO_LAST_UPDATE);
+                this.lastUpdateSuccessful = hmFS.SysProGetBool(WF_INFO_LAST_UPDATE_SUCCESSFUL);
+
+                logger.log("readInfo: success");
+            } catch (e) {
+                logger.log("error getting data from persistent storage: " + e);
+            }
+        }
+    }
+
+    saveInfo(info) {
+        hmFS.SysProSetChars(WF_INFO, info);
+        hmFS.SysProSetInt64(WF_INFO_LAST_UPDATE, this.timeSensor.utc);
+        hmFS.SysProSetBool(WF_INFO_LAST_UPDATE_SUCCESSFUL, this.lastUpdateSuccessful);
     }
 
     destroy() {
