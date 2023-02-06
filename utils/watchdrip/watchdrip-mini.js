@@ -266,7 +266,7 @@ export class Watchdrip {
         }
     }
 
-    saveInfo(info = {}) {
+    saveInfo(info = "{}") {
         hmFS.SysProSetChars(WF_INFO, info);
         hmFS.SysProSetInt64(WF_INFO_LAST_UPDATE, this.timeSensor.utc);
         hmFS.SysProSetBool(WF_INFO_LAST_UPDATE_SUCCESSFUL, this.lastUpdateSuccessful);
