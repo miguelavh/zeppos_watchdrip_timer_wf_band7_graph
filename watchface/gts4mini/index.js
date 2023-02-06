@@ -136,10 +136,6 @@ function mergeStyles(styleObj1, styleObj2, styleObj3 = {}) {
     return Object.assign({}, styleObj1, styleObj2, styleObj3);
 }
 
-function getGlobalWD() {
-    return getApp()._options.globalData.watchDrip;
-}
-
 
 WatchFace({
     // draws the editable widgets
@@ -439,7 +435,8 @@ WatchFace({
 
     onDestroy() {
         logger.log("wf on destroy invoke");
-        getGlobalWD().destroy();
+        
+        getApp()._options.globalData.watchDrip.destroy();
 
         stopLoader();
     },

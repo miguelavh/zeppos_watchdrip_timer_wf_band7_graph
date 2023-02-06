@@ -4,7 +4,6 @@ import {
     WATCHDRIP_APP_ID,
     WF_INFO,
     WF_INFO_LAST_UPDATE,
-    WF_INFO_LAST_SUCCESSFUL,
     WF_INFO_LAST_UPDATE_SUCCESSFUL
 } from "../config/global-constants";
 
@@ -27,11 +26,6 @@ import {WatchdripData} from "./watchdrip-data";
 
 export const logger = Logger.getLogger("wf-wathchdrip");
 
-
-function getGlobalMB() {
-    return getApp()._options.globalData.messageBuilder;
-}
-
 export class Watchdrip {
     constructor() {
         this.screenType = hmSetting.getScreenType();
@@ -41,6 +35,8 @@ export class Watchdrip {
         this.globalNS = getGlobal();
         this.timeSensor = hmSensor.createSensor(hmSensor.id.TIME);
         this.watchdripData = new WatchdripData(this.timeSensor);
+
+        this.messageBuilder = getApp()._options.globalData.messageBuilder;
 
         this.lastInfoUpdate = 0;
         this.lastUpdateAttempt = 0;
@@ -99,7 +95,9 @@ export class Watchdrip {
         const utc = this.timeSensor.utc;
 
         if (this.lastUpdateSuccessful) {
-            if (utc - this.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS + DATA_STALE_TIME_MS) {
+            const bgTimeOlder = utc - this.watchdripData.getBg().time > XDRIP_UPDATE_INTERVAL_MS + DATA_STALE_TIME_MS;
+            const statusNowOlder = utc - this.watchdripData.getStatus().now > XDRIP_UPDATE_INTERVAL_MS + DATA_STALE_TIME_MS;
+            if (bgTimeOlder || statusNowOlder) {
                 logger.log("data older than sensor update interval, update again");
                 this.fetchNewData = true;
             }
@@ -129,13 +127,13 @@ export class Watchdrip {
         }
         logger.log("initConnection");
         this.connectionActive = true;
-        getGlobalMB().connect();
+        this.messageBuilder.connect();
     }
 
     dropConnection(){
         if (this.connectionActive) {
             logger.log("dropConnection");
-            getGlobalMB().disConnect();
+            this.messageBuilder.disConnect();
             this.updatingData = false;
             this.connectionActive = false;
         }
@@ -188,16 +186,17 @@ export class Watchdrip {
         this.lastUpdateAttempt = this.timeSensor.utc;
         this.lastUpdateSuccessful = false;
 
-        if (hmBle.connectStatus() === false) {
+        if (!hmBle.connectStatus()) {
             logger.log("No BT connection");
             return;
         }
 
-        if (this.renewMB === true) {
+        if (this.renewMB) {
             //we need to recreate connection to force start side app
             logger.log("renew messageBuilder");
             const appId = WATCHDRIP_APP_ID;
-            getApp()._options.globalData.messageBuilder = new MessageBuilder({ appId });
+            this.messageBuilder = new MessageBuilder(appId);
+            getApp()._options.globalData.messageBuilder = this.messageBuilder;
             this.connectionActive = false;
             this.renewMB = false;
         }
@@ -210,7 +209,7 @@ export class Watchdrip {
             this.onUpdateStartCallback();
         }
 
-        getGlobalMB().request({
+        this.messageBuilder.request({
             method: Commands.getInfo,
         }, {
             timeout: 5000
@@ -236,6 +235,8 @@ export class Watchdrip {
             }
         }).catch((error) => {
             logger.log("fetch error: " + error);
+            this.renewMB = true;
+            this.saveInfo();
         }).finally(() => {
             this.updateWidgets();
             this.updatingData = false;
@@ -265,7 +266,7 @@ export class Watchdrip {
         }
     }
 
-    saveInfo(info) {
+    saveInfo(info = {}) {
         hmFS.SysProSetChars(WF_INFO, info);
         hmFS.SysProSetInt64(WF_INFO_LAST_UPDATE, this.timeSensor.utc);
         hmFS.SysProSetBool(WF_INFO_LAST_UPDATE_SUCCESSFUL, this.lastUpdateSuccessful);
