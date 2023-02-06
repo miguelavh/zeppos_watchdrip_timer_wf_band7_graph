@@ -235,6 +235,7 @@ export class Watchdrip {
             }
         }).catch((error) => {
             logger.log("fetch error: " + error);
+            this.updatingData = false;
             this.renewMB = true;
             this.saveInfo();
         }).finally(() => {
