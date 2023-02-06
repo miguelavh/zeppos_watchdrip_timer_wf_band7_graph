@@ -120,25 +120,6 @@ export class Watchdrip {
         }
     }
 
-    //connect watch with side app
-    initConnection() {
-        if (this.connectionActive){
-            return;
-        }
-        logger.log("initConnection");
-        this.connectionActive = true;
-        this.messageBuilder.connect();
-    }
-
-    dropConnection(){
-        if (this.connectionActive) {
-            logger.log("dropConnection");
-            this.messageBuilder.disConnect();
-            this.updatingData = false;
-            this.connectionActive = false;
-        }
-    }
-
     setUpdateValueWidgetCallback(callback){
         this.updateValueWidgetCallback = callback;
     }
@@ -180,6 +161,25 @@ export class Watchdrip {
     drawGraph() {
     }
 
+    //connect watch with side app
+    initConnection() {
+        if (this.connectionActive){
+            return;
+        }
+        logger.log("initConnection");
+        this.connectionActive = true;
+        this.messageBuilder.connect();
+    }
+
+    dropConnection(){
+        if (this.connectionActive) {
+            logger.log("dropConnection");
+            this.messageBuilder.disConnect();
+            this.updatingData = false;
+            this.connectionActive = false;
+        }
+    }
+
     fetchInfo() {
         logger.log("fetchInfo");
         
@@ -195,15 +195,15 @@ export class Watchdrip {
             //we need to recreate connection to force start side app
             logger.log("renew messageBuilder");
             const appId = WATCHDRIP_APP_ID;
-            this.messageBuilder = new MessageBuilder(appId);
+            this.messageBuilder = new MessageBuilder({ appId });
             getApp()._options.globalData.messageBuilder = this.messageBuilder;
             this.connectionActive = false;
             this.renewMB = false;
         }
 
         this.initConnection();
-        
         logger.log("BT connection ok");
+
         this.updatingData = true;
         if (typeof this.onUpdateStartCallback === "function"){
             this.onUpdateStartCallback();
@@ -235,12 +235,10 @@ export class Watchdrip {
             }
         }).catch((error) => {
             logger.log("fetch error: " + error);
-            this.updatingData = false;
             this.renewMB = true;
             this.saveInfo();
         }).finally(() => {
             this.updateWidgets();
-            this.updatingData = false;
             if (typeof this.onUpdateFinishCallback === "function"){
                 this.onUpdateFinishCallback(this.lastUpdateSuccessful);
             }
