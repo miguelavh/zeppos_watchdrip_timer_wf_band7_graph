@@ -1,5 +1,4 @@
-import {DebugText} from "../../shared/debug";
-import {Watchdrip} from "../../utils/watchdrip/watchdrip";
+import {Watchdrip} from "../../utils/watchdrip/watchdrip-mini";
 import {WatchdripData} from "../../utils/watchdrip/watchdrip-data";
 import {getGlobal} from "../../shared/global";
 import {
@@ -98,15 +97,8 @@ let batterySensor;
 
 let globalNS, progressTimer, progressAngle, screenType;
 
-let debug, watchdrip;
 
 export const logger = Logger.getLogger("timer-page");
-
-function initDebug() {
-    globalNS.debug = new DebugText();
-    debug = globalNS.debug;
-    debug.setLines(12);
-};
 
 
 function startLoader() {
@@ -134,7 +126,6 @@ function stopLoader() {
 
 function updateWidgets() {
     if (typeof batterySensor !== 'undefined') {
-        screenType = hmSetting.getScreenType();
         if (screenType !== hmSetting.screen_type.AOD) {
             watchBattery.setProperty(hmUI.prop.TEXT, batterySensor.current + '%');
         }
@@ -243,14 +234,6 @@ WatchFace({
         watchBattery = hmUI.createWidget(hmUI.widget.TEXT, WATCH_BATTERY_TEXT);
         batterySensor.addEventListener(hmSensor.event.CHANGE, updateWidgets);
         
-        // UI lifecycle proxy
-        const widgetDelegate = hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, {
-            resume_call: (function() {
-                // Update watch battery
-                updateWidgets();
-            })
-        });
-
         
         // BEGIN editable components init
         // 100% edit mask
@@ -415,34 +398,54 @@ WatchFace({
     build() {
         logger.log("wf on build invoke");
         globalNS = getGlobal();
-        initDebug();
-        debug.log("build");
+
         this.initView();
-        globalNS.watchdrip = new Watchdrip();
-        watchdrip = globalNS.watchdrip;
-        watchdrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
-        watchdrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
-        watchdrip.setOnUpdateStartCallback(this.updateStart);
-        watchdrip.setOnUpdateFinishCallback(this.updateFinish);
-        watchdrip.start();
+
+        const watchDrip = new Watchdrip();
+        getApp()._options.globalData.watchDrip = watchDrip;
+
+        watchDrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
+        watchDrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
+        watchDrip.setOnUpdateStartCallback(this.updateStart);
+        watchDrip.setOnUpdateFinishCallback(this.updateFinish);
+        
+        // AOD runs on a timer, normal uses widget_delegate for updates
+        if (watchDrip.isAOD()) {
+            logger.log("IS_AOD_TRUE");
+            watchDrip.startTimerDataUpdates();
+            
+        } else {
+            logger.log("IS_AOD_FALSE");
+            hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, {
+                resume_call: (function() {
+                    logger.log("resume_call");
+                    watchDrip.checkUpdates();
+                    // Update watch battery
+                    updateWidgets();
+                }),
+                pause_call: (function() {
+                    logger.log("pause_call");
+                    watchDrip.updatingData = false;
+            
+                    stopLoader();
+                })
+            });
+        }
     },
 
     onDestroy() {
         logger.log("wf on destroy invoke");
-        watchdrip.destroy();
-
-        if (typeof batterySensor !== 'undefined') {
-            batterySensor.removeEventListener(hmSensor.event.CHANGE, updateWidgets);
-        }
+        
+        getApp()._options.globalData.watchDrip.destroy();
 
         stopLoader();
     },
 
     onShow() {
-        debug.log("onShow");
+    
     },
 
     onHide() {
-        debug.log("onHide");
+    
     },
 });

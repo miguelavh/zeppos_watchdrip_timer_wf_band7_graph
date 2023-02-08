@@ -5,14 +5,11 @@ const bgNumArr = range(10).map((v) => {
     return img(`bgNum/${v}.png`);
 });
 
-const bgNumAODArr = range(10).map((v) => {
-    return img(`bgNumAOD/${v}.png`);
-});
-
 const bigNumArr = range(10).map((v) => {
     return img(`bigNum/${v}.png`);
 });
 
+// also used for bg value in AOD
 const bigNumAODArr = range(10).map((v) => {
     return img(`bigNumAOD/${v}.png`);
 });
@@ -69,7 +66,7 @@ export const DIGITAL_TIME = {
 };
 
 export const DIGITAL_TIME_AOD = {
-    hour_startX: px(110),
+    hour_startX: px(87),
     hour_startY: px(125),
     hour_array: bigNumAODArr,
     hour_unit_sc: img('bigNumAOD/sp.png'), // colon
@@ -150,7 +147,6 @@ export const BG_VALUE_TEXT_IMG = {
     align_h: hmUI.align.CENTER_H,
     dot_image: img('bgNum/d.png'),
     font_array: bgNumArr,
-    text: '0',
     visible: false,
     h_space:1,
     show_level: hmUI.show_level.ONLY_NORMAL
@@ -160,8 +156,8 @@ export const BG_VALUE_TEXT_IMG_AOD = {
     x: px(93),
     y: px(214),
     w: px(280),
-    dot_image: img('bgNumAOD/d.png'),
-    font_array: bgNumAODArr,
+    dot_image: img('bigNumAOD/d.png'),
+    font_array: bigNumAODArr,
     show_level: hmUI.show_level.ONAL_AOD
 };
 

@@ -8,12 +8,13 @@ const messageBuilder = new MessageBuilder({ appId });
 App({
   globalData: {
     messageBuilder: messageBuilder,
+    watchDrip: { }
   },
   onCreate(options) {
-    console.log("app on create invoke");
+    console.log("wf-app on create invoke");
   },
 
   onDestroy(options) {
-    console.log("app on destroy invoke");
+    console.log("wf-app on destroy invoke");
   },
 });
