@@ -1,3 +1,5 @@
+/// <reference path="../../.types/index.d.ts" />
+
 import {getGlobal} from "../../shared/global";
 
 import {
