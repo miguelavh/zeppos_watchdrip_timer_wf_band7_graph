@@ -1,3 +1,5 @@
+/// <reference path="../../.types/index.d.ts" />
+
 import {img,range} from "../../utils/helper";
 import {Colors} from "../../utils/config/constants";
 
