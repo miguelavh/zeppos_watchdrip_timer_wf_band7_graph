@@ -143,7 +143,7 @@ export const BG_VALUE_NO_DATA_TEXT = {
 };
 
 export const BG_VALUE_TEXT_IMG = {
-    x: px(46),
+    x: px(66),
     y: px(120),
     w: px(113),
     align_h: hmUI.align.CENTER_H,
@@ -191,9 +191,9 @@ export const BG_DELTA_TEXT = {
 
 export const BG_TREND_IMAGE = {
     src: 'watchdrip/arrows/None.png',
-    x: px(75),
+    x: px(81),
     y: px(230),
-    w: px(60),
+    w: px(23),
     h: px(41),
     show_level: hmUI.show_level.ONLY_NORMAL
 };
@@ -240,7 +240,7 @@ export const PHONE_BATTERY_TEXT = {
     w: px(36),
     h: px(25),
     color: Colors.white,
-    text_size: px(18),
+    text_size: px(23),
     align_h: hmUI.align.LEFT,
     align_v: hmUI.align.TOP,
     text_style: hmUI.text_style.NONE,
@@ -248,12 +248,12 @@ export const PHONE_BATTERY_TEXT = {
 };
 
 export const WATCH_BATTERY_TEXT = {
-    x: px(7),
+    x: px(6),
     y: px(264),
     w: px(36),
     h: px(25),
     color: Colors.white,
-    text_size: px(18),
+    text_size: px(23),
     align_h: hmUI.align.RIGHT,
     align_v: hmUI.align.TOP,
     text_style: hmUI.text_style.NONE,
@@ -261,7 +261,7 @@ export const WATCH_BATTERY_TEXT = {
 };
 
 export const BG_STATUS_LOW_IMG = {
-    x: px(44),
+    x: px(66),
     y: px(105),
     src: 'watchdrip/bgLow.png',
     show_level: hmUI.show_level.ONLY_NORMAL
@@ -275,7 +275,7 @@ export const BG_STATUS_OK_IMG = {
 };
 
 export const BG_STATUS_HIGH_IMG = {
-    x: px(142),
+    x: px(118),
     y: px(105),
     src: 'watchdrip/bgHigh.png',
     show_level: hmUI.show_level.ONLY_NORMAL
@@ -469,15 +469,26 @@ export const EDIT_DEFAULT_IMG = {
 
 // Default styles for all ARC_PROGRESS Left widgets
 const EDIT_DEFAULT_ARC_PROGRESS_LEFT = {
-
+    radius: px(editWidgetArcRadius),
+    start_angle: 180,
+    end_angle: 360,
+    color: Colors.accent,
+    line_width: editWidgetArcLineWidth,
+    show_level: hmUI.show_level.ONLY_NORMAL
 };
 // Default styles for all ARC_PROGRESS RIGHT widgets
 const EDIT_DEFAULT_ARC_PROGRESS_RIGHT = {
-
+    radius: px(editWidgetArcRadius),
+    start_angle: 180,
+    end_angle: 0,
+    color: Colors.accent,
+    line_width: editWidgetArcLineWidth,
+    show_level: hmUI.show_level.ONLY_NORMAL
 };
 
 export const EDIT_DEFAULT_ARC_PROGRESS = {
-
+    left: EDIT_DEFAULT_ARC_PROGRESS_LEFT,
+    right: EDIT_DEFAULT_ARC_PROGRESS_RIGHT
 };
 
 // Default styles for all TEXT_IMG widgets
@@ -499,147 +510,165 @@ const topLeftX = 9;
 const topLeftY = 105;
 
 export const EDIT_TOP_LEFT_GROUP = {
-
+    edit_id: 101,
+    x: px(topLeftX),
+    y: px(topLeftY),
+    tips_x: 0,
+    tips_y: -45,
+    default_type: hmUI.edit_type.HEART
 }; 
 
 // Styles for all Top Left IMG widgets
 export const EDIT_TL_IMG = {
-
-
+    x: px(topLeftX),
+    y: px(topLeftY)
 };
 
 // Styles for all Top Left ARC_PROGRESS widgets
 const EDIT_TL_ARC_PROGRESS_LEFT = {
-
-
+    center_x: px(topLeftX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 // Styles for all Top Left ARC_PROGRESS Right widgets
 const EDIT_TL_ARC_PROGRESS_RIGHT = {
-
-
+    center_x: px(topLeftX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 export const EDIT_TL_ARC_PROGRESS = {
- 
-
+    left: EDIT_TL_ARC_PROGRESS_LEFT,
+    right: EDIT_TL_ARC_PROGRESS_RIGHT
 };
 
 // Styles for all Top Left TEXT_IMG widgets
 export const EDIT_TL_TEXT_IMG = {
-
-
+    x: px(topLeftX),
+    y: px(topLeftY + editWidgetIconHeight + editWidgetIconMargin)
 };
 // END Top Left Edit Widgets
 
 
 // BEGIN Top Right Edit Widgets
-const topRightX = 310;
-const topRightY = 124;
+const topRightX = 144;
+const topRightY = 58;
 
 export const EDIT_TOP_RIGHT_GROUP = {
-
-
+    edit_id: 102,
+    x: px(topRightX),
+    y: px(topRightY),
+    tips_x: -25,
+    tips_y: -45,
+    default_type: hmUI.edit_type.STEP
 }; 
 
 // Default styles for all Top Right IMG widgets
 export const EDIT_TR_IMG = {
-
-
+    x: px(topRightX),
+    y: px(topRightY)
 };
 
 // Styles for all Top Right ARC_PROGRESS widgets
 const EDIT_TR_ARC_PROGRESS_LEFT = {
-
-
+    center_x: px(topRightX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 // Styles for all Top Right ARC_PROGRESS Right widgets
 const EDIT_TR_ARC_PROGRESS_RIGHT = {
-
-
+    center_x: px(topRightX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 export const EDIT_TR_ARC_PROGRESS = {
-
+    left: EDIT_TR_ARC_PROGRESS_LEFT,
+    right: EDIT_TR_ARC_PROGRESS_RIGHT
 };
 
 // Styles for all Top Right TEXT_IMG widgets
 export const EDIT_TR_TEXT_IMG = {
-
-
+    x: px(topRightX),
+    y: px(topRightY + editWidgetIconHeight + editWidgetIconMargin)
 };
 // END Top Right Edit Widgets
 
 
 // BEGIN Bottom Left Edit Widgets
-const bottomLeftX = 19;
-const bottomLeftY = 211;
+const bottomLeftX = 9;
+const bottomLeftY = 187;
 
 export const EDIT_BOTTOM_LEFT_GROUP = {
-
-
+    edit_id: 103,
+    x: px(bottomLeftX),
+    y: px(bottomLeftY),
+    tips_x: 0,
+    tips_y: 75,
+    default_type: hmUI.edit_type.WEATHER
 }; 
 
 // Styles for all Bottom Left IMG widgets
 export const EDIT_BL_IMG = {
-
-
+    x: px(bottomLeftX),
+    y: px(bottomLeftY)
 };
 
 // Styles for all Bottom Left ARC_PROGRESS widgets
 const EDIT_BL_ARC_PROGRESS_LEFT = {
- 
-
+    center_x: px(bottomLeftX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 // Styles for all Bottom Left ARC_PROGRESS Right widgets
 const EDIT_BL_ARC_PROGRESS_RIGHT = {
-
-
+    center_x: px(bottomLeftX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 export const EDIT_BL_ARC_PROGRESS = {
-
-
+    left: EDIT_BL_ARC_PROGRESS_LEFT,
+    right: EDIT_BL_ARC_PROGRESS_RIGHT
 };
 
 // Styles for all Bottom Left TEXT_IMG widgets
 export const EDIT_BL_TEXT_IMG = {
-
-
+    x: px(bottomLeftX),
+    y: px(bottomLeftY + editWidgetIconHeight + editWidgetIconMargin)
 };
 // END Bottom Left Edit Widgets
 
 
 // BEGIN Bottom Right Edit Widgets
 const bottomRightX = 144;
-const bottomRightY = 300;
-
+const bottomRightY = 187;
 
 export const EDIT_BOTTOM_RIGHT_GROUP = {
-
-
+    edit_id: 104,
+    x: px(bottomRightX),
+    y: px(bottomRightY),
+    tips_x: -25,
+    tips_y: 75,
+    default_type: hmUI.edit_type.DISTANCE
 }; 
 
 // Styles for all Bottom Right IMG widgets
 export const EDIT_BR_IMG = {
-
+    x: px(bottomRightX),
+    y: px(bottomRightY)
 };
 
 // Styles for all Bottom Right ARC_PROGRESS widgets
 const EDIT_BR_ARC_PROGRESS_LEFT = {
-
-
+    center_x: px(bottomRightX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(bottomRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 // Styles for all Bottom Right ARC_PROGRESS Right widgets
 const EDIT_BR_ARC_PROGRESS_RIGHT = {
-
-
+    center_x: px(bottomRightX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(bottomRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
 export const EDIT_BR_ARC_PROGRESS = {
-
-
+    left: EDIT_BR_ARC_PROGRESS_LEFT,
+    right: EDIT_BR_ARC_PROGRESS_RIGHT
 };
 
 // Styles for all Bottom Right TEXT_IMG widgets
 export const EDIT_BR_TEXT_IMG = {
-
-
+    x: px(bottomRightX),
+    y: px(bottomRightY + editWidgetIconHeight + editWidgetIconMargin)
 };
 // END Bottom Right Edit Widgets
 

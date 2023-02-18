@@ -36,58 +36,58 @@ import {
     EDIT_DEFAULT_ARC_PROGRESS,
     EDIT_DEFAULT_TEXT_IMG,
     // Top Left Edit Group
-    EDIT_TOP_LEFT_GROUP,
-    EDIT_TL_IMG,
-    EDIT_TL_ARC_PROGRESS,
-    EDIT_TL_TEXT_IMG,
+    // EDIT_TOP_LEFT_GROUP,
+    // EDIT_TL_IMG,
+    // EDIT_TL_ARC_PROGRESS,
+    // EDIT_TL_TEXT_IMG,
     // Top Right Edit Group
-    EDIT_TOP_RIGHT_GROUP,
-    EDIT_TR_IMG,
-    EDIT_TR_ARC_PROGRESS,
-    EDIT_TR_TEXT_IMG,
+    // EDIT_TOP_RIGHT_GROUP,
+    // EDIT_TR_IMG,
+    // EDIT_TR_ARC_PROGRESS,
+    // EDIT_TR_TEXT_IMG,
     // Bottom Left Edit Group
-    EDIT_BOTTOM_LEFT_GROUP,
-    EDIT_BL_IMG,
-    EDIT_BL_ARC_PROGRESS,
-    EDIT_BL_TEXT_IMG,
+    // EDIT_BOTTOM_LEFT_GROUP,
+    // EDIT_BL_IMG,
+    // EDIT_BL_ARC_PROGRESS,
+    // EDIT_BL_TEXT_IMG,
     // Bottom Right Edit Group
-    EDIT_BOTTOM_RIGHT_GROUP,
-    EDIT_BR_IMG,
-    EDIT_BR_ARC_PROGRESS,
-    EDIT_BR_TEXT_IMG,
+    // EDIT_BOTTOM_RIGHT_GROUP,
+    // EDIT_BR_IMG,
+    // EDIT_BR_ARC_PROGRESS,
+    // EDIT_BR_TEXT_IMG,
     // Editable Widgets specific styles
-    EDIT_HEART_IMG,
-    EDIT_HEART_IMG_LEVEL,
-    EDIT_HEART_TEXT_IMG,
-    EDIT_STEP_IMG,
-    EDIT_STEP_ARC_PROGRESS,
-    EDIT_STEP_TEXT_IMG,
-    EDIT_DISTANCE_IMG,
-    EDIT_DISTANCE_TEXT_IMG,
-    EDIT_WEATHER_CONDITION_IMG_LEVEL,
-    EDIT_WEATHER_CURRENT_TEXT_IMG,
-    EDIT_PAI_IMG,
-    EDIT_PAI_ARC_PROGRESS,
-    EDIT_PAI_TEXT_IMG,
-    EDIT_UVI_IMG,
-    EDIT_UVI_ARC_PROGRESS,
-    EDIT_UVI_TEXT_IMG,
-    EDIT_ALTIMETER_IMG,
-    EDIT_ALTIMETER_TEXT_IMG,
-    EDIT_MOON_IMG_LEVEL,
-    EDIT_CAL_IMG,
-    EDIT_CAL_ARC_PROGRESS,
-    EDIT_CAL_TEXT_IMG,
-    EDIT_AQI_IMG,
-    EDIT_AQI_TEXT_IMG,
-    EDIT_SPO2_IMG,
-    EDIT_SPO2_TEXT_IMG,
+    // EDIT_HEART_IMG,
+    // EDIT_HEART_IMG_LEVEL,
+    // EDIT_HEART_TEXT_IMG,
+    // EDIT_STEP_IMG,
+    // EDIT_STEP_ARC_PROGRESS,
+    // EDIT_STEP_TEXT_IMG,
+    // EDIT_DISTANCE_IMG,
+    // EDIT_DISTANCE_TEXT_IMG,
+    // EDIT_WEATHER_CONDITION_IMG_LEVEL,
+    // EDIT_WEATHER_CURRENT_TEXT_IMG,
+    // EDIT_PAI_IMG,
+    // EDIT_PAI_ARC_PROGRESS,
+    // EDIT_PAI_TEXT_IMG,
+    // EDIT_UVI_IMG,
+    // EDIT_UVI_ARC_PROGRESS,
+    // EDIT_UVI_TEXT_IMG,
+    // EDIT_ALTIMETER_IMG,
+    // EDIT_ALTIMETER_TEXT_IMG,
+    // EDIT_MOON_IMG_LEVEL,
+    // EDIT_CAL_IMG,
+    // EDIT_CAL_ARC_PROGRESS,
+    // EDIT_CAL_TEXT_IMG,
+    // EDIT_AQI_IMG,
+    // EDIT_AQI_TEXT_IMG,
+    // EDIT_SPO2_IMG,
+    // EDIT_SPO2_TEXT_IMG,
     EDIT_STAND_IMG,
     EDIT_STAND_ARC_PROGRESS,
     EDIT_STAND_TEXT_IMG,
-    EDIT_HUMIDITY_IMG,
-    EDIT_HUMIDITY_ARC_PROGRESS,
-    EDIT_HUMIDITY_TEXT_IMG
+    // EDIT_HUMIDITY_IMG,
+    // EDIT_HUMIDITY_ARC_PROGRESS,
+    // EDIT_HUMIDITY_TEXT_IMG
 } from "./styles";
 import {BG_IMG, BG_FILL_RECT} from "../../utils/config/styles_global";
 import {PROGRESS_ANGLE_INC, PROGRESS_UPDATE_INTERVAL_MS, TEST_DATA} from "../../utils/config/constants";
@@ -243,21 +243,21 @@ WatchFace({
         // 70% edit mask
         const mask = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_FG_MASK, EDIT_MASK_70);
         // Top Left editable widget
-        // const editGroupTopLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_LEFT_GROUP));
-        // const editTopLeftType = editGroupTopLeft.getProperty(hmUI.prop.CURRENT_TYPE);
-        // this.drawWidget(EDIT_TL_IMG, EDIT_TL_ARC_PROGRESS, EDIT_TL_TEXT_IMG, editTopLeftType);
+        const editGroupTopLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_LEFT_GROUP));
+        const editTopLeftType = editGroupTopLeft.getProperty(hmUI.prop.CURRENT_TYPE);
+        this.drawWidget(EDIT_TL_IMG, EDIT_TL_ARC_PROGRESS, EDIT_TL_TEXT_IMG, editTopLeftType);
         // Top Right editable widget
-        // const editGroupTopRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_RIGHT_GROUP));
-        // const editTopRightType = editGroupTopRight.getProperty(hmUI.prop.CURRENT_TYPE);
-        // this.drawWidget(EDIT_TR_IMG, EDIT_TR_ARC_PROGRESS, EDIT_TR_TEXT_IMG, editTopRightType);
+        const editGroupTopRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_RIGHT_GROUP));
+        const editTopRightType = editGroupTopRight.getProperty(hmUI.prop.CURRENT_TYPE);
+        this.drawWidget(EDIT_TR_IMG, EDIT_TR_ARC_PROGRESS, EDIT_TR_TEXT_IMG, editTopRightType);
         // Bottom Left editable widget
-        // const editGroupBottomLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_LEFT_GROUP));
-        // const editBottomLeftType = editGroupBottomLeft.getProperty(hmUI.prop.CURRENT_TYPE);
-        // this.drawWidget(EDIT_BL_IMG, EDIT_BL_ARC_PROGRESS, EDIT_BL_TEXT_IMG, editBottomLeftType);
+        const editGroupBottomLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_LEFT_GROUP));
+        const editBottomLeftType = editGroupBottomLeft.getProperty(hmUI.prop.CURRENT_TYPE);
+        this.drawWidget(EDIT_BL_IMG, EDIT_BL_ARC_PROGRESS, EDIT_BL_TEXT_IMG, editBottomLeftType);
         // Bottom Right editable widget
-        // const editGroupBottomRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_RIGHT_GROUP));
-        // const editBottomRightType = editGroupBottomRight.getProperty(hmUI.prop.CURRENT_TYPE);
-        // this.drawWidget(EDIT_BR_IMG, EDIT_BR_ARC_PROGRESS, EDIT_BR_TEXT_IMG, editBottomRightType);
+        const editGroupBottomRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_RIGHT_GROUP));
+        const editBottomRightType = editGroupBottomRight.getProperty(hmUI.prop.CURRENT_TYPE);
+        this.drawWidget(EDIT_BR_IMG, EDIT_BR_ARC_PROGRESS, EDIT_BR_TEXT_IMG, editBottomRightType);
         
         // xdrip or aaps treatments formatting edit group
         editGroupAAPSxDrip = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, EDIT_GROUP_AAPS_XDRIP);
