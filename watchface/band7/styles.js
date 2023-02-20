@@ -42,7 +42,7 @@ const heartArr = range(1, 7).map((v) => {
 
 
 export const DIGITAL_TIME = {
-    hour_startX: px(14),
+    hour_startX: px(18),
     hour_startY: px(25),
     hour_zero: true,
     hour_space: 2,
@@ -86,7 +86,7 @@ export const DIGITAL_TIME_AOD = {
     show_level: hmUI.show_level.ONAL_AOD
 };
 
-const dateX = px(90);
+const dateX = px(95);
 const dateY = px(91);
 const dateFontWidth = 16; // widest image in font array
 const dateDotWidth = 7;
