@@ -1,4 +1,4 @@
- # ZeppOS Watchface for Watchdrip for GTS4mini
+ # ZeppOS Watchface for Watchdrip for GTS4mini, Falcon, Band 7 and GTR4
  <p align="center">
  <img src="https://github.com/4RK4N/zeppos_watchdrip_timer_wf/blob/b77f52999dbc1599ebe5a3f0775680b3a0f3ec48/assets/gts4mini/images/preview.png" alt="Watchface preview"/>
  </p>
