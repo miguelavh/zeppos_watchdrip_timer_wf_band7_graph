@@ -7,3 +7,5 @@
 <p>This version features 4 editable data widgets. You can change the data displayed in edit mode on the watch. Long-tap the watchface and tap the blue pencil below the watchface.</p>
 
 <p>This version features a modified data display in the bottom line which requires <a href="https://github.com/NightscoutFoundation/xDrip/pull/2294" target="_blank">this PR</a> to be merged into xDrip.<br />You can change the type of data displayed in edit mode on the watch. An empty option also exists.</p>
+
+<p>Band 7 support lacks widgets because of screen size limitations on that watch</p>
