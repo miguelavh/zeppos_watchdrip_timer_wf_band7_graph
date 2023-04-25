@@ -1,3 +1,5 @@
+/// <reference path="../../.types/index.d.ts" />
+
 import {img,range} from "../../utils/helper";
 import {Colors} from "../../utils/config/constants";
 
@@ -66,8 +68,8 @@ export const DIGITAL_TIME = {
 };
 
 export const DIGITAL_TIME_AOD = {
-    hour_startX: px(84),
-    hour_startY: px(121),
+    hour_startX: px(120),
+    hour_startY: px(151),
     hour_array: bigNumAODArr,
     hour_unit_sc: img('bigNumAOD/sp.png'), // colon
     hour_unit_tc: img('bigNumAOD/sp.png'),
@@ -153,8 +155,8 @@ export const BG_VALUE_TEXT_IMG = {
 };
 
 export const BG_VALUE_TEXT_IMG_AOD = {
-    x: px(90),
-    y: px(208),
+    x: px(100),
+    y: px(238),
     w: px(271),
     dot_image: img('bigNumAOD/d.png'),
     font_array: bigNumAODArr,

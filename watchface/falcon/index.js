@@ -1,3 +1,5 @@
+/// <reference path="../../.types/index.d.ts" />
+
 import {Watchdrip} from "../../utils/watchdrip/watchdrip-mini";
 import {WatchdripData} from "../../utils/watchdrip/watchdrip-data";
 import {getGlobal} from "../../shared/global";
