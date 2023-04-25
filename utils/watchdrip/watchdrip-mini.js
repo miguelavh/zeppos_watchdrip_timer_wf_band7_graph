@@ -225,7 +225,8 @@ export class Watchdrip {
                     return;
                 }
                 const dataInfo = str2json(info);
-                this.watchdripData.setData(dataInfo);
+                const dataInfo2 =  str2json(dataInfo);
+                this.watchdripData.setData(dataInfo2);
                 this.watchdripData.updateTimeDiff();
 
                 this.lastInfoUpdate = this.timeSensor.utc,
@@ -254,8 +255,9 @@ export class Watchdrip {
         if (info) {
             try {
                 const data = str2json(info);
+                const data2 = str2json(data);
 
-                this.watchdripData.setData(data);
+                this.watchdripData.setData(data2);
 
                 this.lastInfoUpdate = hmFS.SysProGetInt64(WF_INFO_LAST_UPDATE);
                 this.lastUpdateSuccessful = hmFS.SysProGetBool(WF_INFO_LAST_UPDATE_SUCCESSFUL);
