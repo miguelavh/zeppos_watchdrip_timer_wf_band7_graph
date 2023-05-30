@@ -20,78 +20,6 @@
     }
   },
   "targets": {
-    "gtr-3-pro": {
-      "module": {
-        "watchface": {
-          "path": "watchface/entry/gtr-3-pro/index",
-          "main": 1,
-          "editable": 1,
-          "lockscreen": 1
-        },
-        "app-side": {
-          "path": "app-side/index"
-        }
-      },
-      "platforms": [
-        {
-          "name": "gtr-3-pro",
-          "deviceSource": 229
-        },
-        {
-          "name": "gtr-3-prow",
-          "deviceSource": 230
-        }
-      ],
-      "designWidth": 480
-    },
-    "falcon": {
-      "module": {
-        "watchface": {
-          "path": "watchface/entry/falcon/index",
-          "main": 1,
-          "editable": 1,
-          "lockscreen": 1
-        },
-        "app-side": {
-          "path": "app-side/index"
-        }
-      },
-      "platforms": [
-        {
-          "name": "falcon1",
-          "deviceSource": 414
-        },
-        {
-          "name": "falcon2",
-          "deviceSource": 415
-        }
-      ],
-      "designWidth": 416
-  },
-    "gtr4": {
-      "module": {
-        "watchface": {
-          "path": "watchface/entry/gtr4/index",
-          "main": 1,
-          "editable": 1,
-          "lockscreen": 1
-        },
-        "app-side": {
-          "path": "app-side/index"
-        }
-      },
-      "platforms": [
-        {
-          "name": "gtr41",
-          "deviceSource": 7930112
-        },
-        {
-          "name": "gtr42",
-          "deviceSource": 7930113
-        }
-      ],
-      "designWidth": 466
-  },
     "band7": {
       "module": {
         "watchface": {
@@ -119,31 +47,7 @@
         }
       ],
       "designWidth": 194
-  },
-  "gts4mini": {
-      "module": {
-        "watchface": {
-          "path": "watchface/entry/gts4mini/index",
-          "main": 1,
-          "editable": 1,
-          "lockscreen": 1
-        },
-        "app-side": {
-          "path": "app-side/index"
-        }
-      },
-      "platforms": [
-        {
-          "name": "gts4mini",
-          "deviceSource": 246
-        },
-        {
-          "name": "gts4mini2",
-          "deviceSource": 247
-        }
-      ],
-      "designWidth": 336
-    }
+	}
   },
   "i18n": {
     "en-US": {
