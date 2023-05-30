@@ -32,6 +32,7 @@ import {
     CUSTOM_WIDGETS,
     // Default edit group styles
     EDIT_GROUP_DEFAULTS,
+	EDIT_GROUP_W_DEFAULTS,
     EDIT_DEFAULT_IMG,
     EDIT_DEFAULT_ARC_PROGRESS,
     EDIT_DEFAULT_TEXT_IMG,
@@ -243,21 +244,21 @@ WatchFace({
         // 70% edit mask
         const mask = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_FG_MASK, EDIT_MASK_70);
         // Top Left editable widget
-        // const editGroupTopLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_LEFT_GROUP));
-        // const editTopLeftType = editGroupTopLeft.getProperty(hmUI.prop.CURRENT_TYPE);
-        // this.drawWidget(EDIT_TL_IMG, EDIT_TL_ARC_PROGRESS, EDIT_TL_TEXT_IMG, editTopLeftType);
+        const editGroupTopLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_LEFT_GROUP));
+        const editTopLeftType = editGroupTopLeft.getProperty(hmUI.prop.CURRENT_TYPE);
+        this.drawWidget(EDIT_TL_IMG, EDIT_TL_ARC_PROGRESS, EDIT_TL_TEXT_IMG, editTopLeftType);
         // Top Right editable widget
-        // const editGroupTopRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_TOP_RIGHT_GROUP));
-        // const editTopRightType = editGroupTopRight.getProperty(hmUI.prop.CURRENT_TYPE);
-        // this.drawWidget(EDIT_TR_IMG, EDIT_TR_ARC_PROGRESS, EDIT_TR_TEXT_IMG, editTopRightType);
+        const editGroupTopRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_W_DEFAULTS, EDIT_TOP_RIGHT_GROUP));
+        const editTopRightType = editGroupTopRight.getProperty(hmUI.prop.CURRENT_TYPE);
+        this.drawWidget(EDIT_TR_IMG, EDIT_TR_ARC_PROGRESS, EDIT_TR_TEXT_IMG, editTopRightType);
         // Bottom Left editable widget
-        // const editGroupBottomLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_LEFT_GROUP));
-        // const editBottomLeftType = editGroupBottomLeft.getProperty(hmUI.prop.CURRENT_TYPE);
-        // this.drawWidget(EDIT_BL_IMG, EDIT_BL_ARC_PROGRESS, EDIT_BL_TEXT_IMG, editBottomLeftType);
+        const editGroupBottomLeft = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_LEFT_GROUP));
+        const editBottomLeftType = editGroupBottomLeft.getProperty(hmUI.prop.CURRENT_TYPE);
+        this.drawWidget(EDIT_BL_IMG, EDIT_BL_ARC_PROGRESS, EDIT_BL_TEXT_IMG, editBottomLeftType);
         // Bottom Right editable widget
-        // const editGroupBottomRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_RIGHT_GROUP));
-        // const editBottomRightType = editGroupBottomRight.getProperty(hmUI.prop.CURRENT_TYPE);
-        // this.drawWidget(EDIT_BR_IMG, EDIT_BR_ARC_PROGRESS, EDIT_BR_TEXT_IMG, editBottomRightType);
+        //const editGroupBottomRight = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_RIGHT_GROUP));
+        //const editBottomRightType = editGroupBottomRight.getProperty(hmUI.prop.CURRENT_TYPE);
+        //this.drawWidget(EDIT_BR_IMG, EDIT_BR_ARC_PROGRESS, EDIT_BR_TEXT_IMG, editBottomRightType);
         
         // xdrip or aaps treatments formatting edit group
         editGroupAAPSxDrip = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, EDIT_GROUP_AAPS_XDRIP);
