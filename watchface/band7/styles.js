@@ -521,135 +521,134 @@ export const EDIT_DEFAULT_TEXT_IMG = {
 // END edit group default styles
 
 
-// BEGIN Top Left Edit Widgets
-// BEGIN Top Left Edit Widgets
-const topLeftX = 110+10+5;
-const topLeftY = 110;
+// BEGIN Top Edit Widgets
+const topX = 110+10+5;
+const topY = 110;
 
-export const EDIT_TOP_LEFT_GROUP = {
+export const EDIT_TOP_GROUP = {
     edit_id: 101,
-    x: px(topLeftX),
-    y: px(topLeftY),
+    x: px(topX),
+    y: px(topY),
     tips_x: -20,
     tips_y: -45,
     default_type: hmUI.edit_type.HEART
 }; 
 
-// Styles for all Top Left IMG widgets
-export const EDIT_TL_IMG = {
-    x: px(topLeftX),
-    y: px(topLeftY)
+// Styles for all Top IMG widgets
+export const EDIT_TOP_IMG = {
+    x: px(topX),
+    y: px(topY)
 };
 
-// Styles for all Top Left ARC_PROGRESS widgets
-const EDIT_TL_ARC_PROGRESS_LEFT = {
-    center_x: px(topLeftX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
-    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
+// Styles for all Top ARC_PROGRESS widgets
+const EDIT_TOP_ARC_PROGRESS_LEFT = {
+    center_x: px(topX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(topY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
-// Styles for all Top Left ARC_PROGRESS Right widgets
-const EDIT_TL_ARC_PROGRESS_RIGHT = {
-    center_x: px(topLeftX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
-    center_y: px(topLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
+// Styles for all Top ARC_PROGRESS Right widgets
+const EDIT_TOP_ARC_PROGRESS_RIGHT = {
+    center_x: px(topX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(topY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
-export const EDIT_TL_ARC_PROGRESS = {
-    left: EDIT_TL_ARC_PROGRESS_LEFT,
-    right: EDIT_TL_ARC_PROGRESS_RIGHT
+export const EDIT_TOP_ARC_PROGRESS = {
+    left: EDIT_TOP_ARC_PROGRESS_LEFT,
+    right: EDIT_TOP_ARC_PROGRESS_RIGHT
 };
 
-// Styles for all Top Left TEXT_IMG widgets
-export const EDIT_TL_TEXT_IMG = {
-    x: px(topLeftX),
-    y: px(topLeftY + editWidgetIconHeight + editWidgetIconMargin)
+// Styles for all Top TEXT_IMG widgets
+export const EDIT_TOP_TEXT_IMG = {
+    x: px(topX),
+    y: px(topY + editWidgetIconHeight + editWidgetIconMargin)
 };
 // END Top Left Edit Widgets
 
 
-// BEGIN Top Right Edit Widgets
-const topRightX = 25;
-const topRightY = 335;
+// BEGIN Wide Edit Widgets
+const wideX = 25;
+const wideY = 335;
 
-export const EDIT_TOP_RIGHT_GROUP = {
+export const EDIT_WIDE_GROUP = {
     edit_id: 102,
-    x: px(topRightX),
-    y: px(topRightY),
+    x: px(wideX),
+    y: px(wideY),
     tips_x: -25,
     tips_y: -45,
     default_type: hmUI.edit_type.STEP
 }; 
 
-// Default styles for all Top Right IMG widgets
-export const EDIT_TR_IMG = {
-    x: px(topRightX),
-    y: px(topRightY)
+// Default styles for all Wide IMG widgets
+export const EDIT_WIDE_IMG = {
+    x: px(wideX),
+    y: px(wideY)
 };
 
-// Styles for all Top Right ARC_PROGRESS widgets
-const EDIT_TR_ARC_PROGRESS_LEFT = {
-    center_x: px(topRightX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
-    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
+// Styles for all Wide ARC_PROGRESS widgets
+const EDIT_WIDE_ARC_PROGRESS_LEFT = {
+    center_x: px(wideX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(wideY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
-// Styles for all Top Right ARC_PROGRESS Right widgets
-const EDIT_TR_ARC_PROGRESS_RIGHT = {
-    center_x: px(topRightX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
-    center_y: px(topRightY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
+// Styles for all Wide ARC_PROGRESS Right widgets
+const EDIT_WIDE_ARC_PROGRESS_RIGHT = {
+    center_x: px(wideX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(wideY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
-export const EDIT_TR_ARC_PROGRESS = {
-    left: EDIT_TR_ARC_PROGRESS_LEFT,
-    right: EDIT_TR_ARC_PROGRESS_RIGHT
+export const EDIT_WIDE_ARC_PROGRESS = {
+    left: EDIT_WIDE_ARC_PROGRESS_LEFT,
+    right: EDIT_WIDE_ARC_PROGRESS_RIGHT
 };
 
-// Styles for all Top Right TEXT_IMG widgets
-export const EDIT_TR_TEXT_IMG = {
-    x: px(topRightX + editWidgetIconWidth + editWidgetIconMargin+40),
-    y: px(topRightY)
+// Styles for all Wide TEXT_IMG widgets
+export const EDIT_WIDE_TEXT_IMG = {
+    x: px(wideX + editWidgetIconWidth + editWidgetIconMargin+40),
+    y: px(wideY)
 };
-// END Top Right Edit Widgets
+// END Wide Edit Widgets
 
 
-// BEGIN Bottom Left Edit Widgets
-const bottomLeftX = 110+10+5;
-const bottomLeftY = 190;
+// BEGIN Bottom Edit Widgets
+const bottomX = 110+10+5;
+const bottomY = 190;
 
-export const EDIT_BOTTOM_LEFT_GROUP = {
+export const EDIT_BOTTOM_GROUP = {
     edit_id: 103,
-    x: px(bottomLeftX),
-    y: px(bottomLeftY),
+    x: px(bottomX),
+    y: px(bottomY),
     tips_x: 0,
     tips_y: 75,
     default_type: hmUI.edit_type.WEATHER
 }; 
 
-// Styles for all Bottom Left IMG widgets
-export const EDIT_BL_IMG = {
-    x: px(bottomLeftX),
-    y: px(bottomLeftY)
+// Styles for all Bottom IMG widgets
+export const EDIT_BOTTOM_IMG = {
+    x: px(bottomX),
+    y: px(bottomY)
 };
 
-// Styles for all Bottom Left ARC_PROGRESS widgets
-const EDIT_BL_ARC_PROGRESS_LEFT = {
-    center_x: px(bottomLeftX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
-    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
+// Styles for all Bottom ARC_PROGRESS widgets
+const EDIT_BOTTOM_ARC_PROGRESS_LEFT = {
+    center_x: px(bottomX + editWidgetArcRadius + editWidgetArcMarginX + (editWidgetArcLineWidth / 2)),
+    center_y: px(bottomY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
-// Styles for all Bottom Left ARC_PROGRESS Right widgets
-const EDIT_BL_ARC_PROGRESS_RIGHT = {
-    center_x: px(bottomLeftX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
-    center_y: px(bottomLeftY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
+// Styles for all Bottom ARC_PROGRESS Right widgets
+const EDIT_BOTTOM_ARC_PROGRESS_RIGHT = {
+    center_x: px(bottomX + editWidgetArcRadius + (2 * editWidgetArcMarginX) + editWidgetIconWidth + (editWidgetArcLineWidth / 2) + 1),
+    center_y: px(bottomY + editWidgetArcRadius + editWidgetArcMarginTop + (editWidgetArcLineWidth / 2))
 };
-export const EDIT_BL_ARC_PROGRESS = {
-    left: EDIT_BL_ARC_PROGRESS_LEFT,
-    right: EDIT_BL_ARC_PROGRESS_RIGHT
+export const EDIT_BOTTOM_ARC_PROGRESS = {
+    left: EDIT_BOTTOM_ARC_PROGRESS_LEFT,
+    right: EDIT_BOTTOM_ARC_PROGRESS_RIGHT
 };
 
-// Styles for all Bottom Left TEXT_IMG widgets
-export const EDIT_BL_TEXT_IMG = {
-    x: px(bottomLeftX),
-    y: px(bottomLeftY + editWidgetIconHeight + editWidgetIconMargin)
+// Styles for all Bottom TEXT_IMG widgets
+export const EDIT_BOTTOM_TEXT_IMG = {
+    x: px(bottomX),
+    y: px(bottomY + editWidgetIconHeight + editWidgetIconMargin)
 };
-// END Bottom Left Edit Widgets
+// END Bottom Edit Widgets
 
 
 // BEGIN Bottom Right Edit Widgets
-const bottomRightX = 139;
+/*const bottomRightX = 139;
 const bottomRightY = 195;
 
 export const EDIT_BOTTOM_RIGHT_GROUP = {
@@ -686,7 +685,7 @@ export const EDIT_BR_ARC_PROGRESS = {
 export const EDIT_BR_TEXT_IMG = {
     x: px(bottomRightX),
     y: px(bottomRightY + editWidgetIconHeight + editWidgetIconMargin)
-};
+};*/
 // END Bottom Right Edit Widgets
 
 
