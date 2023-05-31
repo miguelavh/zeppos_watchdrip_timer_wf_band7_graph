@@ -322,6 +322,7 @@ WatchFace({
             bgValTextImgWidget.setProperty(hmUI.prop.TEXT, bgObj.getBGVal());
             bgValTextImgWidget.setProperty(hmUI.prop.VISIBLE, true);
             bgValNoDataTextWidget.setProperty(hmUI.prop.VISIBLE, false);
+			bgValTimeTextWidget.setProperty(hmUI.prop.VISIBLE, true);
         } else {
             bgValNoDataTextWidget.setProperty(hmUI.prop.VISIBLE, true);
             bgValTextImgWidget.setProperty(hmUI.prop.VISIBLE, false);
