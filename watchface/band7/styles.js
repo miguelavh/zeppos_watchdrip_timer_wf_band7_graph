@@ -199,8 +199,10 @@ export const BG_TREND_IMAGE = {
 };
 
 export const BG_STALE_IMG = {
-    x: px(69-45),
-    y: px(135-10),
+//    x: px(69-45),
+//    y: px(135-10),
+    x: px(64-50),
+    y: px(105-10-3),
     src: 'watchdrip/stale.png',
     visible: false,
     show_level: hmUI.show_level.ONLY_NORMAL
@@ -209,7 +211,7 @@ export const BG_STALE_IMG = {
 // Xdrip modified to put ExternalStatusService.getLastStatusLine()
 export const AAPS_TEXT = {
     x: px(10),
-    y: px(288),
+    y: px(400),
     w: px(165),
     h: px(27),
     color: Colors.white,
@@ -224,7 +226,7 @@ export const AAPS_TEXT = {
 // Xdrip modified to put ExternalStatusService.getLastStatusLineTime()
 export const AAPS_TIME_TEXT = {
     x: px(27),
-    y: px(316),
+    y: px(450),
     w: px(129),
     h: px(27),
     color: Colors.defaultTransparent,
