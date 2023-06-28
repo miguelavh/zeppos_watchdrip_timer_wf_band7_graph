@@ -1,6 +1,6 @@
 import {Colors} from "./constants";
-import {img} from "../helper";
 import {DEVICE_HEIGHT, DEVICE_WIDTH} from "./device";
+import {img} from "../helper";
 
 export const DEBUG_TEXT = {
     x: px(30),
@@ -31,4 +31,13 @@ export const BG_IMG = {
     h: px(DEVICE_HEIGHT),
     src: img("bg/bg.png"),
     show_level: hmUI.show_level.ONLY_NORMAL
+}
+
+export const BG_IMG_AOD = {
+    x: px(0),
+    y: px(0),
+    w: px(DEVICE_WIDTH),
+    h: px(DEVICE_HEIGHT),
+    src: img("bg/bg_aod.png"),
+    show_level: hmUI.show_level.ONLY_AOD
 }
