@@ -86,10 +86,10 @@ export const DIGITAL_TIME_AOD = {
     show_level: hmUI.show_level.ONAL_AOD
 };
 
-const dateX = px(95);
-const dateY = px(300);
-const dateFontWidth = 16; // widest image in font array
-const dateDotWidth = 7;
+const dateX = px(110+10+5+10-20+36+1);
+const dateY = px(100-8);
+const dateFontWidth = 9; // widest image in font array
+const dateDotWidth = 3;
 const dateFontSpacing = 1;
 export const DATE_TEXT_IMG = {
     day_startX: px(dateX),
@@ -120,8 +120,8 @@ export const DATE_TEXT_IMG = {
 };
 
 export const WEEK_DAYS_IMG = {
-    x: px(36),
-    y: px(300),
+    x: px(110+10+5+10-20+1),
+    y: px(100-8),
     week_en: weekEnArr,
     week_tc: weekEnArr,
     week_sc: weekEnArr,
@@ -202,7 +202,7 @@ export const BG_STALE_IMG = {
 //    x: px(69-45),
 //    y: px(135-10),
     x: px(64-50),
-    y: px(105-10-3),
+    y: px(105+30),
     src: 'watchdrip/stale.png',
     visible: false,
     show_level: hmUI.show_level.ONLY_NORMAL
@@ -525,7 +525,7 @@ export const EDIT_DEFAULT_TEXT_IMG = {
 
 // BEGIN Top Edit Widgets
 const topX = 110+10+5;
-const topY = 110;
+const topY = 110+5+2;
 
 export const EDIT_TOP_GROUP = {
     edit_id: 101,
@@ -533,7 +533,7 @@ export const EDIT_TOP_GROUP = {
     y: px(topY),
     tips_x: -20,
     tips_y: -45,
-    default_type: hmUI.edit_type.HEART
+    default_type: hmUI.edit_type.STEP
 }; 
 
 // Styles for all Top IMG widgets
@@ -609,7 +609,7 @@ export const EDIT_WIDE_TEXT_IMG = {
 
 // BEGIN Bottom Edit Widgets
 const bottomX = 110+10+5;
-const bottomY = 190;
+const bottomY = 190+5;
 
 export const EDIT_BOTTOM_GROUP = {
     edit_id: 103,

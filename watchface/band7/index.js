@@ -1,6 +1,7 @@
 /// <reference path="../../.types/index.d.ts" />
 
-import {Watchdrip} from "../../utils/watchdrip/watchdrip-mini";
+import {DebugText} from "../../shared/debug";
+import {Watchdrip} from "../../utils/watchdrip/watchdrip";
 import {WatchdripData} from "../../utils/watchdrip/watchdrip-data";
 import {getGlobal} from "../../shared/global";
 import {
@@ -22,13 +23,13 @@ import {
     IMG_STATUS_BT_DISCONNECTED,
     PHONE_BATTERY_TEXT,
     WATCH_BATTERY_TEXT,
-    AAPS_TEXT,
-    AAPS_TIME_TEXT,
+    //AAPS_TEXT,
+    //AAPS_TIME_TEXT,
     // Edit masks
     EDIT_MASK_70,
     EDIT_MASK_100,
     // xdrip or aaps treatments formatting edit group
-    EDIT_GROUP_AAPS_XDRIP,
+    //EDIT_GROUP_AAPS_XDRIP,
     CUSTOM_WIDGETS,
     // Default edit group styles
     EDIT_GROUP_DEFAULTS,
@@ -92,17 +93,25 @@ import {
 } from "./styles";
 import {BG_IMG, BG_FILL_RECT} from "../../utils/config/styles_global";
 import {PROGRESS_ANGLE_INC, PROGRESS_UPDATE_INTERVAL_MS, TEST_DATA} from "../../utils/config/constants";
+import {PointStyle} from "../../utils/watchdrip/graph/pointStyle";
+
 
 let bgValNoDataTextWidget, bgValTextImgWidget, bgValTimeTextWidget, bgDeltaTextWidget, bgTrendImageWidget, bgStaleLine, 
-    phoneBattery, watchBattery, bgStatusLow, bgStatusOk, bgStatusHigh, progress, editGroupAAPSxDrip, aapsText, aapsTimeText;
+    phoneBattery, watchBattery, bgStatusLow, bgStatusOk, bgStatusHigh, progress;
 
 let batterySensor;
 
 let globalNS, progressTimer, progressAngle, screenType;
 
+let debug, watchdrip;
 
 export const logger = Logger.getLogger("timer-page");
 
+function initDebug() {
+    globalNS.debug = new DebugText();
+    debug = globalNS.debug;
+    debug.setLines(12);
+}
 
 function startLoader() {
     progress.setProperty(hmUI.prop.VISIBLE, true);
@@ -111,6 +120,13 @@ function startLoader() {
     progressTimer = globalNS.setInterval(() => {
         updateLoader();
     }, PROGRESS_UPDATE_INTERVAL_MS);
+	updateWidgets();
+}
+
+function forceUpdate() {
+    watchDrip.checkUpdates();
+    updateWidgets();
+	stopLoader();
 }
 
 function updateLoader() {
@@ -248,9 +264,9 @@ WatchFace({
         const editTopType = editGroupTop.getProperty(hmUI.prop.CURRENT_TYPE);
         this.drawWidget(EDIT_TOP_IMG, EDIT_TOP_ARC_PROGRESS, EDIT_TOP_TEXT_IMG, editTopType);
         // Wide editable widget
-        const editGroupWide = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_W_DEFAULTS, EDIT_WIDE_GROUP));
-        const editWideType = editGroupWide.getProperty(hmUI.prop.CURRENT_TYPE);
-        this.drawWidget(EDIT_WIDE_IMG, EDIT_WIDE_ARC_PROGRESS, EDIT_WIDE_TEXT_IMG, editWideType);
+        //const editGroupWide = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_W_DEFAULTS, EDIT_WIDE_GROUP));
+        //const editWideType = editGroupWide.getProperty(hmUI.prop.CURRENT_TYPE);
+        //this.drawWidget(EDIT_WIDE_IMG, EDIT_WIDE_ARC_PROGRESS, EDIT_WIDE_TEXT_IMG, editWideType);
         // Bottom editable widget
         const editGroupBottom = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, mergeStyles(EDIT_GROUP_DEFAULTS, EDIT_BOTTOM_GROUP));
         const editBottomType = editGroupBottom.getProperty(hmUI.prop.CURRENT_TYPE);
@@ -261,7 +277,7 @@ WatchFace({
         //this.drawWidget(EDIT_BR_IMG, EDIT_BR_ARC_PROGRESS, EDIT_BR_TEXT_IMG, editBottomRightType);
         
         // xdrip or aaps treatments formatting edit group
-        editGroupAAPSxDrip = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, EDIT_GROUP_AAPS_XDRIP);
+        //editGroupAAPSxDrip = hmUI.createWidget(hmUI.widget.WATCHFACE_EDIT_GROUP, EDIT_GROUP_AAPS_XDRIP);
         // END editable components init
 
 
@@ -283,9 +299,9 @@ WatchFace({
         progress = hmUI.createWidget(hmUI.widget.IMG, IMG_LOADING_PROGRESS);
         stopLoader();
         // From modified xDrip ExternalStatusService.getLastStatusLine()
-        aapsText = hmUI.createWidget(hmUI.widget.TEXT, AAPS_TEXT);
+        //aapsText = hmUI.createWidget(hmUI.widget.TEXT, AAPS_TEXT);
         // From modified xDrip ExternalStatusService.getLastStatusLineTime()
-        aapsTimeText = hmUI.createWidget(hmUI.widget.TEXT, AAPS_TIME_TEXT);
+        //aapsTimeText = hmUI.createWidget(hmUI.widget.TEXT, AAPS_TIME_TEXT);
     },
     updateStart() {
         bgValTimeTextWidget.setProperty(hmUI.prop.VISIBLE, false);
@@ -335,8 +351,8 @@ WatchFace({
         phoneBattery.setProperty(hmUI.prop.TEXT, watchdripData.getStatus().getBatVal());
 
         // treatments formatting according to user selection
-        const editTypeAAPSxDrip = editGroupAAPSxDrip.getProperty(hmUI.prop.CURRENT_TYPE);
-        switch (editTypeAAPSxDrip) {
+        //const editTypeAAPSxDrip = editGroupAAPSxDrip.getProperty(hmUI.prop.CURRENT_TYPE);
+        /*switch (editTypeAAPSxDrip) {
             // default xDrip data
             case CUSTOM_WIDGETS.XDRIP:
                 const treatmentObj = watchdripData.getTreatment();
@@ -351,7 +367,7 @@ WatchFace({
             case CUSTOM_WIDGETS.NONE:
                 aapsText.setProperty(hmUI.prop.VISIBLE, false);
                 break;
-        };
+        };*/
 
         if (TEST_DATA) {
             bgStatusLow.setProperty(hmUI.prop.VISIBLE, true);
@@ -372,7 +388,7 @@ WatchFace({
         bgStaleLine.setProperty(hmUI.prop.VISIBLE, watchdripData.isBgStale());
 
         // treatments formatting according to user selection
-        const editTypeAAPSxDrip = editGroupAAPSxDrip.getProperty(hmUI.prop.CURRENT_TYPE);
+        /*const editTypeAAPSxDrip = editGroupAAPSxDrip.getProperty(hmUI.prop.CURRENT_TYPE);
         switch (editTypeAAPSxDrip) {
             // default xDrip data
             case CUSTOM_WIDGETS.XDRIP:
@@ -392,7 +408,7 @@ WatchFace({
             case CUSTOM_WIDGETS.NONE:
                 aapsTimeText.setProperty(hmUI.prop.VISIBLE, false);
                 break;    
-        };
+        };*/
     },
 
     onInit() {
@@ -403,45 +419,63 @@ WatchFace({
         logger.log("wf on build invoke");
         globalNS = getGlobal();
 
+        initDebug();
+        debug.log("build");
         this.initView();
 
-        const watchDrip = new Watchdrip();
-        getApp()._options.globalData.watchDrip = watchDrip;
-
-        watchDrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
-        watchDrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
-        watchDrip.setOnUpdateStartCallback(this.updateStart);
-        watchDrip.setOnUpdateFinishCallback(this.updateFinish);
-        
+        globalNS.watchdrip = new Watchdrip();
+        watchdrip = globalNS.watchdrip;
+        watchdrip.prepare();
+		
+        watchdrip.setUpdateValueWidgetCallback(this.updateValuesWidget);
+        watchdrip.setUpdateTimesWidgetCallback(this.updateTimesWidget);
+        watchdrip.setOnUpdateStartCallback(this.updateStart);
+        watchdrip.setOnUpdateFinishCallback(this.updateFinish);
+		
+        let lineStyles = {};
+        const POINT_SIZE = 5;
+        const TREATMENT_POINT_SIZE = POINT_SIZE + 4;
+        const LINE_SIZE = 1;
+        lineStyles['predict'] = new PointStyle(POINT_SIZE, POINT_SIZE, POINT_SIZE);
+        lineStyles['high'] = new PointStyle(POINT_SIZE, POINT_SIZE, POINT_SIZE);
+        lineStyles['low'] = new PointStyle(POINT_SIZE, POINT_SIZE, POINT_SIZE);
+        lineStyles['inRange'] = new PointStyle(POINT_SIZE, POINT_SIZE, POINT_SIZE);
+        lineStyles['lineLow'] = new PointStyle("", LINE_SIZE);
+        lineStyles['lineHigh'] = new PointStyle("", LINE_SIZE);
+        lineStyles['treatment'] = new PointStyle(TREATMENT_POINT_SIZE, TREATMENT_POINT_SIZE);
+        watchdrip.createGraph(5,260,184,110, lineStyles);
+        watchdrip.start();
+		
         // AOD runs on a timer, normal uses widget_delegate for updates
-        if (watchDrip.isAOD()) {
+        /*if (watchdrip.isAOD()) {
             logger.log("IS_AOD_TRUE");
-            watchDrip.startTimerDataUpdates();
+            watchdrip.startTimerDataUpdates();
             
         } else {
             logger.log("IS_AOD_FALSE");
             hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, {
                 resume_call: (function() {
                     logger.log("resume_call");
-                    watchDrip.checkUpdates();
+                    watchdrip.checkUpdates();
                     // Update watch battery
                     updateWidgets();
                 }),
                 pause_call: (function() {
                     logger.log("pause_call");
-                    watchDrip.updatingData = false;
+                    watchdrip.updatingData = false;
             
                     stopLoader();
                 })
             });
-        }
+        }*/
+		
     },
+	
+	
 
     onDestroy() {
         logger.log("wf on destroy invoke");
-        
-        getApp()._options.globalData.watchDrip.destroy();
-
+        watchdrip.destroy();
         stopLoader();
     },
 
