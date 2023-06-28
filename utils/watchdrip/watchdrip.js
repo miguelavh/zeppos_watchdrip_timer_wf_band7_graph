@@ -1,334 +1,474 @@
 import {getGlobal} from "../../shared/global";
 import {
+    WATCHDRIP_ALARM_CONFIG_DEFAULTS,
     WATCHDRIP_APP_ID,
     WATCHDRIP_CONFIG,
     WATCHDRIP_CONFIG_DEFAULTS,
     WATCHDRIP_CONFIG_LAST_UPDATE,
     WF_INFO,
-    WF_INFO_LAST_UPDATE
+    WF_INFO_DIR,
+    WF_INFO_FILE,
+    WF_INFO_LAST_UPDATE,
+    WF_INFO_LAST_UPDATE_ATTEMPT,
+    WF_INFO_LAST_UPDATE_SUCCESS
 } from "../config/global-constants";
 import {json2str, str2json} from "../../shared/data";
 import {MessageBuilder} from "../../shared/message";
 import {
+    APP_FETCH_TIMER_UPDATE_INTERVAL_MS,
+    APP_FETCH_UPDATE_INTERVAL_MS,
     Commands,
     DATA_AOD_TIMER_UPDATE_INTERVAL_MS,
     DATA_AOD_UPDATE_INTERVAL_MS,
     DATA_STALE_TIME_MS,
     DATA_TIMER_UPDATE_INTERVAL_MS,
-    DATA_UPDATE_INTERVAL_MS
+    DATA_UPDATE_INTERVAL_MS,
+    GRAPH_LIMIT,
+    MMOLL_TO_MGDL,
+    USE_FILE_INFO_STORAGE,
+    XDRIP_UPDATE_INTERVAL_MS
 } from "../config/constants";
+import * as fs from "./../../shared/fs";
 import {WatchdripData} from "./watchdrip-data";
+import {gotoSubpage} from "../../shared/navigate";
+import {Graph} from "./graph/graph";
+import {Viewport} from "./graph/viewport";
 
 let {messageBuilder} = getApp()._options.globalData;
 
-export const logger = Logger.getLogger("wf-wathchdrip");
-
-let watchdrip, debug
+/*
+typeof DebugText
+*/
+var debug = null;
+/*
+typeof Watchdrip
+*/
+var watchdrip = null;
 
 export class Watchdrip {
     constructor() {
         this.screenType = hmSetting.getScreenType();
-
-        this.updateIntervals = this.screenType === hmSetting.screen_type.AOD ? DATA_AOD_UPDATE_INTERVAL_MS : DATA_UPDATE_INTERVAL_MS;
 
         this.globalNS = getGlobal();
         debug = this.globalNS.debug;
         this.timeSensor = hmSensor.createSensor(hmSensor.id.TIME);
         this.watchdripData = new WatchdripData(this.timeSensor);
 
-        this.system_alarm_id = null;
         this.lastInfoUpdate = 0;
         this.lastUpdateAttempt = null;
         this.lastUpdateSucessful = false;
-        this.configLastUpdate = null;
+        this.configLastUpdate = 0;
         this.updatingData = false;
         this.intervalTimer = null;
-
+        this.firstRun = true;
+        this.resumeCall = false;
+        /*
+        typeof Graph
+        */
+        this.graph = new Graph(0, 0, 0, 0);
     }
 
     //call before any usage of the class instance
-    prepare(){
+    prepare() {
         watchdrip = this.globalNS.watchdrip;
     }
 
     start() {
-        watchdrip.checkConfigUpdate();
-        watchdrip.readInfo();
-        watchdrip.updateValuesWidget();
+        this.checkConfigUpdate();
+        this.createWatchdripDir();
+        this.updateIntervals = this.getUpdateInterval();
+        this.readInfo();
+        this.updateValuesWidget();
         //Monitor watchface activity in order to recreate connection
-        if (watchdrip.isAOD()) {
-            watchdrip.widgetDelegateCallbackResumeCall();
-        }
-        else {
+        if (this.isAOD()) {
+            this.widgetDelegateCallbackResumeCall();
+        } else {
             hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, {
-                resume_call: watchdrip.widgetDelegateCallbackResumeCall,
-                pause_call: watchdrip.widgetDelegateCallbackPauseCall,
+                resume_call: () => {
+                    this.widgetDelegateCallbackResumeCall();
+                },
+                pause_call: () => {
+                    this.widgetDelegateCallbackPauseCall();
+                }
             });
         }
     }
 
+    getUpdateInterval() {
+        let interval = DATA_UPDATE_INTERVAL_MS;
+        if (this.isAOD()) {
+            interval = DATA_AOD_UPDATE_INTERVAL_MS;
+        } else if (this.isAppFetch()) {
+            interval = APP_FETCH_UPDATE_INTERVAL_MS
+        }
+        return interval;
+    }
+
+    getTimerUpdateInterval() {
+        let interval = DATA_TIMER_UPDATE_INTERVAL_MS;
+        if (this.isAppFetch()) {
+            interval = APP_FETCH_TIMER_UPDATE_INTERVAL_MS
+        } else if (this.isAOD()) {
+            interval = DATA_AOD_TIMER_UPDATE_INTERVAL_MS;
+        }
+        return interval;
+    }
+
     startDataUpdates() {
-        if (watchdrip.intervalTimer != null) return; //already started
-        let interval = watchdrip.isAOD() ? DATA_AOD_TIMER_UPDATE_INTERVAL_MS : DATA_TIMER_UPDATE_INTERVAL_MS;
-        logger.log("startDataUpdates, interval: " + interval);
-        watchdrip.intervalTimer = watchdrip.globalNS.setInterval(() => {
-            watchdrip.checkUpdates();
+        if (this.intervalTimer != null) return; //already started
+        let interval = this.getTimerUpdateInterval();
+        debug.log("startDataUpdates, interval: " + interval);
+        this.intervalTimer = this.globalNS.setInterval(() => {
+            this.checkUpdates();
         }, interval);
     }
 
     stopDataUpdates() {
-        if (watchdrip.intervalTimer !== null) {
-            logger.log("stopDataUpdates");
-            watchdrip.globalNS.clearInterval(watchdrip.intervalTimer);
-            watchdrip.intervalTimer = null;
+        if (this.intervalTimer !== null) {
+            debug.log("stopDataUpdates");
+            this.globalNS.clearInterval(this.intervalTimer);
+            this.intervalTimer = null;
         }
     }
 
-    isAOD(){
-        return  watchdrip.screenType === hmSetting.screen_type.AOD;
+    isAOD() {
+        return this.screenType === hmSetting.screen_type.AOD;
     }
 
-    openAPP(page = "") {
-        const obj = {
-            appid: WATCHDRIP_APP_ID,
-            url: "pages/index",
+    isTimeout(time, timeout_ms) {
+        if (!time) {
+            return false;
         }
-
-        if (page !== ""){
-            obj.url = "pages/" + page;
-        }
-
-        logger.log("openAPP page:" + page );
-        hmApp.startApp(obj)
+        return this.timeSensor.utc - time > timeout_ms;
     }
 
-    isTimeout(time, timeout_ms){
-        return watchdrip.timeSensor.utc - time > timeout_ms;
+    readLastUpdate() {
+        let lastInfoUpdate = hmFS.SysProGetInt64(WF_INFO_LAST_UPDATE);
+        this.lastUpdateAttempt = hmFS.SysProGetInt64(WF_INFO_LAST_UPDATE_ATTEMPT);
+        this.lastUpdateSucessful = hmFS.SysProGetBool(WF_INFO_LAST_UPDATE_SUCCESS);
+        return lastInfoUpdate;
+    }
+
+    handleRareCases() {
+        let fetch = false;
+        if (this.lastUpdateAttempt == null) {
+            debug.log("initial fetch");
+            fetch = true;
+        } else if (this.isTimeout(this.lastUpdateAttempt, DATA_STALE_TIME_MS)) {
+            debug.log("the side app not responding, force update again");
+            fetch = true;
+        }
+        if (fetch) {
+            this.fetchInfo();
+        }
     }
 
     checkUpdates() {
-        watchdrip.updateTimesWidget();
-        //logger.log("checkUpdates");
-        if (watchdrip.updatingData) {
-            // logger.log("updatingData, return");
+        //debug.log("checkUpdates");
+        if (this.checkConfigUpdate()) {
+            return; //restart
+        }
+        this.updateTimesWidget();
+
+        if (this.watchdripConfig.disableUpdates) {
+            debug.log("disableUpdates, return");
             return;
         }
-        let lastInfoUpdate = hmFS.SysProGetInt64(WF_INFO_LAST_UPDATE);
+        if (this.updatingData) {
+            debug.log("updatingData, return");
+            return;
+        }
+        let lastInfoUpdate = this.readLastUpdate();
         if (!lastInfoUpdate) {
-            if (watchdrip.lastUpdateAttempt == null) {
-                logger.log("initial fetch");
-                watchdrip.fetchInfo();
-                return;
-            }
-            if (watchdrip.isTimeout(watchdrip.lastUpdateAttempt, DATA_STALE_TIME_MS)) {
-                logger.log("the side app not responding, force update again");
-                watchdrip.fetchInfo();
-                return;
-            }
+            this.handleRareCases();
         } else {
-            if (!watchdrip.lastUpdateSucessful) {
-                if (watchdrip.lastUpdateAttempt !== null)
-                    if (watchdrip.isTimeout(watchdrip.lastUpdateAttempt, DATA_STALE_TIME_MS)) {
-                        logger.log("reached DATA_STALE_TIME_MS");
-                        watchdrip.fetchInfo();
-                        return;
-                    } else {
+            if (this.lastUpdateSucessful) {
+                if (this.lastInfoUpdate !== lastInfoUpdate) {
+                    //update widgets because the data was modified outside the current scope
+                    debug.log("update from remote");
+                    this.readInfo();
+                    this.lastInfoUpdate = lastInfoUpdate;
+                    this.updateWidgets();
+                }
+                if (this.isTimeout(lastInfoUpdate, this.updateIntervals)) {
+                    debug.log("reached updateIntervals");
+                    this.fetchInfo();
+                    return;
+                }
+                const bgTimeOlder = this.isTimeout(this.watchdripData.getBg().time, XDRIP_UPDATE_INTERVAL_MS);
+                const statusNowOlder = this.isTimeout(this.watchdripData.getStatus().now, XDRIP_UPDATE_INTERVAL_MS);
+                if (bgTimeOlder || statusNowOlder) {
+                    if (!this.isTimeout(this.lastUpdateAttempt, DATA_STALE_TIME_MS)) {
+                        debug.log("wait DATA_STALE_TIME");
                         return;
                     }
-            }
-            if (watchdrip.isTimeout(lastInfoUpdate, watchdrip.updateIntervals)) {
-                logger.log("reached updateIntervals");
-                watchdrip.fetchInfo();
-                return;
-            }
-            if (watchdrip.lastInfoUpdate === lastInfoUpdate) {
+                    debug.log("data older than sensor update interval");
+                    this.fetchInfo();
+                    return;
+                }
                 //data not modified from outside scope so nothing to do
-                //logger.log("data not modified");
-                return;
+                debug.log("data not modified");
+            } else {
+                this.handleRareCases();
             }
-            //update widgets because the data was modified outside the current scope
-            watchdrip.updateWidgets();
         }
-
-    }
-
-    update() {
-        watchdrip.checkConfigUpdate();
-        // logger.log(watchdrip.watchdripConfig)
-        // debug.enabled = watchdrip.watchdripConfig.showLog
-        if (watchdrip.watchdripConfig.disableUpdates === true) {
-            watchdrip.stopDataUpdates();
-        } else {
-            watchdrip.startDataUpdates();
-        }
-    }
-
-    startAppUpdate(isStartNow = false) {
-        //logger.log("Update app info now:" + isStartNow);
-        const obj = {
-            appid: WATCHDRIP_APP_ID,
-            url: "pages/index",
-            param: "update"
-        }
-        if (isStartNow) {
-            hmApp.startApp(obj)
-        } else {
-            obj.delay = 5000;
-            watchdrip.system_alarm_id = hmApp.alarmNew(obj);
-        }
-        watchdrip.lastUpdateAttempt = watchdrip.timeSensor.utc;
     }
 
     //connect watch with side app
     initConnection() {
-        if (watchdrip.connectionActive){
+        if (this.connectionActive) {
             return;
         }
-        logger.log("initConnection");
-        watchdrip.connectionActive = true;
+        debug.log("initConnection");
+        this.connectionActive = true;
         const appId = WATCHDRIP_APP_ID;
         //we need to recreate connection to force start side app
         messageBuilder = new MessageBuilder({appId});
         messageBuilder.connect();
     }
 
-    dropConnection(){
-        logger.log("dropConnection");
+    dropConnection() {
+        if (!this.connectionActive) {
+            return;
+        }
+        debug.log("dropConnection");
         messageBuilder.disConnect();
-        watchdrip.connectionActive = false;
+        this.connectionActive = false;
     }
 
     /*Callback which is called  when watchface is active  (visible)*/
     widgetDelegateCallbackResumeCall() {
-        logger.log("resume_call");
-        watchdrip.readInfo();
-        watchdrip.updatingData = false;
-        watchdrip.update();
+        debug.log("resume_call");
+        //for some reason the wf can call resume two times
+        if (!this.resumeCall) {
+            this.resumeCall = true;
+            //prevent two reading(useful for AOD)
+            if (this.firstRun) {
+                this.firstRun = false;
+                this.readInfo();
+				this.checkUpdates();
+            }
+            this.updatingData = false;
+            this.startDataUpdates();
+        } else {
+            debug.log("prevent second resume");
+        }
     }
 
     /*Callback which is called  when watchface deactivating (not visible)*/
     widgetDelegateCallbackPauseCall() {
-        //logger.log("pause_call");
-        watchdrip.stopDataUpdates();
-        watchdrip.updatingData = false;
-        if (typeof watchdrip.onUpdateFinishCallback === "function"){
-            watchdrip.onUpdateFinishCallback(watchdrip.lastUpdateSucessful);
-        }
-        watchdrip.dropConnection();
+        //debug.log("pause_call");
+        this.stopDataUpdates();
+        this.resumeCall = false;
+        this.updatingData = false;
+        this.updateFinish();
+        this.dropConnection();
     }
 
-
-    setUpdateValueWidgetCallback(callback){
-        watchdrip.updateValueWidgetCallback = callback;
+    setUpdateValueWidgetCallback(callback) {
+        this.updateValueWidgetCallback = callback;
     }
 
-    setUpdateTimesWidgetCallback(callback){
-        watchdrip.updateTimesWidgetCallback = callback;
+    setUpdateTimesWidgetCallback(callback) {
+        this.updateTimesWidgetCallback = callback;
     }
 
-    setOnUpdateStartCallback(callback){
-        watchdrip.onUpdateStartCallback = callback;
+    setOnUpdateStartCallback(callback) {
+        this.onUpdateStartCallback = callback;
     }
 
-    setOnUpdateFinishCallback(callback){
-        watchdrip.onUpdateFinishCallback = callback;
+    setOnUpdateFinishCallback(callback) {
+        this.onUpdateFinishCallback = callback;
     }
 
     updateWidgets() {
-        logger.log("updateWidgets");
-        watchdrip.updateValuesWidget()
-        watchdrip.updateTimesWidget()
+        debug.log("updateWidgets");
+        this.updateTimesWidget()
+        this.updateValuesWidget()
     }
 
     updateValuesWidget() {
-        if (typeof watchdrip.updateValueWidgetCallback === "function"){
-            watchdrip.updateValueWidgetCallback(watchdrip.watchdripData);
+        if (typeof this.updateValueWidgetCallback === "function") {
+            this.updateValueWidgetCallback(this.watchdripData);
         }
+        this.drawGraph();
     }
 
     updateTimesWidget() {
-        if (typeof watchdrip.updateTimesWidgetCallback === "function"){
-            watchdrip.updateTimesWidgetCallback(watchdrip.watchdripData);
+        if (typeof this.updateTimesWidgetCallback === "function") {
+            this.updateTimesWidgetCallback(this.watchdripData);
         }
     }
 
+    updateStart() {
+        if (typeof this.onUpdateStartCallback === "function") {
+            this.onUpdateStartCallback();
+        }
+    }
+
+    updateFinish() {
+        if (typeof this.onUpdateFinishCallback === "function") {
+            this.onUpdateFinishCallback(this.lastUpdateSucessful);
+        }
+    }
+
+    createGraph(x, y, width, height, lineStyles) {
+        this.graph = new Graph(x, y, width, height);
+        this.graphLineStyles = lineStyles;
+    }
+
+    //draw graph only on normal display
+    //the aod mode is glitchy
     drawGraph() {
+        if (this.graph == null || this.isAOD()) {
+            return;
+        }
+
+        let graphInfo = this.watchdripData.getGraph();
+        if (graphInfo.start === "") {
+            this.graph.clear();
+            return;
+        }
+        //debug.log("draw graph");
+        let viewportTop = this.watchdripData.getStatus().isMgdl ? GRAPH_LIMIT * MMOLL_TO_MGDL : GRAPH_LIMIT;
+        this.graph.setViewport(new Viewport(graphInfo.start, graphInfo.end, 0, viewportTop));
+        let lines = {};
+        graphInfo.lines.forEach(line => {
+            let name = line.name;
+            if (name in this.graphLineStyles) {
+                let lineStyle = this.graphLineStyles[name];
+                //if image not defined, use default line color
+                if (lineStyle.color === "" && lineStyle.imageFile === "") {
+                    lineStyle.color = line.color;
+                }
+                let lineObj = {};
+                lineObj.pointStyle = lineStyle;
+                lineObj.points = line.points;
+                lines[name] = lineObj;
+            }
+        });
+
+        //debug.log("Lines count : " + Object.keys(lines).length);
+        this.graph.setLines(lines);
+        this.graph.draw();
+    }
+
+    isAppFetch() {
+        return this.watchdripConfig.useAppFetch === true;
+    }
+
+    resetLastUpdate() {
+        this.lastUpdateAttempt = this.timeSensor.utc;
+        hmFS.SysProSetInt64(WF_INFO_LAST_UPDATE_ATTEMPT, this.lastUpdateAttempt);
+        this.lastUpdateSucessful = false;
+        hmFS.SysProSetBool(WF_INFO_LAST_UPDATE_SUCCESS, this.lastUpdateSucessful);
     }
 
     fetchInfo() {
-        watchdrip.lastUpdateAttempt = watchdrip.timeSensor.utc;
-        watchdrip.lastUpdateSucessful = false;
-
-        watchdrip.initConnection();
-
-        logger.log("fetchInfo");
-        if (messageBuilder.connectStatus() === false) {
-            logger.log("No BT Connection");
+        debug.log("fetchInfo");
+        this.resetLastUpdate();
+        if (this.isAppFetch()) {
+            gotoSubpage('update', {
+                    params: WATCHDRIP_ALARM_CONFIG_DEFAULTS
+                },
+                WATCHDRIP_APP_ID);
             return;
         }
-        watchdrip.updatingData = true;
-        if (typeof watchdrip.onUpdateStartCallback === "function"){
-            watchdrip.onUpdateStartCallback();
-        }
 
+        this.initConnection();
+
+        if (messageBuilder.connectStatus() === false) {
+            debug.log("No BT Connection");
+            return;
+        }
+        this.updatingData = true;
+        this.updateStart();
+        var params = WATCHDRIP_ALARM_CONFIG_DEFAULTS.fetchParams;
         messageBuilder
             .request({
                 method: Commands.getInfo,
+                params: params
             }, {
                 timeout: 5000
             })
             .then((data) => {
-                logger.log("received data");
-                const {result: info = {}} = data;
+                debug.log("received data");
+                let {result: info = {}} = data;
                 try {
                     if (info.error) {
-                        logger.log("Error");
-                        logger.log(info);
+                        debug.log("Error");
+                        debug.log(info);
                         return;
                     }
+                    this.lastInfoUpdate = this.saveInfo(info);
                     let dataInfo = str2json(info);
-
-                    watchdrip.watchdripData.setData(dataInfo);
-                    watchdrip.watchdripData.updateTimeDiff();
-
-                    watchdrip.lastInfoUpdate = watchdrip.saveInfo(info);
-                    watchdrip.lastUpdateSucessful = true;
-                    watchdrip.updateWidgets();
+                    info = null;
+                    this.watchdripData.setData(dataInfo);
+                    this.watchdripData.updateTimeDiff();
+                    dataInfo = null;
+                    this.updateWidgets();
                 } catch (e) {
-                    logger.log("error:" + e);
+                    debug.log("error:" + e);
                 }
             })
             .catch((error) => {
-                logger.log("fetch error:" + error);
+                debug.log("fetch error:" + error);
             })
             .finally(() => {
-                watchdrip.updatingData = false;
-                if (typeof watchdrip.onUpdateFinishCallback === "function"){
-                    watchdrip.onUpdateFinishCallback(watchdrip.lastUpdateSucessful);
+                this.updatingData = false;
+                if (typeof this.onUpdateFinishCallback === "function") {
+                    this.onUpdateFinishCallback(this.lastUpdateSucessful);
                 }
-                if (watchdrip.isAOD()){
-                    watchdrip.dropConnection();
+                if (this.isAOD()) {
+                    this.dropConnection();
                 }
             });
     }
 
+    createWatchdripDir() {
+        if (USE_FILE_INFO_STORAGE && !this.isAOD()) {
+            if (!fs.statSync(WF_INFO_DIR)) {
+                fs.mkdirSync(WF_INFO_DIR);
+            }
+            // const [fileNameArr] = hmFS.readdir("/storage");
+            // debug.log(fileNameArr);
+        }
+    }
+
     readInfo() {
-        let info = hmFS.SysProGetChars(WF_INFO);
-        let data = {};
+        let info = "";
+        if (USE_FILE_INFO_STORAGE) {
+            info = fs.readTextFile(WF_INFO_FILE);
+        } else {
+            info = hmFS.SysProGetChars(WF_INFO);
+        }
         if (info) {
+            let data = {};
             try {
                 data = str2json(info);
+                info = null;
+                debug.log("data was read");
+                this.watchdripData.setData(data); 
+                this.watchdripData.timeDiff = 0;
             } catch (e) {
 
             }
+            data = null;
+            return true
         }
-        watchdrip.watchdripData.setData(data);
+        return false;
     }
 
     saveInfo(info) {
-        hmFS.SysProSetChars(WF_INFO, info);
-        let time = watchdrip.timeSensor.utc;
+        if (USE_FILE_INFO_STORAGE) {
+            fs.writeTextFile(WF_INFO_FILE, info);
+        } else {
+            hmFS.SysProSetChars(WF_INFO, info);
+        }
+        this.lastUpdateSucessful = true;
+        let time = this.timeSensor.utc;
         hmFS.SysProSetInt64(WF_INFO_LAST_UPDATE, time);
+        hmFS.SysProSetBool(WF_INFO_LAST_UPDATE_SUCCESS, this.lastUpdateSucessful);
         return time;
     }
 
@@ -336,11 +476,11 @@ export class Watchdrip {
     readConfig() {
         let configStr = hmFS.SysProGetChars(WATCHDRIP_CONFIG);
         if (!configStr) {
-            watchdrip.watchdripConfig = WATCHDRIP_CONFIG_DEFAULTS;
-            watchdrip.saveConfig();
+            this.watchdripConfig = WATCHDRIP_CONFIG_DEFAULTS;
+            this.saveConfig();
         } else {
             try {
-                watchdrip.watchdripConfig = str2json(configStr);
+                this.watchdripConfig = str2json(configStr);
             } catch (e) {
 
             }
@@ -348,24 +488,28 @@ export class Watchdrip {
     }
 
     saveConfig() {
-        hmFS.SysProSetChars(WATCHDRIP_CONFIG, json2str(watchdrip.watchdripConfig));
-        hmFS.SysProSetChars(WATCHDRIP_CONFIG_LAST_UPDATE, watchdrip.timeSensor.utc);
+        hmFS.SysProSetChars(WATCHDRIP_CONFIG, json2str(this.watchdripConfig));
+        hmFS.SysProSetInt64(WATCHDRIP_CONFIG_LAST_UPDATE, this.timeSensor.utc);
     }
 
     /* will check last config updates to sync config with app*/
     checkConfigUpdate() {
         let configLastUpdate = hmFS.SysProGetInt64(WATCHDRIP_CONFIG_LAST_UPDATE);
-        if (watchdrip.configLastUpdate !== configLastUpdate) {
-            watchdrip.configLastUpdate = configLastUpdate;
-            watchdrip.readConfig();
+        if (this.configLastUpdate !== configLastUpdate) {
+            debug.log("detected config change");
+            this.configLastUpdate = configLastUpdate;
+            this.readConfig();
+            debug.setEnabled(this.watchdripConfig.showLog);
+            //restart timer (the fetch mode can be changed)
+            this.stopDataUpdates();
+            this.startDataUpdates();
+            return true;
         }
+        return false
     }
 
     destroy() {
-        if (watchdrip.system_alarm_id !== null) {
-            hmApp.alarmCancel(watchdrip.system_alarm_id);
-        }
-        watchdrip.stopDataUpdates();
-        watchdrip.dropConnection();
+        this.stopDataUpdates();
+        this.dropConnection();
     }
 }

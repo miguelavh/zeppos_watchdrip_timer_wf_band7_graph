@@ -3,8 +3,7 @@ import {StatusData} from "./model/statusData";
 import {MINUTE_IN_MS, niceTime} from "../../shared/date";
 import {TreatmentData} from "./model/treatmentData";
 import {PumpData} from "./model/pumpData";
-
-import {ExternalData} from "./model/externalData";
+import {GraphData} from "./model/graphData";
 
 const BG_STALE_TIME_MS = 13 * MINUTE_IN_MS;
 
@@ -19,16 +18,14 @@ export class WatchdripData {
         this.treatment = TreatmentData.createEmpty();
         /** @var PumpData $object */
         this.pump = PumpData.createEmpty();
-        
-        /** @var ExternalData $object */
-        this.external = ExternalData.createEmpty();
-        
+        /** @var GraphData $object */
+        this.graph = GraphData.createEmpty();
         /* defines the difference in time between phone and watch*/
         this.timeDiff = 0;
     }
 
     updateTimeDiff() {
-        if (this.getStatus().now == null) {
+        if (!this.getStatus().now) {
             this.timeDiff = 0;
         } else {
             this.timeDiff = this.timeSensor.utc - this.getStatus().now;
@@ -58,10 +55,10 @@ export class WatchdripData {
             this.pump = Object.assign(PumpData.prototype, data['pump']);
         }
 
-        if (data['external'] === undefined) {
-            this.external = ExternalData.createEmpty();
+        if (data['graph'] === undefined) {
+            this.graph = GraphData.createEmpty();
         } else {
-            this.external = Object.assign(ExternalData.prototype, data['external']);
+            this.graph = Object.assign(GraphData.prototype, data['graph']);
         }
     }
 
@@ -85,9 +82,9 @@ export class WatchdripData {
         return this.pump;
     }
 
-    /** @return ExternalData $object */
-    getExternal() {
-        return this.external;
+    /** @return GraphData $object */
+    getGraph() {
+        return this.graph;
     }
 
     isBgStale() {
